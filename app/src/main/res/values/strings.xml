@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Avito2_0</string>
+    <string name="emailEditTextHint">Введите почту</string>
+</resources>

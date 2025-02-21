@@ -62,7 +62,7 @@ class RegisterPage {
     private val repeatPasswordEditTextUi = PasswordEditTextUi(
         id = R.id.repeatPasswordEditText,
         text  = "",
-        hintResId = R.string.passwordHint,
+        hintResId = R.string.repeatPasswordHint,
         containerClassTypeMatcher,
         containerIdMatcher
     )
@@ -77,7 +77,7 @@ class RegisterPage {
     private val registerButtonUi = ButtonUi(
         id = R.id.registerButton,
         text = R.string.register,
-        colorHex = "#000000",
+        colorHex = "#FF000000",
         containerClassTypeMatcher,
         containerIdMatcher
     )

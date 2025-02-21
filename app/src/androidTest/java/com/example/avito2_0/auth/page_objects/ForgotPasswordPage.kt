@@ -41,13 +41,13 @@ class ForgotPasswordPage {
     private val recoverPasswordButtonUi = ButtonUi(
         id = R.id.recoverPasswordButton,
         text = R.string.recoverPassword,
-        colorHex = "#000000",
+        colorHex = "#FF000000",
         containerClassTypeMatcher,
         containerIdMatcher
     )
 
     private val loginTextViewUi = TextViewUi(
-        id = R.id.loginTv,
+        id = R.id.loginTV,
         text = R.string.login,
         containerClassTypeMatcher,
         containerIdMatcher

@@ -6,4 +6,5 @@
     <string name="login">Войти</string>
     <string name="dontGetEmail">Не получили письмо?</string>
     <string name="recoverPassword">Восстановить пароль</string>
+    <string name="forgotPassword">Забыли пароль?</string>
 </resources>

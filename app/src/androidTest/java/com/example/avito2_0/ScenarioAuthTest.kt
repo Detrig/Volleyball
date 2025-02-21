@@ -2,16 +2,15 @@ package com.example.avito2_0
 
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.example.avito2_0.auth.ForgotPasswordPage
-import com.example.avito2_0.auth.LoginPage
-import com.example.avito2_0.auth.RegisterPage
+import com.example.avito2_0.auth.page_objects.ForgotPasswordPage
+import com.example.avito2_0.auth.page_objects.LoginPage
+import com.example.avito2_0.auth.page_objects.RegisterPage
 import org.junit.Before
 
 import org.junit.Test
 import org.junit.runner.RunWith
 
 import org.junit.Rule
-import kotlin.math.log
 
 
 @RunWith(AndroidJUnit4::class)

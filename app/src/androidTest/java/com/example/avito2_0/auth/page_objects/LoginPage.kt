@@ -1,4 +1,4 @@
-package com.example.avito2_0.auth
+package com.example.avito2_0.auth.page_objects
 
 import android.view.View
 import android.widget.LinearLayout
@@ -6,6 +6,12 @@ import androidx.test.espresso.matcher.ViewMatchers.isAssignableFrom
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withParent
 import com.example.avito2_0.R
+import com.example.avito2_0.auth.ui_elements.ButtonUi
+import com.example.avito2_0.auth.ui_elements.EmailEditTextUi
+import com.example.avito2_0.auth.ui_elements.PasswordEditTextUi
+import com.example.avito2_0.auth.ui_elements.ProgressUi
+import com.example.avito2_0.auth.ui_elements.TextViewUi
+import com.example.avito2_0.auth.ui_elements.ToastUi
 import org.hamcrest.Matcher
 
 class LoginPage(authMap : Map<String, String>) {  // email/password
@@ -24,8 +30,8 @@ class LoginPage(authMap : Map<String, String>) {  // email/password
     }
 
     fun inputLogin(mail: String, password: String) {
-        emailEditTextUi.inputText(mail)
-        passwordEditTextUi.inputText(password)
+        emailEditTextUi.input(mail)
+        passwordEditTextUi.input(password)
     }
 
     fun clickLoginButton() {
@@ -47,7 +53,10 @@ class LoginPage(authMap : Map<String, String>) {  // email/password
         registerTextView.assertDisable()
         loginButton.assertDisable()
         forgotPasswordTextView.assertDisable()
+
         progressUi.assertLoading()
+        progressUi.simulateLoading(3000)
+        progressUi.assertNotLoading()
     }
 
     private val containerIdMatcher : Matcher<View> = withParent(withId(R.id.rootLayout))
@@ -86,7 +95,7 @@ class LoginPage(authMap : Map<String, String>) {  // email/password
 
     private val forgotPasswordTextView = TextViewUi(
         id = R.id.forgotPasswordTV,
-        text = "Забыли пароль?",
+        text = R.string.forgotPassword,
         containerClassTypeMatcher,
         containerIdMatcher
     )

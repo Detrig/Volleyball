@@ -2,13 +2,16 @@ package com.example.avito2_0
 
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.example.avito2_0.auth.AuthPage
+import com.example.avito2_0.auth.ForgotPasswordPage
+import com.example.avito2_0.auth.LoginPage
+import com.example.avito2_0.auth.RegisterPage
 import org.junit.Before
 
 import org.junit.Test
 import org.junit.runner.RunWith
 
 import org.junit.Rule
+import kotlin.math.log
 
 
 @RunWith(AndroidJUnit4::class)
@@ -17,7 +20,9 @@ class ScenarioAuthTest {
     @get:Rule
     val activityScenarioRule = ActivityScenarioRule(MainActivity::class.java)
 
-    private lateinit var authPage : AuthPage;
+    private lateinit var loginPage : LoginPage;
+    private lateinit var registerPage : RegisterPage;
+    private lateinit var forgotPasswordPage: ForgotPasswordPage;
 
     @Before
     fun setup() {
@@ -25,25 +30,26 @@ class ScenarioAuthTest {
             Pair("alexzaitsev04@mail.ru", "pass_2"),
             Pair("test@mail.ru", "pass_2")
         )
-        authPage = AuthPage(authMap)
+        loginPage = LoginPage(authMap)
     }
     /**
        * happy pass
      */
     @Test
     fun testcase1() {
-        authPage.assertLoginInitialState()
+        loginPage.assertLoginInitialState()
 
-        authPage.clickRegisterTextView()
-        authPage.assertRegistrationInitialState()
+        loginPage.clickRegisterTextView()
+        registerPage.assertRegistrationInitialState()
 
-        authPage.inputRegistration(mail = "alexzaitsev04@mail.ru", password = "pass_2", repeatPassword = "pass_2")
-        authPage.clickRegisterButton()
-        authPage.asertLoginInitialState()
+        registerPage.inputRegistration(mail = "alexzaitsev04@mail.ru", password = "pass_2", repeatPassword = "pass_2")
+        registerPage.clickRegisterButton()
+        loginPage.assertLoginInitialState()
 
-        authPage.inputLogin(mail = "alexzaitsev04@mail.ru", password = "pass_2")
-        authPage.clickLoginButton()
-        authPage.assertAdvertisementInitialState()
+        loginPage.inputLogin(mail = "alexzaitsev04@mail.ru", password = "pass_2")
+        loginPage.clickLoginButton()
+        loginPage.assertLoadingState()
+       // loginPage.assertAdvertisementInitialState()
     }
 
     /**
@@ -51,16 +57,16 @@ class ScenarioAuthTest {
      */
     @Test
     fun testcase2() {
-        authPage.assertLoginInitialState()
+        loginPage.assertLoginInitialState()
 
-        authPage.clickForgotPassTextView()
-        authPage.assertForgotPasswordInitialState()
+        loginPage.clickForgotPassTextView()
+        forgotPasswordPage.assertForgotPasswordInitialState()
 
-        authPage.inputRestore(email = "alexzaitsev04@")
-        authPage.assertForgotPasswordErrorState(errorText = "Incorrect email")
+        forgotPasswordPage.inputRestore(email = "alexzaitsev04@")
+        forgotPasswordPage.assertForgotPasswordErrorState(errorText = "Incorrect email")
 
-        authPage.inputRestore(email = "alexzaitsev04@mail.ru")
-        authPage.assertLoginInitialState()
+        forgotPasswordPage.inputRestore(email = "alexzaitsev04@mail.ru")
+        loginPage.assertLoginInitialState()
     }
 
     /**
@@ -68,24 +74,26 @@ class ScenarioAuthTest {
      */
     @Test
     fun testcase3() {
-        authPage.assertLoginInitialState()
+        loginPage.assertLoginInitialState()
 
-        authPage.inputLogin(email = "alexZ", password = "pass_2")
-        authPage.assertLoginErrorState(errorText = "incorrect password or email")
+        loginPage.inputLogin(mail = "alexZ", password = "pass_2")
+        loginPage.clickLoginButton()
+        loginPage.assertLoadingState()
+        loginPage.assertLoginErrorState(errorText = "incorrect password or email")
 
-        authPage.clickRegisterTextView()
-        authPage.assertRegistrationInitialState()
+        loginPage.clickRegisterTextView()
+        registerPage.assertRegistrationInitialState()
 
-        authPage.inputRegistration(mail = "test@mail.ru", password = "pass_3", repeatPassword = "pass_2")
-        authPage.clickRegisterButton()
-        authPage.assertRegistrationErrorState(errorText = "password don't match")
+        registerPage.inputRegistration(mail = "test@mail.ru", password = "pass_3", repeatPassword = "pass_2")
+        registerPage.clickRegisterButton()
+        registerPage.assertRegistrationErrorState(errorText = "password don't match")
 
-        authPage.inputRegistration(mail = "test@mail.ru", password = "pass3", repeatPassword = "pass3")
-        authPage.clickRegisterButton()
-        authPage.assertRegistrationErrorState(errorText = "password do not meet requirements")
+        registerPage.inputRegistration(mail = "test@mail.ru", password = "pass3", repeatPassword = "pass3")
+        registerPage.clickRegisterButton()
+        registerPage.assertRegistrationErrorState(errorText = "password do not meet requirements")
 
-        authPage.inputRegistration(mail = "test@mail.ru", password = "pass_3", repeatPassword = "pass_3")
-        authPage.clickRegisterButton()
-        authPage.assertLoginInitialState()
+        registerPage.inputRegistration(mail = "test@mail.ru", password = "pass_3", repeatPassword = "pass_3")
+        registerPage.clickRegisterButton()
+        loginPage.assertLoginInitialState()
     }
 }

@@ -1,4 +1,9 @@
 <resources>
     <string name="app_name">Avito2_0</string>
     <string name="emailEditTextHint">Введите почту</string>
+    <string name="passwordHint">Пароль</string>
+    <string name="register">Зарегистрироваться</string>
+    <string name="login">Войти</string>
+    <string name="dontGetEmail">Не получили письмо?</string>
+    <string name="recoverPassword">Восстановить пароль</string>
 </resources>

@@ -41,7 +41,7 @@ class ScenarioAuthTest {
         loginPage.clickRegisterTextView()
         registerPage.assertRegistrationInitialState()
 
-        registerPage.inputRegistration(mail = "alexzaitsev04@mail.ru", password = "pass_2", repeatPassword = "pass_2")
+        registerPage.inputRegistration(email = "alexzaitsev04@mail.ru", password = "pass_2", repeatPassword = "pass_2")
         registerPage.clickRegisterButton()
         loginPage.assertLoginInitialState()
 
@@ -83,15 +83,15 @@ class ScenarioAuthTest {
         loginPage.clickRegisterTextView()
         registerPage.assertRegistrationInitialState()
 
-        registerPage.inputRegistration(mail = "test@mail.ru", password = "pass_3", repeatPassword = "pass_2")
+        registerPage.inputRegistration(email = "test@mail.ru", password = "pass_3", repeatPassword = "pass_2")
         registerPage.clickRegisterButton()
         registerPage.assertRegistrationErrorState(errorText = "password don't match")
 
-        registerPage.inputRegistration(mail = "test@mail.ru", password = "pass3", repeatPassword = "pass3")
+        registerPage.inputRegistration(email = "test@mail.ru", password = "pass3", repeatPassword = "pass3")
         registerPage.clickRegisterButton()
         registerPage.assertRegistrationErrorState(errorText = "password do not meet requirements")
 
-        registerPage.inputRegistration(mail = "test@mail.ru", password = "pass_3", repeatPassword = "pass_3")
+        registerPage.inputRegistration(email = "test@mail.ru", password = "pass_3", repeatPassword = "pass_3")
         registerPage.clickRegisterButton()
         loginPage.assertLoginInitialState()
     }

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:id="@+id/rootLayout"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/registration"
+        android:textSize="24sp"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:layout_weight="0.3"/>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:layout_weight="0.7">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/emailEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:autofillHints="emailAddress"
+            style="@style/EditTextAuthStyle"
+            android:inputType="textEmailAddress"
+            android:hint="@string/emailEditTextHint"/>
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/passwordEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:autofillHints="emailAddress"
+            style="@style/EditTextAuthStyle"
+            android:layout_marginTop="16dp"
+            android:inputType="textPassword"
+            android:hint="@string/passwordHint"/>
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/repeatPasswordEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:autofillHints="emailAddress"
+            style="@style/EditTextAuthStyle"
+            android:layout_marginTop="16dp"
+            android:inputType="textPassword"
+            android:hint="@string/repeatPasswordHint"/>
+
+        <TextView
+            android:id="@+id/sendEmailTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/dontGetEmail"
+            android:layout_marginTop="8dp"
+            android:padding="8dp"
+            android:textSize="16sp"
+            android:layout_marginStart="50dp" />
+
+        <Button
+            android:id="@+id/registerButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/black"
+            style="@style/AuthMarginHorizontal"
+            android:layout_marginTop="32dp"
+            android:text="@string/register" />
+
+        <TextView
+            android:id="@+id/loginTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/login"
+            android:layout_marginTop="8dp"
+            android:padding="8dp"
+            android:textSize="16sp" />
+
+    </LinearLayout>
+
+</LinearLayout>

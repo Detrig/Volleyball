@@ -84,6 +84,8 @@ class ScenarioAuthTest {
         registerPage.assertRegistrationInitialState()
 
         registerPage.inputRegistration(email = "test@mail.ru", password = "pass_3", repeatPassword = "pass_2")
+        activityScenarioRule.scenario.recreate()
+        registerPage.checkRegistrationText(email = "test@mail.ru", password = "pass_3", repeatPassword = "pass_2")
         registerPage.clickRegisterButton()
         registerPage.assertRegistrationErrorState(errorText = "password don't match")
 

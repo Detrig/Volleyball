@@ -39,6 +39,11 @@ class RegisterPage {
         passwordEditTextUi.assertErrorHighlight()
     }
 
+    fun checkRegistrationText(email: String, password: String, repeatPassword: String) {
+        emailEditTextUi.withTextHere(email)
+        passwordEditTextUi.withTextHere(password)
+        repeatPasswordEditTextUi.withTextHere(repeatPassword)
+    }
 
     private val containerIdMatcher : Matcher<View> = withParent(withId(R.id.rootLayout))
     private val containerClassTypeMatcher : Matcher<View> = withParent(isAssignableFrom(LinearLayout::class.java))

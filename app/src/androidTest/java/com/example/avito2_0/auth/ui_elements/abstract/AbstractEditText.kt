@@ -3,6 +3,7 @@ package com.example.avito2_0.auth.ui_elements.abstract
 import androidx.test.espresso.ViewInteraction
 import androidx.test.espresso.action.ViewActions.clearText
 import androidx.test.espresso.action.ViewActions.click
+import androidx.test.espresso.action.ViewActions.closeSoftKeyboard
 import androidx.test.espresso.action.ViewActions.typeText
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.isEnabled
@@ -17,6 +18,7 @@ abstract class AbstractEditText(
             .perform(clearText())
             .perform(click())
             .perform(typeText(text))
+            .perform(closeSoftKeyboard())
             .check(matches(withText(text)))
     }
 
@@ -26,5 +28,9 @@ abstract class AbstractEditText(
 
     fun assertDisable() {
         interaction.check(matches(not(isEnabled())))
+    }
+
+    fun withTextHere(text: String) {
+        interaction.check(matches(withText(text)))
     }
 }

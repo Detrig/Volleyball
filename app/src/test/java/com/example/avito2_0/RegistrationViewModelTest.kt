@@ -20,6 +20,38 @@ class RegistrationViewModelTest {
         assertEquals(expected, actual)
     }
 
+//    @Test
+//    fun inputValidEmailAndPasswordState() {
+//        val actual : RegistrationUiState = viewModel.inputRegistration(
+//            email = "alexzaitsev04@mail.ru",
+//            password = "pass_2"
+//        )
+//        val expected = RegistrationUiState.Input(
+//            email = "alexzaitsev04@mail.ru",
+//            password = "pass_2"
+//        )
+//        assertEquals(expected, actual)
+//    }
+
     @Test
-    fun inputValid
+    fun checkValidEmailAndPasswordState() {
+        val actual : RegistrationUiState = viewModel.register(
+            email = "alexzaitsev04@mail.ru",
+            password = "pass_2",
+            repeatPassword = "pass_2"
+        )
+        val expected = RegistrationUiState.Success()
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun checkInvalidEmailAndPasswordState() {
+        val actual : RegistrationUiState = viewModel.register(
+            email = "test@mail.ru",
+            password = "pass3",
+            repeatPassword = "pass3"
+        )
+        val expected = RegistrationUiState.Error("Password do not meet requirements")
+        assertEquals(expected, actual)
+    }
 }

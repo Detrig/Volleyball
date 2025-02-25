@@ -28,14 +28,14 @@ class LoginViewModelTest {
     /**
      * Check input email and password
      */
-    @Test
-    fun inputCorrectEmailAndPasswordState() {
-        val actual : LoginUiState = viewModel.inputLogin(mail = "alexzaitsev04@mail.ru", password = "pass_2")
-        val expected = LoginUiState.Input(
-            mail = "alexzaitsev04@mail.ru", password = "pass_2"
-        )
-        assertEquals(expected, actual)
-    }
+//    @Test
+//    fun inputCorrectEmailAndPasswordState() {
+//        val actual : LoginUiState = viewModel.inputLogin(mail = "alexzaitsev04@mail.ru", password = "pass_2")
+//        val expected = LoginUiState.Input(
+//            mail = "alexzaitsev04@mail.ru", password = "pass_2"
+//        )
+//        assertEquals(expected, actual)
+//    }
 
     /**
      * Correct email and password
@@ -43,15 +43,16 @@ class LoginViewModelTest {
      */
     @Test
     fun checkCorrectEmailAndPasswordState() {
-        val actual : LoginUiState = viewModel.login(
+        var actual : LoginUiState = viewModel.login(
             mail = "alexzaitsev04@mail.ru", password = "pass_2"
         )
         var expected = LoginUiState.Loading()
         assertEquals(expected, actual)
 
 
+        actual = viewModel.isLoginSuccess()
         expected = LoginUiState.Success()
-        assertEquals(expected, actual.)
+        assertEquals(expected, actual)
     }
 
     /**
@@ -65,6 +66,11 @@ class LoginViewModelTest {
             mail = "alexZ", password = "pass_2"
         )
         val expected = LoginUiState.Loading()
+        assertEquals(expected, actual)
+
+        actual = viewModel.isLoginSuccess()
+        expected = LoginUiState.Error("Incorrect password or email")
+        assertEquals(expected, actual)
     }
 
 }

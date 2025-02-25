@@ -64,6 +64,9 @@ class ScenarioAuthTest {
         forgotPasswordPage.inputRestore(email = "alexzaitsev04@")
         forgotPasswordPage.assertForgotPasswordErrorState(errorText = "Incorrect email")
 
+        forgotPasswordPage.inputRestore(email = "ZOV@yandex.com")
+        forgotPasswordPage.assertForgotPasswordErrorState(errorText = "Account not found")
+
         forgotPasswordPage.inputRestore(email = "alexzaitsev04@mail.ru")
         loginPage.assertLoginInitialState()
     }
@@ -78,7 +81,7 @@ class ScenarioAuthTest {
         loginPage.inputLogin(mail = "alexZ", password = "pass_2")
         loginPage.clickLoginButton()
         loginPage.assertLoadingState()
-        loginPage.assertLoginErrorState(errorText = "incorrect password or email")
+        loginPage.assertLoginErrorState(errorText = "Incorrect password or email")
 
         loginPage.clickRegisterTextView()
         registerPage.assertRegistrationInitialState()
@@ -89,7 +92,7 @@ class ScenarioAuthTest {
 
         registerPage.inputRegistration(email = "test@mail.ru", password = "pass3", repeatPassword = "pass3")
         registerPage.clickRegisterButton()
-        registerPage.assertRegistrationErrorState(errorText = "password do not meet requirements")
+        registerPage.assertRegistrationErrorState(errorText = "Password do not meet requirements")
 
         registerPage.inputRegistration(email = "test@mail.ru", password = "pass_3", repeatPassword = "pass_3")
         registerPage.clickRegisterButton()

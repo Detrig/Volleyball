@@ -1,5 +1,9 @@
 package com.example.avito2_0
 
+import com.example.avito2_0.core.Result
+import com.example.avito2_0.data.AuthRepository
+import com.example.avito2_0.data.User
+
 internal class FakeAuthRepository : AuthRepository {
 
     private val userList : MutableList<User> = mutableListOf(

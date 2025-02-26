@@ -1,6 +1,7 @@
-package com.example.avito2_0
+package com.example.avito2_0.data
 
 import android.util.Patterns
+import com.example.avito2_0.core.Result
 
 interface AuthRepository {
 

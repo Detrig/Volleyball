@@ -8,17 +8,26 @@ interface LoginUiState {
 
     object Initial : LoginUiState {
 
+        override fun update(binding: FragmentLoginBinding) {
+            super.update(binding)
+        }
     }
 
     object Loading : LoginUiState{
-
+        override fun update(binding: FragmentLoginBinding) {
+            super.update(binding)
+        }
     }
 
     object Success : LoginUiState {
-
+        override fun update(binding: FragmentLoginBinding) {
+            super.update(binding)
+        }
     }
 
     class Error(val errorText: String) : LoginUiState {
-
+        override fun update(binding: FragmentLoginBinding) {
+            super.update(binding)
+        }
     }
 }

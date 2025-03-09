@@ -3,7 +3,7 @@ package com.example.disputer.core
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 
-class LiveDataWrapper {
+interface LiveDataWrapper<T> {
     interface Read<T : Any> {
         fun liveData() : LiveData<T>
     }

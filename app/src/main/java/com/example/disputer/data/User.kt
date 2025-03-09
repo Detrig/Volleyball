@@ -1,6 +1,7 @@
 package com.example.disputer.data
 
 data class User(
-    val email : String,
-    val password : String
+    val uid: String,
+    val email: String,
+    val isAdmin: Boolean
 )

@@ -19,6 +19,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Avito2_0"
+rootProject.name = "Disputer"
 include(":app")
  

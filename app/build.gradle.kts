@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.avito2_0"
+    namespace = "com.example.disputer"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.example.avito2_0"
+        applicationId = "com.example.disputer"
         minSdk = 24
         targetSdk = 35
         versionCode = 1
@@ -50,4 +50,13 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.analytics)
+    implementation(libs.firebase.auth)
+    implementation("com.google.firebase:firebase-database:21.0.0")
+
+    //Authentication with Credential Manager
+    implementation(libs.play.services.auth)
+
 }

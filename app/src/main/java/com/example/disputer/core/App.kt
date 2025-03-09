@@ -2,6 +2,7 @@ package com.example.disputer.core
 
 import android.app.Application
 import androidx.lifecycle.ViewModel
+import com.google.firebase.FirebaseApp
 
 class App : Application(), ProvideViewModel {
 
@@ -17,6 +18,7 @@ class App : Application(), ProvideViewModel {
         super.onCreate()
         val provideViewModel = ProvideViewModel.Base(clear)
         factory = ViewModelFactory.Base(provideViewModel)
+        FirebaseApp.initializeApp(this)
     }
 
     override fun <T : ViewModel> viewModel(viewModelClass: Class<T>): T =

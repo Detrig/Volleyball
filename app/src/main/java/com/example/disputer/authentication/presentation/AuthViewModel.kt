@@ -8,6 +8,5 @@ class AuthViewModel(
     private val loginUseCase: LoginUseCase,
     private val registerUseCase: RegistrationUseCase,
     private val logoutUseCase: LogoutUseCase,
-    private val authUiState
 ) {
 }

@@ -16,7 +16,7 @@ interface LiveDataWrapper<T> {
 
 
     abstract class Abstract<T : Any>(
-        protected val liveData : MutableLiveData<T> = MutableLiveData()
+        protected val liveData : SingleLiveEvent<T> = SingleLiveEvent()
     ) : Mutable<T> {
         override fun liveData(): LiveData<T> = liveData
 

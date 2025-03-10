@@ -5,7 +5,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.example.disputer.auth.page_objects.ForgotPasswordPage
 import com.example.disputer.auth.page_objects.LoginPage
 import com.example.disputer.auth.page_objects.RegisterPage
-import com.example.disputer.authentication.MainActivity
+import com.example.disputer.authentication.presentation.ui.MainActivity
 import org.junit.Before
 
 import org.junit.Test

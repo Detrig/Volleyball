@@ -1,5 +1,7 @@
 package com.example.disputer
 
+import com.example.disputer.authentication.presentation.state.login.LoginUiState
+import com.example.disputer.authentication.presentation.viewmodel.LoginViewModel
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
@@ -21,7 +23,7 @@ class LoginViewModelTest {
     @Test
     fun initialState() {
         val actual : LoginUiState = viewModel.init()
-        val expected : LoginUiState = LoginUiState.Initial()
+        val expected : LoginUiState = LoginUiState.Initial
         assertEquals(expected, actual)
     }
 
@@ -44,9 +46,9 @@ class LoginViewModelTest {
     @Test
     fun checkCorrectEmailAndPasswordState() {
         var actual : LoginUiState = viewModel.login(
-            mail = "alexzaitsev04@mail.ru", password = "pass_2"
+            email = "alexzaitsev04@mail.ru", password = "pass_2"
         )
-        var expected = LoginUiState.Loading()
+        var expected = LoginUiState.Loading
         assertEquals(expected, actual)
 
 
@@ -54,6 +56,7 @@ class LoginViewModelTest {
         expected = LoginUiState.Success()
         assertEquals(expected, actual)
     }
+
 
     /**
      * Incorrect email or password
@@ -63,7 +66,7 @@ class LoginViewModelTest {
     @Test
     fun checkIncorrectEmailOrPasswordState() {
         val actual : LoginUiState = viewModel.login(
-            mail = "alexZ", password = "pass_2"
+            email = "alexZ", password = "pass_2"
         )
         val expected : LoginUiState = LoginUiState.Loading()
         assertEquals(expected, actual)

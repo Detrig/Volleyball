@@ -1,14 +1,10 @@
 package com.example.disputer.authentication.data
 
 import android.util.Patterns
-import com.example.disputer.core.Result
-import com.example.disputer.data.User
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
@@ -21,6 +17,7 @@ interface AuthRepository {
     suspend fun register(
         email: String,
         password: String,
+        repeatPassword: String = ""
     )
 
     fun logout()
@@ -32,7 +29,7 @@ interface AuthRepository {
         private val firestore: FirebaseFirestore
     ) : AuthRepository {
 
-        override  suspend fun register(email: String, password: String) {
+        override suspend fun register(email: String, password: String, repeatPassword : String) {
             return suspendCoroutine<Unit> { continuation ->
                 try {
                     firebaseAuth.createUserWithEmailAndPassword(email, password)

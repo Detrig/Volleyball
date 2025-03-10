@@ -1,23 +1,20 @@
-package com.example.disputer.authentication
+package com.example.disputer.authentication.presentation.ui
 
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.ViewModel
 import com.example.disputer.R
-import com.example.disputer.authentication.data.AuthRepository
+import com.example.disputer.authentication.presentation.viewmodel.MainViewModel
+import com.example.disputer.core.ProvideViewModel
 import com.example.disputer.databinding.ActivityMainBinding
-import com.google.firebase.FirebaseApp
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
-import kotlinx.coroutines.launch
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), ProvideViewModel {
 
     private lateinit var binding : ActivityMainBinding
+    private lateinit var viewModel : MainViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -26,16 +23,20 @@ class MainActivity : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(binding.root)
 
+        viewModel = viewModel(MainViewModel::class.java)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        FirebaseApp.initializeApp(this)
-        val repo = AuthRepository.Base(Firebase.auth, Firebase.firestore)
 
-        lifecycleScope.launch {
-            repo.register("alexzaitsev04@mail.ru", "pass_2")
+        viewModel.liveData().observe(this) { screen ->
+            screen.show(supportFragmentManager, R.id.main)
         }
+        viewModel.init(savedInstanceState == null)
     }
+
+    override fun <T : ViewModel> viewModel(viewModelClass: Class<T>): T =
+        (application as ProvideViewModel).viewModel(viewModelClass)
+
 }

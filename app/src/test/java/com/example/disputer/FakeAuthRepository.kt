@@ -2,7 +2,7 @@ package com.example.disputer
 
 import com.example.disputer.core.Result
 import com.example.disputer.authentication.data.AuthRepository
-import com.example.disputer.data.User
+import com.example.disputer.authentication.data.User
 
 internal class FakeAuthRepository : AuthRepository {
 
@@ -12,8 +12,8 @@ internal class FakeAuthRepository : AuthRepository {
     )
 
 
-    override fun login(mail : String, password : String) : Result {
-        val user = userList.find { it.email == mail }
+    override suspend fun login(email : String, password : String) : Result {
+        val user = userList.find { it.email == email }
         return if (user != null && user.password == password) {
             Result.Success
         } else {
@@ -21,8 +21,8 @@ internal class FakeAuthRepository : AuthRepository {
         }
     }
 
-    override fun register(mail: String, password: String, repeatPassword: String): Result {
-        val existingUser = userList.find { it.email == mail }
+    override suspend fun register(email: String, password: String, repeatPassword: String): Result {
+        val existingUser = userList.find { it.email == email }
 
         if (existingUser != null) {
             return Result.Error("User already exists")
@@ -36,12 +36,16 @@ internal class FakeAuthRepository : AuthRepository {
             return Result.Error("Password must be at least 6 characters long and contain at least one special character")
         }
 
-        if (!isValidEmail(mail)) {
+        if (!isValidEmail(email)) {
             return Result.Error("Invalid email format")
         }
 
-        userList.add(User(mail, password))
+        userList.add(User(email, password))
         return Result.Success
+    }
+
+    override fun logout() {
+
     }
 
     override fun forgotPassword(mail : String) : Result {

@@ -9,5 +9,13 @@
         <item name="android:layout_marginStart">50dp</item>
         <item name="android:layout_marginEnd">50dp</item>
         <item name="android:textSize">20sp</item>
+        <item name="android:padding">12dp</item>
+<!--        <item name="backgroundTint">@drawable/edtnormal</item>-->
     </style>
+
+    <style name="roundedImageView" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">8dp</item>
+    </style>
+
 </resources>

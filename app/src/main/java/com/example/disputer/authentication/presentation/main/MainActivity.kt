@@ -1,4 +1,4 @@
-package com.example.disputer.authentication.presentation.ui
+package com.example.disputer.authentication.presentation.main
 
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
@@ -7,7 +7,6 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModel
 import com.example.disputer.R
-import com.example.disputer.authentication.presentation.viewmodel.MainViewModel
 import com.example.disputer.core.ProvideViewModel
 import com.example.disputer.databinding.ActivityMainBinding
 

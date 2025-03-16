@@ -1,4 +1,4 @@
-package com.example.disputer.authentication.presentation.state.login
+package com.example.disputer.authentication.presentation.login
 
 import android.view.View
 import android.widget.Toast

@@ -1,7 +1,7 @@
 package com.example.disputer
 
-import com.example.disputer.authentication.presentation.state.login.LoginUiState
-import com.example.disputer.authentication.presentation.viewmodel.LoginViewModel
+import com.example.disputer.authentication.presentation.login.LoginUiState
+import com.example.disputer.authentication.presentation.login.LoginViewModel
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test

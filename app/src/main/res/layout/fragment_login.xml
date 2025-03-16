@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:id="@+id/rootLayout"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rootLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    xmlns:tools="http://schemas.android.com/tools">
+    android:orientation="vertical">
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -19,54 +19,56 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/authorize"
-                android:textSize="24sp"
                 android:layout_gravity="center"
+                android:layout_weight="0.35"
                 android:gravity="center"
-                android:layout_weight="0.35"/>
+                android:text="@string/authorize"
+                android:textSize="24sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:orientation="vertical"
-                android:layout_weight="0.65">
+                android:layout_weight="0.65"
+                android:orientation="vertical">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/emailEditText"
+                    style="@style/EditTextAuthStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:autofillHints="emailAddress"
-                    style="@style/EditTextAuthStyle"
-                    android:inputType="textEmailAddress"
-                    android:hint="@string/emailEditTextHint"/>
+                    android:background="@drawable/edtnormal"
+                    android:hint="@string/emailEditTextHint"
+                    android:inputType="textEmailAddress" />
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/passwordEditText"
+                    style="@style/EditTextAuthStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:autofillHints="emailAddress"
-                    style="@style/EditTextAuthStyle"
                     android:layout_marginTop="16dp"
-                    android:inputType="textPassword"
-                    android:hint="@string/passwordHint"/>
+                    android:autofillHints="emailAddress"
+                    android:background="@drawable/edtnormal"
+                    android:hint="@string/passwordHint"
+                    android:inputType="textPassword" />
 
                 <TextView
                     android:id="@+id/forgotPasswordTV"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/forgotPassword"
+                    android:layout_marginStart="50dp"
                     android:layout_marginTop="8dp"
                     android:padding="8dp"
-                    android:textSize="16sp"
-                    android:layout_marginStart="50dp" />
+                    android:text="@string/forgotPassword"
+                    android:textSize="16sp" />
 
                 <Button
                     android:id="@+id/loginButton"
+                    style="@style/AuthMarginHorizontal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:backgroundTint="@color/black"
-                    style="@style/AuthMarginHorizontal"
                     android:layout_marginTop="32dp"
+                    android:backgroundTint="@color/black"
                     android:text="@string/login" />
 
                 <TextView
@@ -74,9 +76,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="@string/register"
                     android:layout_marginTop="8dp"
                     android:padding="8dp"
+                    android:text="@string/register"
                     android:textSize="16sp" />
             </LinearLayout>
         </LinearLayout>
@@ -87,6 +89,6 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_gravity="center"
-            android:visibility="gone"/>
+            android:visibility="gone" />
     </FrameLayout>
 </LinearLayout>

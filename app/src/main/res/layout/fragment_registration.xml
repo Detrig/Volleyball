@@ -1,86 +1,106 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/rootLayout"
-    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/registration"
-        android:textSize="24sp"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:layout_weight="0.3"/>
-
-
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:orientation="vertical"
-        android:layout_weight="0.7">
+        android:layout_weight="1">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/emailEditText"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:autofillHints="emailAddress"
-            style="@style/EditTextAuthStyle"
-            android:inputType="textEmailAddress"
-            android:hint="@string/emailEditTextHint"/>
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/passwordEditText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:autofillHints="emailAddress"
-            style="@style/EditTextAuthStyle"
-            android:layout_marginTop="16dp"
-            android:inputType="textPassword"
-            android:hint="@string/passwordHint"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="0.3"
+                android:gravity="center"
+                android:text="@string/registration"
+                android:textSize="24sp" />
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/repeatPasswordEditText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:autofillHints="emailAddress"
-            style="@style/EditTextAuthStyle"
-            android:layout_marginTop="16dp"
-            android:inputType="textPassword"
-            android:hint="@string/repeatPasswordHint"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.65"
+                android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/sendEmailTV"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/dontGetEmail"
-            android:layout_marginTop="8dp"
-            android:padding="8dp"
-            android:textSize="16sp"
-            android:layout_marginStart="50dp" />
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/emailEditText"
+                    style="@style/EditTextAuthStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:autofillHints="emailAddress"
+                    android:background="@drawable/edtnormal"
+                    android:hint="@string/emailEditTextHint"
+                    android:inputType="textEmailAddress" />
 
-        <Button
-            android:id="@+id/registerButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/black"
-            style="@style/AuthMarginHorizontal"
-            android:layout_marginTop="32dp"
-            android:text="@string/register" />
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/passwordEditText"
+                    style="@style/EditTextAuthStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:background="@drawable/edtnormal"
+                    android:hint="@string/passwordHint"
+                    android:inputType="textPassword" />
 
-        <TextView
-            android:id="@+id/loginTV"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/repeatPasswordEditText"
+                    style="@style/EditTextAuthStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:background="@drawable/edtnormal"
+                    android:hint="@string/repeatPasswordHint"
+                    android:inputType="textPassword" />
+
+                <TextView
+                    android:id="@+id/sendEmailTV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="50dp"
+                    android:layout_marginTop="8dp"
+                    android:padding="8dp"
+                    android:text="@string/dontGetEmail"
+                    android:textSize="16sp" />
+
+                <Button
+                    android:id="@+id/registerButton"
+                    style="@style/AuthMarginHorizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="32dp"
+                    android:backgroundTint="@color/black"
+                    android:text="@string/register" />
+
+                <TextView
+                    android:id="@+id/loginTV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="8dp"
+                    android:padding="8dp"
+                    android:text="@string/login"
+                    android:textSize="16sp" />
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_gravity="center"
-            android:text="@string/login"
-            android:layout_marginTop="8dp"
-            android:padding="8dp"
-            android:textSize="16sp" />
+            android:visibility="gone"
+            tools:visibility="visible"/>
 
-    </LinearLayout>
-
+    </FrameLayout>
 </LinearLayout>

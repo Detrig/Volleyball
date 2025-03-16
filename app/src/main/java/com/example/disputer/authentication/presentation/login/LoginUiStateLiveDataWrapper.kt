@@ -1,4 +1,4 @@
-package com.example.disputer.authentication.presentation.state.login
+package com.example.disputer.authentication.presentation.login
 
 import com.example.disputer.core.LiveDataWrapper
 

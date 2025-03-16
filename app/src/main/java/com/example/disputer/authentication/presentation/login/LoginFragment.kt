@@ -1,10 +1,9 @@
-package com.example.disputer.authentication.presentation.ui
+package com.example.disputer.authentication.presentation.login
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.disputer.authentication.presentation.viewmodel.LoginViewModel
 import com.example.disputer.core.AbstractFragment
 import com.example.disputer.core.ProvideViewModel
 import com.example.disputer.databinding.FragmentLoginBinding
@@ -32,6 +31,14 @@ class LoginFragment : AbstractFragment<FragmentLoginBinding>() {
             hideKeyBoard()
 
             viewModel.login(email, password)
+        }
+
+        binding.registerTV.setOnClickListener {
+            viewModel.registerScreen()
+        }
+
+        binding.forgotPasswordTV.setOnClickListener {
+            viewModel.forgotPasswordScreen()
         }
     }
 }

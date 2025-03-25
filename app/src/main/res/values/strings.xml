@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Disputer</string>
+    <string name="app_name">Первый эйс</string>
     <string name="emailEditTextHint">Почта</string>
     <string name="passwordHint">Пароль</string>
     <string name="register">Зарегистрироваться</string>

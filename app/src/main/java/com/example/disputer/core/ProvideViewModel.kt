@@ -4,7 +4,10 @@ import androidx.lifecycle.ViewModel
 import com.example.disputer.authentication.presentation.login.LoginViewModel
 import com.example.disputer.authentication.data.AuthRepository
 import com.example.disputer.authentication.data.PasswordRepository
+import com.example.disputer.authentication.data.User
+import com.example.disputer.authentication.data.UserRepository
 import com.example.disputer.authentication.domain.ForgotPasswordUseCase
+import com.example.disputer.authentication.domain.IsLoggedInUseCase
 import com.example.disputer.authentication.domain.LoginUseCase
 import com.example.disputer.authentication.domain.RegistrationUseCase
 import com.example.disputer.authentication.presentation.forgotpassword.ForgotPasswordUiStateLiveDataWrapper
@@ -34,14 +37,17 @@ interface ProvideViewModel {
 
         private val authRepository = AuthRepository.Base(fireBaseAuth, fireBaseFirestore)
         private val passwordRepository = PasswordRepository.Base(fireBaseAuth)
+        private val userRepository = UserRepository.Base(fireBaseAuth, fireBaseFirestore)
 
         private val loginUiStateLiveDataWrapper = LoginUiStateLiveDataWrapper.Base()
         private val loginUseCase = LoginUseCase(authRepository)
+        private val isLoggedInUseCase = IsLoggedInUseCase(userRepository)
 
         private val registerUiStateLiveDataWrapper = RegisterUiStateLiveDataWrapper.Base()
         private val registerUseCase = RegistrationUseCase(authRepository)
 
-        private val forgotPasswordUiStateLiveDataWrapper = ForgotPasswordUiStateLiveDataWrapper.Base()
+        private val forgotPasswordUiStateLiveDataWrapper =
+            ForgotPasswordUiStateLiveDataWrapper.Base()
         private val forgotPasswordUseCase = ForgotPasswordUseCase(passwordRepository)
 
 
@@ -51,8 +57,10 @@ interface ProvideViewModel {
                     navigation,
                     loginUiStateLiveDataWrapper,
                     loginUseCase,
+                    isLoggedInUseCase,
                     viewModelScope
                 )
+
                 MainViewModel::class.java -> MainViewModel(navigation)
                 RegisterViewModel::class.java -> RegisterViewModel(
                     navigation,
@@ -60,6 +68,7 @@ interface ProvideViewModel {
                     registerUseCase,
                     viewModelScope
                 )
+
                 ForgotPasswordViewModel::class.java -> ForgotPasswordViewModel(
                     navigation,
                     clear,
@@ -67,6 +76,7 @@ interface ProvideViewModel {
                     forgotPasswordUseCase,
                     viewModelScope
                 )
+
                 else -> throw IllegalStateException("unknown viewModelClass $viewModelClass")
             } as T
 

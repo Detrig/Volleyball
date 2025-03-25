@@ -38,6 +38,12 @@
         <item name="android:textSize">18sp</item>
     </style>
 
+    <style name="TextViewMainStyle" parent="Widget.MaterialComponents.TextView">
+        <item name="fontFamily">@font/onest_bold</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">22sp</item>
+    </style>
+
     <style name="roundedImageView" parent="">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">8dp</item>

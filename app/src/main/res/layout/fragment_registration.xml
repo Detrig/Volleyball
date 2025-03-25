@@ -1,86 +1,144 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/rootLayout"
-    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/white">
 
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/registration"
-        android:textSize="24sp"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:layout_weight="0.3"/>
-
-
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:orientation="vertical"
-        android:layout_weight="0.7">
+        android:layout_weight="1">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/emailEditText"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:autofillHints="emailAddress"
-            style="@style/EditTextAuthStyle"
-            android:inputType="textEmailAddress"
-            android:hint="@string/emailEditTextHint"/>
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/passwordEditText"
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:layout_marginStart="64dp"
+                android:layout_marginEnd="64dp"
+                android:scaleType="centerInside"
+                android:src="@drawable/volleylogo"
+                android:layout_weight="0.25"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.65"
+                android:orientation="vertical">
+
+                <com.google.android.material.button.MaterialButtonToggleGroup
+                    android:id="@+id/toggleGroup"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="64dp"
+                    android:layout_marginEnd="64dp"
+                    android:background="@drawable/bg_toggle_group"
+                    app:singleSelection="true"
+                    app:selectionRequired="true"
+                    app:checkedButton="@id/btnParent"
+                    android:gravity="center">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnParent"
+                        style="@style/ToggleButtonStyle"
+                        android:layout_width="150dp"
+                        android:layout_height="wrap_content"
+                        android:textAlignment="center"
+                        android:text="@string/parent" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnCoach"
+                        style="@style/ToggleButtonStyle"
+                        android:layout_width="150dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/coach" />
+                </com.google.android.material.button.MaterialButtonToggleGroup>
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/emailEditText"
+                    style="@style/EditTextAuthStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:autofillHints="emailAddress"
+                    android:background="@drawable/edittesdt_uderline"
+                    android:hint="@string/emailEditTextHint"
+                    android:inputType="textEmailAddress" />
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/passwordEditText"
+                    style="@style/EditTextAuthStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:background="@drawable/edittesdt_uderline"
+                    android:hint="@string/passwordHint"
+                    android:inputType="textPassword" />
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/repeatPasswordEditText"
+                    style="@style/EditTextAuthStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:background="@drawable/edittesdt_uderline"
+                    android:hint="@string/passwordHint"
+                    android:inputType="textPassword" />
+
+<!--                <TextView-->
+<!--                    android:id="@+id/sendEmailTV"-->
+<!--                    style="@style/MyTextViewStyle"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginStart="64dp"-->
+<!--                    android:layout_marginTop="8dp"-->
+<!--                    android:padding="8dp"-->
+<!--                    android:text="@string/dontGetEmail"-->
+<!--                    android:textSize="16sp" />-->
+
+                <Button
+                    android:id="@+id/registerButton"
+                    style="@style/AuthMarginHorizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/register" />
+
+                <TextView
+                    android:id="@+id/loginTV"
+                    style="@style/MyTextViewStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="8dp"
+                    android:padding="8dp"
+                    android:text="@string/login"
+                    android:textSize="16sp" />
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <ImageView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:autofillHints="emailAddress"
-            style="@style/EditTextAuthStyle"
-            android:layout_marginTop="16dp"
-            android:inputType="textPassword"
-            android:hint="@string/passwordHint"/>
+            android:layout_height="120dp"
+            android:layout_gravity="bottom"
+            android:scaleType="centerCrop"
+            android:src="@drawable/volleyback" />
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/repeatPasswordEditText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:autofillHints="emailAddress"
-            style="@style/EditTextAuthStyle"
-            android:layout_marginTop="16dp"
-            android:inputType="textPassword"
-            android:hint="@string/repeatPasswordHint"/>
-
-        <TextView
-            android:id="@+id/sendEmailTV"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/dontGetEmail"
-            android:layout_marginTop="8dp"
-            android:padding="8dp"
-            android:textSize="16sp"
-            android:layout_marginStart="50dp" />
-
-        <Button
-            android:id="@+id/registerButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/black"
-            style="@style/AuthMarginHorizontal"
-            android:layout_marginTop="32dp"
-            android:text="@string/register" />
-
-        <TextView
-            android:id="@+id/loginTV"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_gravity="center"
-            android:text="@string/login"
-            android:layout_marginTop="8dp"
-            android:padding="8dp"
-            android:textSize="16sp" />
+            android:visibility="gone"/>
 
-    </LinearLayout>
-
+    </FrameLayout>
 </LinearLayout>

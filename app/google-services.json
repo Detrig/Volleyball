@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "330871424195",
+    "firebase_url": "https://volleyball-382c6-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "volleyball-382c6",
+    "storage_bucket": "volleyball-382c6.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:330871424195:android:4cc7f88b2a6c31805cce76",
+        "android_client_info": {
+          "package_name": "com.github.volleyball"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAa-hopPZ0wzAU0uEsFDos2hWJNKiCn_MU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

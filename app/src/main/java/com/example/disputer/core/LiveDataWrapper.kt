@@ -3,7 +3,7 @@ package com.example.disputer.core
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 
-class LiveDataWrapper {
+interface LiveDataWrapper<T> {
     interface Read<T : Any> {
         fun liveData() : LiveData<T>
     }
@@ -16,7 +16,7 @@ class LiveDataWrapper {
 
 
     abstract class Abstract<T : Any>(
-        protected val liveData : MutableLiveData<T> = MutableLiveData()
+        protected val liveData : SingleLiveEvent<T> = SingleLiveEvent()
     ) : Mutable<T> {
         override fun liveData(): LiveData<T> = liveData
 

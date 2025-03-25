@@ -1,45 +1,106 @@
 package com.example.disputer.authentication.data
 
 import android.util.Patterns
-import com.example.disputer.core.Result
-import com.example.disputer.data.User
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import kotlin.coroutines.resume
+import kotlin.coroutines.resumeWithException
+import kotlin.coroutines.suspendCoroutine
 
 interface AuthRepository {
 
-    fun login(mail: String, password: String): Result
+    suspend fun login(email: String, password: String)
 
-    fun register(
-        mail: String,
+    suspend fun register(
+        email: String,
         password: String,
-        repeatPassword: String
-    ): Result
+        isCoach: Boolean,
+        repeatPassword: String = "",
+    )
 
-    fun forgotPassword(mail: String): Result
+    fun logout()
 
     class Base(
-        private val userList : MutableList<User> = mutableListOf(
-            User("alexzaitsev04@mail.ru", "pass_2"),
-            User("test@mail.ru", "pass_3")
-        )
+        private val firebaseAuth: FirebaseAuth,
+        private val firestore: FirebaseFirestore
     ) : AuthRepository {
 
-        override fun login(mail: String, password: String): Result {
-            val user = User(mail, password)
+        override suspend fun register(email: String, password: String,  isCoach: Boolean, repeatPassword : String) {
+            return suspendCoroutine<Unit> { continuation ->
+                try {
+                    firebaseAuth.createUserWithEmailAndPassword(email, password)
+                        .addOnSuccessListener { authResult ->
+                            val user = authResult.user
+                            user?.sendEmailVerification()?.addOnSuccessListener {
 
-            userList.forEach {
-                if (it == user)
-                    return Result.Success
+                                // Сохранение пользователя в Firestore
+                                val newUser = User(
+                                    uid = user.uid,
+                                    email = user.email ?: "",
+                                    isCoach = false // По умолчанию false
+                                )
+
+                                if(isCoach) {
+                                    newUser.isParent = false
+                                    firestore.collection("coach").document(newUser.uid).set(newUser)
+                                        .addOnSuccessListener {
+                                            continuation.resume(Unit)
+                                        }
+                                        .addOnFailureListener { e ->
+                                            continuation.resumeWithException(e)
+                                        }
+                                } else if (!isCoach) {
+                                    firestore.collection("parent").document(newUser.uid).set(newUser)
+                                        .addOnSuccessListener {
+                                            continuation.resume(Unit)
+                                        }
+                                        .addOnFailureListener { e ->
+                                            continuation.resumeWithException(e)
+                                        }
+                                }
+
+                            }?.addOnFailureListener { e ->
+                                continuation.resumeWithException(e)
+                            }
+                        }
+                        .addOnFailureListener { e ->
+                            continuation.resumeWithException(e)
+                        }
+                } catch (e: Exception) {
+                    if (e is CancellationException) throw e
+                    continuation.resumeWithException(e)
+                }
             }
-
-            return Result.Error("Incorrect password or email")
         }
 
-        override fun register(mail: String, password: String, repeatPassword: String): Result {
-            TODO("Not yet implemented")
+        override suspend fun login(email: String, password: String) = withContext(Dispatchers.IO) {
+            try {
+                suspendCoroutine<Unit> { continuation ->
+                    firebaseAuth.signInWithEmailAndPassword(email, password)
+                        .addOnSuccessListener { authResult ->
+                            val user = authResult.user
+                            if (user != null && user.isEmailVerified) {
+                                continuation.resume(Unit)
+                            } else {
+                                continuation.resumeWithException(Exception("Email not verified"))
+                            }
+                        }
+                        .addOnFailureListener {
+                            continuation.resumeWithException(Exception("Email or password is incorrect"))
+                        }
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                if (e is CancellationException) throw e
+                throw e
+            }
         }
 
-        override fun forgotPassword(mail: String): Result {
-            TODO("Not yet implemented")
+        override fun logout() {
+            firebaseAuth.signOut()
         }
     }
 

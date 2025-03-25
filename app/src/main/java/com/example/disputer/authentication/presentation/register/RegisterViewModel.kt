@@ -23,15 +23,15 @@ class RegisterViewModel(
         registerUiStateLiveDataWrapper.update(RegisterUiState.Initial)
     }
 
-    fun register(email: String, password: String, repeatPassword: String) {
+    fun register(email: String, password: String, repeatPassword: String, isCoach: Boolean) {
         registerUiStateLiveDataWrapper.update(RegisterUiState.Loading)
 
         if (password == repeatPassword) {
             viewModelScope.launch(dispatcher) {
                 try {
-                    registerUseCase.invoke(email, password)
+                    registerUseCase.invoke(email, password, isCoach)
                     withContext(dispatcherMain) {
-                        registerUiStateLiveDataWrapper.update(RegisterUiState.Success("Так держать!"))
+                        registerUiStateLiveDataWrapper.update(RegisterUiState.Success("Подтвердите почту!"))
                         loginScreen()
                     }
                 } catch (e: Exception) {

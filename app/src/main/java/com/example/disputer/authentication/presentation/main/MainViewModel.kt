@@ -1,7 +1,6 @@
 package com.example.disputer.authentication.presentation.main
 
 import androidx.lifecycle.ViewModel
-import com.example.disputer.disputes.presentation.activedispute.ActiveDisputeScreen
 import com.example.disputer.authentication.presentation.login.LoginScreen
 import com.example.disputer.core.Navigation
 
@@ -14,7 +13,8 @@ class MainViewModel(
     }
 
     fun init(firstRun: Boolean) {
-        navigation.update(ActiveDisputeScreen)
+        if (firstRun)
+            navigation.update(LoginScreen)
     }
 
     fun liveData() = navigation.liveData()

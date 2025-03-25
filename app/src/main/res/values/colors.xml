@@ -6,4 +6,8 @@
     <color name="blush">#FEC5E5</color>
     <color name="orange">#CB5C0D</color>
     <color name="gray">#86888A</color>
+    <color name="light_gray">#E6E6E3</color>
+
+    <color name="blue">#496DB2</color>
+    <color name="red">#FF0000</color>
 </resources>

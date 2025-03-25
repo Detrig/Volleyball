@@ -25,7 +25,6 @@ interface RegisterUiState {
             passwordEditText.setBackgroundResource(R.drawable.edtnormal)
             repeatPasswordEditText.isEnabled = repeatPasswordEnable
             repeatPasswordEditText.setBackgroundResource(R.drawable.edtnormal)
-            sendEmailTV.isEnabled = sendEmailEnable
             registerButton.isEnabled = registerEnable
             progressBar.visibility = progressVisible
             loginTV.isEnabled = loginEnable

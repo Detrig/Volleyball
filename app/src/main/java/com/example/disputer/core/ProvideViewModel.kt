@@ -1,8 +1,6 @@
 package com.example.disputer.core
 
 import androidx.lifecycle.ViewModel
-import com.example.disputer.disputes.presentation.activedispute.ActiveDisputeUiLiveDataWrapper
-import com.example.disputer.disputes.presentation.activedispute.ActiveDisputeViewModel
 import com.example.disputer.authentication.presentation.login.LoginViewModel
 import com.example.disputer.authentication.data.AuthRepository
 import com.example.disputer.authentication.data.PasswordRepository
@@ -15,8 +13,6 @@ import com.example.disputer.authentication.presentation.register.RegisterUiState
 import com.example.disputer.authentication.presentation.forgotpassword.ForgotPasswordViewModel
 import com.example.disputer.authentication.presentation.main.MainViewModel
 import com.example.disputer.authentication.presentation.register.RegisterViewModel
-import com.example.disputer.disputes.data.DisputesRepository
-import com.example.disputer.disputes.data.models.Dispute
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -48,8 +44,6 @@ interface ProvideViewModel {
         private val forgotPasswordUiStateLiveDataWrapper = ForgotPasswordUiStateLiveDataWrapper.Base()
         private val forgotPasswordUseCase = ForgotPasswordUseCase(passwordRepository)
 
-        private val activeDisputeUiLiveDataWrapper = ActiveDisputeUiLiveDataWrapper.Base()
-        private val disputerRepository = DisputesRepository.Base()
 
         override fun <T : ViewModel> viewModel(viewModelClass: Class<T>): T {
             return when (viewModelClass) {
@@ -68,14 +62,9 @@ interface ProvideViewModel {
                 )
                 ForgotPasswordViewModel::class.java -> ForgotPasswordViewModel(
                     navigation,
+                    clear,
                     forgotPasswordUiStateLiveDataWrapper,
                     forgotPasswordUseCase,
-                    viewModelScope
-                )
-                ActiveDisputeViewModel::class.java -> ActiveDisputeViewModel(
-                    navigation,
-                    activeDisputeUiLiveDataWrapper,
-                    disputerRepository,
                     viewModelScope
                 )
                 else -> throw IllegalStateException("unknown viewModelClass $viewModelClass")

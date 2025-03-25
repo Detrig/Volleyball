@@ -4,6 +4,8 @@ import androidx.lifecycle.ViewModel
 import com.example.disputer.authentication.domain.ForgotPasswordUseCase
 import com.example.disputer.authentication.presentation.login.LoginScreen
 import com.example.disputer.authentication.presentation.register.RegisterScreen
+import com.example.disputer.authentication.presentation.register.RegisterViewModel
+import com.example.disputer.core.ClearViewModel
 import com.example.disputer.core.Navigation
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
@@ -13,6 +15,7 @@ import kotlinx.coroutines.withContext
 
 class ForgotPasswordViewModel(
     private val navigation: Navigation,
+    private val clearViewModel : ClearViewModel,
     private val forgotPasswordUiStateLiveDataWrapper: ForgotPasswordUiStateLiveDataWrapper,
     private val forgotPasswordUseCase: ForgotPasswordUseCase,
     private val viewModelScope: CoroutineScope,
@@ -24,7 +27,7 @@ class ForgotPasswordViewModel(
         forgotPasswordUiStateLiveDataWrapper.update(ForgotPasswordUiState.Initial)
     }
 
-    fun resetPassword(email : String) {
+    fun resetPassword(email: String) {
 
         forgotPasswordUiStateLiveDataWrapper.update(ForgotPasswordUiState.Loading)
 
@@ -35,7 +38,7 @@ class ForgotPasswordViewModel(
                     forgotPasswordUiStateLiveDataWrapper.update(ForgotPasswordUiState.Success("Проверьте почту"))
                     loginScreen()
                 }
-            } catch (e : Exception) {
+            } catch (e: Exception) {
                 withContext(dispatcherMain) {
                     forgotPasswordUiStateLiveDataWrapper.update(ForgotPasswordUiState.Error(e.message))
                 }
@@ -46,5 +49,10 @@ class ForgotPasswordViewModel(
     fun liveDataUiState() = forgotPasswordUiStateLiveDataWrapper.liveData()
 
     fun loginScreen() = navigation.update(LoginScreen)
-    fun registerScreen() = navigation.update(RegisterScreen)
+    fun registerScreen() {
+        navigation.update(RegisterScreen)
+        //clearViewModel.clearViewModel(RegisterViewModel::class.java)
+    }
+
+
 }

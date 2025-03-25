@@ -4,5 +4,6 @@ data class User(
     val uid: String,
     val email: String,
     val password : String? = null,
-    val isAdmin: Boolean = false
+    var isCoach: Boolean = false,
+    var isParent: Boolean = true
 )

@@ -17,19 +17,18 @@ interface AuthRepository {
     suspend fun register(
         email: String,
         password: String,
-        repeatPassword: String = ""
+        isCoach: Boolean,
+        repeatPassword: String = "",
     )
 
     fun logout()
-
-
 
     class Base(
         private val firebaseAuth: FirebaseAuth,
         private val firestore: FirebaseFirestore
     ) : AuthRepository {
 
-        override suspend fun register(email: String, password: String, repeatPassword : String) {
+        override suspend fun register(email: String, password: String,  isCoach: Boolean, repeatPassword : String) {
             return suspendCoroutine<Unit> { continuation ->
                 try {
                     firebaseAuth.createUserWithEmailAndPassword(email, password)
@@ -41,16 +40,28 @@ interface AuthRepository {
                                 val newUser = User(
                                     uid = user.uid,
                                     email = user.email ?: "",
-                                    isAdmin = false // По умолчанию false
+                                    isCoach = false // По умолчанию false
                                 )
 
-                                firestore.collection("users").document(user.uid).set(newUser)
-                                    .addOnSuccessListener {
-                                        continuation.resume(Unit)
-                                    }
-                                    .addOnFailureListener { e ->
-                                        continuation.resumeWithException(e)
-                                    }
+                                if(isCoach) {
+                                    newUser.isParent = false
+                                    firestore.collection("coach").document(newUser.uid).set(newUser)
+                                        .addOnSuccessListener {
+                                            continuation.resume(Unit)
+                                        }
+                                        .addOnFailureListener { e ->
+                                            continuation.resumeWithException(e)
+                                        }
+                                } else if (!isCoach) {
+                                    firestore.collection("parent").document(newUser.uid).set(newUser)
+                                        .addOnSuccessListener {
+                                            continuation.resume(Unit)
+                                        }
+                                        .addOnFailureListener { e ->
+                                            continuation.resumeWithException(e)
+                                        }
+                                }
+
                             }?.addOnFailureListener { e ->
                                 continuation.resumeWithException(e)
                             }

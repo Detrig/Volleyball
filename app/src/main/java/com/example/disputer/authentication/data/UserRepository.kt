@@ -11,7 +11,7 @@ interface UserRepository {
     fun getCurrentUser(): FirebaseUser?
     fun isLoggedIn(): Boolean
     suspend fun isEmailVerified(): Boolean
-    suspend fun isAdmin(): Boolean
+    suspend fun isCoach(): Boolean
 
     class Base(
         private val firebaseAuth: FirebaseAuth,
@@ -43,15 +43,15 @@ interface UserRepository {
             }
         }
 
-        override suspend fun isAdmin(): Boolean {
+        override suspend fun isCoach(): Boolean {
             return suspendCoroutine { continuation ->
                 val userId = firebaseAuth.currentUser?.uid ?: return@suspendCoroutine continuation.resume(false)
                 val firestore = FirebaseFirestore.getInstance()
 
                 firestore.collection("users").document(userId).get()
                     .addOnSuccessListener { document ->
-                        val isAdmin = document.getBoolean("admin") ?: false
-                        continuation.resume(isAdmin)
+                        val isCoach = document.getBoolean("coach") ?: false
+                        continuation.resume(isCoach)
                     }
                     .addOnFailureListener { e ->
                         continuation.resume(false)

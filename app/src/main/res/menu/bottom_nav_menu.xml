@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/home"
+        android:icon="@drawable/home_regular"
+        android:title="Главная" />
+    <item
+        android:id="@+id/schedule"
+        android:icon="@drawable/calendar"
+        android:title="Расписание" />
+    <item
+        android:id="@+id/coach"
+        android:icon="@drawable/trophy"
+        android:title="Тренер" />
+    <item
+        android:id="@+id/profile"
+        android:icon="@drawable/user"
+        android:title="Профиль" />
+</menu>

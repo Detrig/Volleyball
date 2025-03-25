@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.example.disputer.authentication.presentation.main.MainActivity
 import com.example.disputer.core.AbstractFragment
 import com.example.disputer.core.ProvideViewModel
 import com.example.disputer.databinding.FragmentLoginBinding
@@ -17,7 +18,7 @@ class LoginFragment : AbstractFragment<FragmentLoginBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        (activity as? MainActivity)?.hideHeaderBottomNav()
         viewModel = (activity as ProvideViewModel).viewModel(LoginViewModel::class.java)
 
         viewModel.liveDataUiState().observe(viewLifecycleOwner) { uiState ->
@@ -31,6 +32,8 @@ class LoginFragment : AbstractFragment<FragmentLoginBinding>() {
             hideKeyBoard()
 
             viewModel.login(email, password)
+
+            viewModel.onLoginSuccess()
         }
 
         binding.registerTV.setOnClickListener {

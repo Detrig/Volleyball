@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.example.disputer.authentication.presentation.main.MainActivity
 import com.example.disputer.core.AbstractFragment
 import com.example.disputer.core.ProvideViewModel
 import com.example.disputer.databinding.FragmentForgotPasswordBinding
@@ -20,6 +21,7 @@ class ForgotPasswordFragment : AbstractFragment<FragmentForgotPasswordBinding>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        (activity as? MainActivity)?.hideHeaderBottomNav()
 
         viewModel = (activity as ProvideViewModel).viewModel(ForgotPasswordViewModel::class.java)
 

@@ -90,7 +90,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:background="@drawable/edittesdt_uderline"
-                    android:hint="@string/passwordHint"
+                    android:hint="@string/repeatPasswordHint"
                     android:inputType="textPassword" />
 
 <!--                <TextView-->

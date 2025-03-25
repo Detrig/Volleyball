@@ -1,6 +1,7 @@
 package com.example.disputer.authentication.presentation.main
 
 import android.os.Bundle
+import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -33,6 +34,18 @@ class MainActivity : AppCompatActivity(), ProvideViewModel {
             screen.show(supportFragmentManager, R.id.main)
         }
         viewModel.init(savedInstanceState == null)
+    }
+
+    fun hideHeaderBottomNav() {
+        binding.headerImage.visibility = View.GONE
+        binding.bottomNavigation.visibility = View.GONE
+        binding.constraint.setBackgroundColor(resources.getColor(R.color.white))
+    }
+
+    fun showHeaderBottomNav() {
+        binding.headerImage.visibility = View.VISIBLE
+        binding.bottomNavigation.visibility = View.VISIBLE
+        binding.constraint.setBackgroundColor(resources.getColor(R.color.dark_blue))
     }
 
     override fun <T : ViewModel> viewModel(viewModelClass: Class<T>): T =

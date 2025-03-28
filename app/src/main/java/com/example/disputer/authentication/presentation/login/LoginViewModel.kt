@@ -35,7 +35,7 @@ class LoginViewModel(
             try {
                 loginUseCase.invoke(email, password)
                 withContext(dispatcherMain) {
-                    //  disputesScreen()
+                    navigation.update(TrainingMainScreen)
                 }
             } catch (e: Exception) {
                 withContext(dispatcherMain) {
@@ -45,11 +45,11 @@ class LoginViewModel(
         }
     }
 
-    fun onLoginSuccess() {
-        if (isLoggedInUseCase.invoke()) {
-            navigation.update(TrainingMainScreen)
-        }
-    }
+//    fun onLoginSuccess() {
+//        if (isLoggedInUseCase.invoke()) {
+//            navigation.update(TrainingMainScreen)
+//        }
+//    }
 
     fun liveDataUiState() = loginUiStateLiveDataWrapper.liveData()
 

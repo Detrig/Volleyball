@@ -6,7 +6,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/textViewTrainings"
         style="@style/TextViewMainStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -19,12 +19,36 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rcViewTrainings"
         android:layout_width="match_parent"
-        android:layout_height="180dp"
+        android:layout_height="wrap_content"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         android:orientation="horizontal"
+        android:layout_marginTop="8dp"
         tools:listitem="@layout/trainings_rc_view_item"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewTrainings" />
+
+    <TextView
+        android:id="@+id/textViewShops"
+        style="@style/TextViewMainStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="96dp"
+        android:text="Магазины"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rcViewTrainings" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rcViewShops"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewShops"
+        tools:listitem="@layout/shop_rc_view_item"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

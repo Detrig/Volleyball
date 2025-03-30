@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="android:fitsSystemWindows">false</item>
+    </style>
+
     <style name="AuthMarginHorizontal" >
         <item name="android:layout_marginStart">64dp</item>
         <item name="android:layout_marginEnd">64dp</item>

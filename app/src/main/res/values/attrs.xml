@@ -3,7 +3,6 @@
     <declare-styleable name="ArrowButton">
         <attr name="buttonText" format="string" />
         <attr name="textColor" format="color" />
-        <attr name="buttonIcon" format="reference" />
-        <attr name="backgroundColor" format="color" />
+        <attr name="backgroundColor" format="color"/>
     </declare-styleable>
 </resources>

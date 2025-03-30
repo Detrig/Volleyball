@@ -61,4 +61,5 @@ dependencies {
     //Authentication with Credential Manager
     implementation(libs.play.services.auth)
 
+    implementation("com.github.bumptech.glide:glide:4.16.0")
 }

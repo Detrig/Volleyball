@@ -73,7 +73,7 @@ class RegisterPage {
     )
 
     private val sendEmailUi = TextViewUi(
-        id = R.id.sendEmailTV,
+        id = R.id.textView,
         text = R.string.dontGetEmail,
         containerClassTypeMatcher,
         containerIdMatcher

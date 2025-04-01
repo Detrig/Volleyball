@@ -34,7 +34,18 @@ class MainActivity : AppCompatActivity(), ProvideViewModel {
             screen.show(supportFragmentManager, R.id.main)
         }
         viewModel.init(savedInstanceState == null)
+
+        binding.bottomNavigation.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.home -> viewModel.mainScreen()
+                R.id.schedule -> viewModel.scheduleScreen()
+                R.id.coach -> viewModel.coachScreen()
+                R.id.info -> viewModel.infoScreen()
+            }
+            true
+        }
     }
+
 
     fun hideHeaderBottomNav() {
         binding.headerImage.visibility = View.GONE

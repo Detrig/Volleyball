@@ -3,10 +3,12 @@ package com.example.disputer.authentication.data
 data class Coach(
     val uid: String,
     val name: String,
-    val trainings: List<Training>,
-    val childs: List<Child>,
-    val address: List<String>,
-    val email: String,
     val phoneNumber: String,
-    val telegram: String
+    val qualification: String,
+    val email: String,
+    val imageUrl: String = "",
+    val trainings: List<Training> = arrayListOf(),
+    val students: List<Student> = arrayListOf(),
+    val address: List<String> = arrayListOf(),
+    val telegram: String = ""
 )

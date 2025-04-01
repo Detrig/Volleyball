@@ -22,9 +22,9 @@ interface RegisterUiState {
         override fun update(binding: FragmentRegistrationBinding) = with(binding) {
             emailEditText.isEnabled = emailEnable
             passwordEditText.isEnabled = passwordEnable
-            passwordEditText.setBackgroundResource(R.drawable.edtnormal)
+            passwordEditText.setBackgroundResource(R.drawable.edittesdt_uderline)
             repeatPasswordEditText.isEnabled = repeatPasswordEnable
-            repeatPasswordEditText.setBackgroundResource(R.drawable.edtnormal)
+            repeatPasswordEditText.setBackgroundResource(R.drawable.edittesdt_uderline)
             registerButton.isEnabled = registerEnable
             progressBar.visibility = progressVisible
             loginTV.isEnabled = loginEnable
@@ -67,8 +67,6 @@ interface RegisterUiState {
         Abstract(true, true, true, true, true, true, View.GONE) {
         override fun update(binding: FragmentRegistrationBinding) {
             super.update(binding)
-            binding.passwordEditText.setBackgroundResource(R.drawable.edtnormal)
-            binding.repeatPasswordEditText.setBackgroundResource(R.drawable.edtnormal)
         }
     }
 }

@@ -33,7 +33,7 @@ class LoginFragment : AbstractFragment<FragmentLoginBinding>() {
 
             viewModel.login(email, password)
 
-            viewModel.onLoginSuccess()
+            //viewModel.onLoginSuccess()
         }
 
         binding.registerTV.setOnClickListener {

@@ -8,5 +8,8 @@ data class Training(
     val time: String,
     //val maxPersonCount: Int,
     val addressInfo: String,
-    val address: String
+    val address: String,
+    val group: String = "",
+    val birthYear: String = "",
+    val coachName: String = ""
 )

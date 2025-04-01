@@ -6,6 +6,7 @@ import com.example.disputer.authentication.domain.LoginUseCase
 import com.example.disputer.authentication.presentation.forgotpassword.ForgotPasswordScreen
 import com.example.disputer.authentication.presentation.register.RegisterScreen
 import com.example.disputer.core.Navigation
+import com.example.disputer.training.presentation.info.InfoScreen
 import com.example.disputer.training.presentation.main.TrainingMainScreen
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
@@ -35,7 +36,7 @@ class LoginViewModel(
             try {
                 loginUseCase.invoke(email, password)
                 withContext(dispatcherMain) {
-                    //  disputesScreen()
+                    trainingsMainScreen()
                 }
             } catch (e: Exception) {
                 withContext(dispatcherMain) {
@@ -45,15 +46,15 @@ class LoginViewModel(
         }
     }
 
-    fun onLoginSuccess() {
-        if (isLoggedInUseCase.invoke()) {
-            navigation.update(TrainingMainScreen)
-        }
-    }
+//    fun onLoginSuccess() {
+//        if (isLoggedInUseCase.invoke()) {
+//            navigation.update(TrainingMainScreen)
+//        }
+//    }
 
     fun liveDataUiState() = loginUiStateLiveDataWrapper.liveData()
 
+    fun trainingsMainScreen() = navigation.update(TrainingMainScreen)
     fun registerScreen() = navigation.update(RegisterScreen)
     fun forgotPasswordScreen() = navigation.update(ForgotPasswordScreen)
-    //private fun disputesScreen() = navigation.update(DisputesScreen)
 }

@@ -1,6 +1,6 @@
 package com.example.disputer.authentication.data
 
-data class Child(
+data class Student(
     val uid: String,
     val name: String,
     val age: Int,

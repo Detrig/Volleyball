@@ -23,4 +23,5 @@
     <string name="parent">Родитель</string>
     <string name="coach">Тренер</string>
     <string name="writings">Записи</string>
+    <string name="schedule">Расписание</string>
 </resources>

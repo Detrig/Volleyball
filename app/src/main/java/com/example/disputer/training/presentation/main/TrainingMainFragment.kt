@@ -14,63 +14,13 @@ import com.example.disputer.authentication.presentation.main.MainActivity
 import com.example.disputer.core.AbstractFragment
 import com.example.disputer.databinding.FragmentTrainingMainBinding
 import androidx.core.net.toUri
+import com.example.disputer.core.ProvideViewModel
 
 class TrainingMainFragment : AbstractFragment<FragmentTrainingMainBinding>() {
 
     private lateinit var trainingAdapter: TrainingsRecyclerViewAdapter
     private lateinit var shopAdapter: ShopsRcViewAdapter
-    private val trainingList = arrayListOf(
-        Training(
-            id = "1",
-            time = "17:00",
-            date = "Пн, 5 июня",
-            addressInfo = "Спортивный комплекс 'Триумф', зал волейбола",
-            address = "ул. Хабарова, 27, г. Якутск"
-        ),
-        Training(
-            id = "2",
-            time = "19:30",
-            date = "Вт, 6 июня",
-            addressInfo = "СК '50 лет Победы', основной зал",
-            address = "ул. Петра Алексеева, 6, г. Якутск",
-            coachName = "Алексей"
-        ),
-        Training(
-            id = "3",
-            time = "18:00",
-            date = "Ср, 7 июня",
-            addressInfo = "СВФУ им. М.К. Аммосова, спортивный зал КФЕН",
-            address = "ул. Кулаковского, 48, г. Якутск"
-        ),
-        Training(
-            id = "4",
-            time = "16:00",
-            date = "Чт, 8 июня",
-            addressInfo = "Дворец спорта 'Эллэй Боотур' Дворец спорта 'Эллэй Боотур' Дворец спорта 'Эллэй Боотур'",
-            address = "ул. Лермонтова, 60/2, г. Якутск"
-        ),
-        Training(
-            id = "5",
-            time = "20:00",
-            date = "Пт, 9 июня",
-            addressInfo = "Школа №5, спортивный зал",
-            address = "ул. Каландарашвили, 15, г. Якутск ул. Каландарашвили, 15, г. Якутск"
-        ),
-        Training(
-            id = "6",
-            time = "15:30",
-            date = "Сб, 10 июня",
-            addressInfo = "ФОК 'Модун'",
-            address = "ул. Петра Алексеева, 205/1, г. Якутск"
-        ),
-        Training(
-            id = "7",
-            time = "14:00",
-            date = "Вс, 11 июня",
-            addressInfo = "Спортзал ЯГСХА",
-            address = "ул. Красильникова, 15, г. Якутск"
-        )
-    )
+    private lateinit var viewModel: TrainingMainViewModel
 
     private val shopsList = arrayListOf(
         Shop(
@@ -93,8 +43,13 @@ class TrainingMainFragment : AbstractFragment<FragmentTrainingMainBinding>() {
         super.onViewCreated(view, savedInstanceState)
         (requireActivity() as MainActivity).showHeaderBottomNav()
 
+        viewModel = (activity as ProvideViewModel).viewModel(TrainingMainViewModel::class.java)
         initRcView()
-        trainingAdapter.update(trainingList)
+//        viewModel.trainingsLiveData().observe(viewLifecycleOwner) { list ->
+//            trainingAdapter.update(ArrayList(list))
+//        }
+
+        trainingAdapter.update(ArrayList(viewModel.trainingsLiveData().value!!))
         shopAdapter.update(shopsList)
     }
 

@@ -2,10 +2,8 @@ package com.example.disputer.training.presentation.customviews
 
 import android.content.Context
 import android.util.AttributeSet
-import android.util.TypedValue
 import android.view.LayoutInflater
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.content.ContextCompat
 import com.example.disputer.R
 import com.example.disputer.databinding.CustomArrowButtonBinding
 
@@ -26,7 +24,9 @@ class ArrowButton @JvmOverloads constructor(
             val text = typedArray.getString(R.styleable.ArrowButton_buttonText) ?: ""
             if (typedArray.hasValue(R.styleable.ArrowButton_backgroundColor)) {
                 val bgColor = typedArray.getColor(R.styleable.ArrowButton_backgroundColor, 0)
-                binding.myButtonContainer.setBackgroundColor(bgColor)
+                val drawable = binding.myButtonContainer.background?.mutate() // Копируем Drawable
+                drawable?.setTint(bgColor)
+                binding.myButtonContainer.background = drawable
             }
 
             binding.tabNameTV.text = text

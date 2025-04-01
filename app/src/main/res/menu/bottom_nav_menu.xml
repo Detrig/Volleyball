@@ -13,7 +13,7 @@
         android:icon="@drawable/trophy"
         android:title="Тренер" />
     <item
-        android:id="@+id/profile"
+        android:id="@+id/info"
         android:icon="@drawable/user"
         android:title="Профиль" />
 </menu>

@@ -3,7 +3,6 @@ package com.example.disputer.training.presentation.main
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,7 +12,6 @@ import com.example.disputer.authentication.data.Training
 import com.example.disputer.authentication.presentation.main.MainActivity
 import com.example.disputer.core.AbstractFragment
 import com.example.disputer.databinding.FragmentTrainingMainBinding
-import androidx.core.net.toUri
 import com.example.disputer.core.ProvideViewModel
 
 class TrainingMainFragment : AbstractFragment<FragmentTrainingMainBinding>() {

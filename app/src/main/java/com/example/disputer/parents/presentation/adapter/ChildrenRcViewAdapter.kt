@@ -1,4 +1,4 @@
-package com.example.disputer.training.presentation.main
+package com.example.disputer.parents.presentation.adapter
 
 import android.view.LayoutInflater
 import android.view.View
@@ -6,29 +6,25 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.disputer.R
-import com.example.disputer.authentication.data.Training
-import com.example.disputer.databinding.TrainingsRcViewItemBinding
+import com.example.disputer.authentication.data.Student
+import com.example.disputer.databinding.ChildRcViewItemBinding
 
-class TrainingsRecyclerViewAdapter(private val listener: Any) : RecyclerView.Adapter<TrainingsRecyclerViewAdapter.ViewHolder>() {
+class ChildrenRcViewAdapter(private val listener : OnChildClickListener) : RecyclerView.Adapter<ChildrenRcViewAdapter.ViewHolder>() {
 
-    val list : ArrayList<Training> = arrayListOf()
+    val list : ArrayList<Student> = arrayListOf()
 
     class ViewHolder(view : View) : RecyclerView.ViewHolder(view) {
-        private val binding = TrainingsRcViewItemBinding.bind(view)
+        private val binding = ChildRcViewItemBinding.bind(view)
 
-        fun bind(training: Training, listener : OnTrainingClickListener) = with(binding) {
-            time.text = training.time
-            date.text = training.date
-            addressInfoTV.text = training.addressInfo
-            addressTV.text = training.address
+        fun bind(student: Student, listener : OnChildClickListener) = with(binding) {
 
             itemView.setOnClickListener {
-                listener.onClick(training)
+                listener.onClick(student)
             }
         }
     }
 
-    fun update(newList : ArrayList<Training>) {
+    fun update(newList : ArrayList<Student>) {
         val diffUtil = DiffUtilCallBack(list, newList)
         val diff = DiffUtil.calculateDiff(diffUtil)
 
@@ -38,7 +34,7 @@ class TrainingsRecyclerViewAdapter(private val listener: Any) : RecyclerView.Ada
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.trainings_rc_view_item, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.child_rc_view_item, parent, false)
         return ViewHolder(view)
     }
 
@@ -49,8 +45,8 @@ class TrainingsRecyclerViewAdapter(private val listener: Any) : RecyclerView.Ada
     }
 
     class DiffUtilCallBack(
-        private val old : List<Training>,
-        private val new : List<Training>
+        private val old : List<Student>,
+        private val new : List<Student>
     ) : DiffUtil.Callback() {
         override fun getOldListSize(): Int = old.size
 
@@ -60,7 +56,7 @@ class TrainingsRecyclerViewAdapter(private val listener: Any) : RecyclerView.Ada
             val oldItem = old[oldItemPosition]
             val newItem = new[newItemPosition]
 
-            return oldItem.id == newItem.id && oldItem.id == newItem.id
+            return oldItem == newItem
 
         }
 
@@ -68,12 +64,12 @@ class TrainingsRecyclerViewAdapter(private val listener: Any) : RecyclerView.Ada
             val oldItem = old[oldItemPosition]
             val newItem = new[newItemPosition]
 
-            return oldItem.id == newItem.id && oldItem.id == newItem.id
+            return oldItem == newItem
         }
 
     }
 
-    interface OnTrainingClickListener {
-        fun onClick(training: Training)
+    interface OnChildClickListener {
+        fun onClick(student: Student)
     }
 }

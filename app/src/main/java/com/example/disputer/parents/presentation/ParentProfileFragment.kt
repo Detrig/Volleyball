@@ -4,13 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.disputer.authentication.data.Student
-import com.example.disputer.authentication.data.Training
+import com.example.disputer.children.Student
+import com.example.disputer.training.data.Training
 import com.example.disputer.core.AbstractFragment
 import com.example.disputer.core.ProvideViewModel
 import com.example.disputer.databinding.FragmentParentProfileBinding
 import com.example.disputer.parents.presentation.adapter.ChildrenRcViewAdapter
-import com.example.disputer.training.presentation.main.TrainingsRecyclerViewAdapter
+import com.example.disputer.training.presentation.training_parent.TrainingsRecyclerViewAdapter
 
 class ParentProfileFragment : AbstractFragment<FragmentParentProfileBinding>() {
 
@@ -30,7 +30,7 @@ class ParentProfileFragment : AbstractFragment<FragmentParentProfileBinding>() {
         parentViewModel = (activity as ProvideViewModel).viewModel(ParentViewModel::class.java)
 
         parentViewModel.uiState.observe(viewLifecycleOwner) { uiState ->
-            uiState
+            uiState.update(binding, childrenAdapter, trainingsAdapter)
         }
 
         initRcView()

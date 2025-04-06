@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.disputer.R
-import com.example.disputer.authentication.data.Student
+import com.example.disputer.children.Student
 import com.example.disputer.databinding.ChildRcViewItemBinding
 
 class ChildrenRcViewAdapter(private val listener : OnChildClickListener) : RecyclerView.Adapter<ChildrenRcViewAdapter.ViewHolder>() {

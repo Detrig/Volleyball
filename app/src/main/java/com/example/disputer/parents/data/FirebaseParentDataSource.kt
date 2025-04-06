@@ -1,7 +1,6 @@
 package com.example.disputer.parents.data
 
-import com.example.disputer.authentication.data.Student
-import com.example.disputer.authentication.data.Training
+import com.example.disputer.children.Student
 import com.example.disputer.core.Resource
 import com.example.disputer.parents.domain.repository.ParentDataSource
 import com.google.firebase.firestore.FirebaseFirestore
@@ -12,15 +11,15 @@ class FirebaseParentDataSource(
 ) : ParentDataSource {
 
     private companion object {
-        const val PARENTS_COLLECTION = "parents"
-        const val STUDENTS_COLLECTION = "students"
-        const val TRAININGS_COLLECTION = "trainings"
+        const val PARENTS_COLLECTION = "parent"
+        const val STUDENTS_COLLECTION = "student"
+        const val TRAININGS_COLLECTION = "training"
     }
 
     override suspend fun getParent(id: String): Resource<Parent> {
         return try {
             val document = fireStore.collection(PARENTS_COLLECTION)
-                .document()
+                .document(id)
                 .get()
                 .await()
 
@@ -77,11 +76,39 @@ class FirebaseParentDataSource(
     }
 
     override suspend fun getParentChildren(parentId: String): Resource<List<Student>> {
-        TODO("Not yet implemented")
-    }
+        return try {
+            // 1. Получаем документ родителя
+            val parentDocument = fireStore.collection(PARENTS_COLLECTION)
+                .document(parentId)
+                .get()
+                .await()
 
-    override suspend fun getParentTrainings(parentId: String): Resource<List<Training>> {
-        TODO("Not yet implemented")
-    }
+            if (!parentDocument.exists()) {
+                return Resource.Error("Parent not found")
+            }
 
+            // 2. Получаем список ID детей
+            val parent = parentDocument.toObject(Parent::class.java)
+                ?: return Resource.Error("Failed to parse parent data")
+
+            val childIds = parent.childIds
+            if (childIds.isEmpty()) {
+                return Resource.Success(emptyList())
+            }
+
+            // 3. Получаем документы всех детей
+            val students = fireStore.collection(STUDENTS_COLLECTION)
+                .whereIn("uid", childIds)
+                .get()
+                .await()
+                .documents
+                .mapNotNull { document ->
+                    document.toObject(Student::class.java)?.copy(uid = document.id)
+                }
+
+            Resource.Success(students)
+        } catch (e: Exception) {
+            Resource.Error(e.localizedMessage ?: "Failed to load parent's children")
+        }
+    }
 }

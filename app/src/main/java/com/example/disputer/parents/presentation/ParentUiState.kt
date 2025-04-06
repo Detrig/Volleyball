@@ -1,18 +1,12 @@
 package com.example.disputer.parents.presentation
 
 import android.view.View
-import android.widget.ImageView
-import android.widget.ProgressBar
-import android.widget.TextView
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.disputer.authentication.data.Student
-import com.example.disputer.authentication.data.Training
+import com.example.disputer.children.Student
 import com.example.disputer.databinding.FragmentParentProfileBinding
 import com.example.disputer.parents.data.Parent
 import com.example.disputer.parents.presentation.adapter.ChildrenRcViewAdapter
-import com.example.disputer.training.presentation.main.TrainingsRecyclerViewAdapter
+import com.example.disputer.training.presentation.training_parent.TrainingsRecyclerViewAdapter
 
 interface ParentUiState {
 
@@ -47,7 +41,6 @@ interface ParentUiState {
     data class Success(
         private val parent: Parent,
         private val childs: List<Student>,
-        private val trainings: List<Training>
     ) : ParentUiState {
         override fun update(
             binding: FragmentParentProfileBinding,
@@ -61,7 +54,6 @@ interface ParentUiState {
                 .into(binding.parentImage)
 
             childrenRcViewAdapter.update(ArrayList(childs))
-            trainingsRcViewAdapter.update(ArrayList(trainings))
         }
     }
 

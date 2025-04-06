@@ -1,10 +1,9 @@
 package com.example.disputer.authentication.presentation.forgotpassword
 
 import androidx.lifecycle.ViewModel
-import com.example.disputer.authentication.domain.ForgotPasswordUseCase
+import com.example.disputer.authentication.domain.usecase.ForgotPasswordUseCase
 import com.example.disputer.authentication.presentation.login.LoginScreen
 import com.example.disputer.authentication.presentation.register.RegisterScreen
-import com.example.disputer.authentication.presentation.register.RegisterViewModel
 import com.example.disputer.core.ClearViewModel
 import com.example.disputer.core.Navigation
 import kotlinx.coroutines.CoroutineDispatcher

@@ -1,13 +1,17 @@
 package com.example.disputer.authentication.presentation.login
 
 import androidx.lifecycle.ViewModel
-import com.example.disputer.authentication.domain.IsLoggedInUseCase
-import com.example.disputer.authentication.domain.LoginUseCase
+import com.example.disputer.authentication.data.AuthUser
+import com.example.disputer.authentication.domain.usecase.GetCurrentUserRoleUseCase
+import com.example.disputer.authentication.domain.usecase.IsLoggedInUseCase
+import com.example.disputer.authentication.domain.usecase.LoginUseCase
+import com.example.disputer.authentication.domain.utils.CurrentUserLiveDataWrapper
 import com.example.disputer.authentication.presentation.forgotpassword.ForgotPasswordScreen
 import com.example.disputer.authentication.presentation.register.RegisterScreen
 import com.example.disputer.core.Navigation
-import com.example.disputer.training.presentation.info.InfoScreen
-import com.example.disputer.training.presentation.main.TrainingMainScreen
+import com.example.disputer.core.Resource
+import com.example.disputer.training.presentation.training_coach.TrainingCoachMainScreen
+import com.example.disputer.training.presentation.training_parent.TrainingParentMainScreen
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -15,10 +19,11 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class LoginViewModel(
-    private val navigation : Navigation,
+    private val navigation: Navigation,
     private val loginUiStateLiveDataWrapper: LoginUiStateLiveDataWrapper,
+    private val currentUserLiveDataWrapper: CurrentUserLiveDataWrapper,
     private val loginUseCase: LoginUseCase,
-    private val isLoggedInUseCase: IsLoggedInUseCase,
+    private val getCurrentUserRoleUseCase: GetCurrentUserRoleUseCase,
     private val viewModelScope: CoroutineScope,
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO,
     private val dispatcherMain: CoroutineDispatcher = Dispatchers.Main
@@ -35,8 +40,18 @@ class LoginViewModel(
         viewModelScope.launch(dispatcher) {
             try {
                 loginUseCase.invoke(email, password)
+
                 withContext(dispatcherMain) {
-                    trainingsMainScreen()
+                    when (val userResource = getCurrentUserRoleUseCase()) {
+                        is Resource.Success -> {
+                            currentUserLiveDataWrapper.update(userResource.data!!)
+                            navigateBasedOnRole(userResource.data)
+                        }
+
+                        is Resource.Error -> {
+                            loginUiStateLiveDataWrapper.update(LoginUiState.Error(errorText = userResource.message))
+                        }
+                    }
                 }
             } catch (e: Exception) {
                 withContext(dispatcherMain) {
@@ -46,15 +61,18 @@ class LoginViewModel(
         }
     }
 
-//    fun onLoginSuccess() {
-//        if (isLoggedInUseCase.invoke()) {
-//            navigation.update(TrainingMainScreen)
-//        }
-//    }
+    private fun navigateBasedOnRole(authUser: AuthUser) {
+        when (authUser) {
+            is AuthUser.CoachUser -> navigation.update(TrainingCoachMainScreen)
+            is AuthUser.ParentUser -> navigation.update(TrainingParentMainScreen)
+        }
+    }
+
+    fun userRoleLiveDataWrapper() = currentUserLiveDataWrapper.liveData()
 
     fun liveDataUiState() = loginUiStateLiveDataWrapper.liveData()
 
-    fun trainingsMainScreen() = navigation.update(TrainingMainScreen)
+    fun trainingsMainScreen() = navigation.update(TrainingParentMainScreen)
     fun registerScreen() = navigation.update(RegisterScreen)
     fun forgotPasswordScreen() = navigation.update(ForgotPasswordScreen)
 }

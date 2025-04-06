@@ -32,8 +32,6 @@ class LoginFragment : AbstractFragment<FragmentLoginBinding>() {
             hideKeyBoard()
 
             viewModel.login(email, password)
-
-            //viewModel.onLoginSuccess()
         }
 
         binding.registerTV.setOnClickListener {

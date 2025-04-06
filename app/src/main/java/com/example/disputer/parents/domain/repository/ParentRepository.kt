@@ -1,7 +1,7 @@
 package com.example.disputer.parents.domain.repository
 
-import com.example.disputer.authentication.data.Student
-import com.example.disputer.authentication.data.Training
+import com.example.disputer.children.Student
+import com.example.disputer.training.data.Training
 import com.example.disputer.core.Resource
 import com.example.disputer.parents.data.Parent
 

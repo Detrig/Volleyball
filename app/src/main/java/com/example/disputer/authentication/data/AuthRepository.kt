@@ -1,6 +1,8 @@
 package com.example.disputer.authentication.data
 
 import android.util.Patterns
+import com.example.disputer.coach.data.Coach
+import com.example.disputer.parents.data.Parent
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.CancellationException
@@ -18,6 +20,7 @@ interface AuthRepository {
         email: String,
         password: String,
         isCoach: Boolean,
+        isParent: Boolean,
         repeatPassword: String = "",
     )
 
@@ -28,7 +31,7 @@ interface AuthRepository {
         private val firestore: FirebaseFirestore
     ) : AuthRepository {
 
-        override suspend fun register(email: String, password: String,  isCoach: Boolean, repeatPassword : String) {
+        override suspend fun register(email: String, password: String,  isCoach: Boolean, isParent: Boolean, repeatPassword : String) {
             return suspendCoroutine<Unit> { continuation ->
                 try {
                     firebaseAuth.createUserWithEmailAndPassword(email, password)
@@ -36,24 +39,18 @@ interface AuthRepository {
                             val user = authResult.user
                             user?.sendEmailVerification()?.addOnSuccessListener {
 
-                                // Сохранение пользователя в Firestore
-                                val newUser = User(
-                                    uid = user.uid,
-                                    email = user.email ?: "",
-                                    isCoach = false // По умолчанию false
-                                )
-
                                 if(isCoach) {
-                                    newUser.isParent = false
-                                    firestore.collection("coach").document(newUser.uid).set(newUser)
+                                    val newCoach = Coach(uid = user.uid, email = user.email.toString())
+                                    firestore.collection("coach").document(newCoach.uid).set(newCoach)
                                         .addOnSuccessListener {
                                             continuation.resume(Unit)
                                         }
                                         .addOnFailureListener { e ->
                                             continuation.resumeWithException(e)
                                         }
-                                } else if (!isCoach) {
-                                    firestore.collection("parent").document(newUser.uid).set(newUser)
+                                } else if (isParent) {
+                                    val newParent = Parent(uid = user.uid, email = user.email.toString())
+                                    firestore.collection("parent").document(newParent.uid).set(newParent)
                                         .addOnSuccessListener {
                                             continuation.resume(Unit)
                                         }

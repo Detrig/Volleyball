@@ -1,8 +1,11 @@
 package com.example.disputer.training.data
 
+import android.util.Log
+import androidx.lifecycle.LiveData
 import com.example.disputer.core.Resource
 import com.example.disputer.training.domain.repository.TrainingDataSource
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.Query
 import kotlinx.coroutines.tasks.await
 import java.text.SimpleDateFormat
@@ -18,6 +21,35 @@ class FirebaseTrainingDataSource(
         const val DATE_FIELD = "date"
 
         val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+    }
+
+    override suspend fun observeTrainingsLiveData(): LiveData<Resource<List<Training>>> {
+        return object : LiveData<Resource<List<Training>>>() {
+            private var listener: ListenerRegistration? = null
+
+            override fun onActive() {
+                super.onActive()
+                listener = firestore.collection(TRAININGS_COLLECTION)
+                    .addSnapshotListener { snapshot, error ->
+                        when {
+                            error != null ->
+                                postValue(Resource.Error(error.message ?: "Unknown error"))
+                            snapshot != null -> {
+                                val trainings = snapshot.documents.mapNotNull { doc ->
+                                    doc.toObject(Training::class.java)?.copy(id = doc.id)
+                                }
+                                postValue(Resource.Success(trainings))
+                            }
+                        }
+                    }
+            }
+
+            override fun onInactive() {
+                super.onInactive()
+                listener?.remove()
+                listener = null
+            }
+        }
     }
 
     override suspend fun getFutureTrainings(): Resource<List<Training>> {

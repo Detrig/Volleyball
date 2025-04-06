@@ -1,5 +1,6 @@
 package com.example.disputer.training.domain.repository
 
+import androidx.lifecycle.LiveData
 import com.example.disputer.core.Resource
 import com.example.disputer.training.data.Training
 
@@ -9,4 +10,5 @@ interface TrainingDataSource {
     suspend fun getAllTrainings(): Resource<List<Training>>
     suspend fun addTraining(training: Training): Resource<Training>
     suspend fun deleteTraining(training: Training): Resource<Training>
+    suspend fun observeTrainingsLiveData() : LiveData<Resource<List<Training>>>
 }

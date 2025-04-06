@@ -26,8 +26,19 @@ import com.example.disputer.training.domain.repository.TrainingsRepository
 import com.example.disputer.training.presentation.training_parent.TrainingParentMainViewModel
 import com.example.disputer.training.presentation.training_parent.TrainingsLiveDataWrapper
 import com.example.disputer.schedule.ScheduleViewModel
+import com.example.disputer.shop.data.FirebaseShopDataSource
+import com.example.disputer.shop.data.ShopRepositoryImpl
+import com.example.disputer.shop.domain.usecase.AddShopUseCase
+import com.example.disputer.shop.domain.usecase.DeleteShopUseCase
+import com.example.disputer.shop.domain.usecase.GetShopsUseCase
+import com.example.disputer.shop.domain.usecase.UploadShopImageUseCase
+import com.example.disputer.shop.domain.utils.AddShopUiStateLiveDataWrapper
+import com.example.disputer.shop.domain.utils.ImageProcessor
+import com.example.disputer.shop.presentation.ShopViewModel
 import com.example.disputer.training.data.FirebaseTrainingDataSource
 import com.example.disputer.training.data.TrainingRepositoryImpl
+import com.example.disputer.training.domain.repository.AddTrainingUiStateLiveDataWrapper
+import com.example.disputer.training.presentation.training_coach.TrainingCoachViewModel
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -63,7 +74,8 @@ interface ProvideViewModel {
         private val registerUseCase = RegistrationUseCase(authRepository)
 
         //Reset password
-        private val forgotPasswordUiStateLiveDataWrapper = ForgotPasswordUiStateLiveDataWrapper.Base()
+        private val forgotPasswordUiStateLiveDataWrapper =
+            ForgotPasswordUiStateLiveDataWrapper.Base()
         private val forgotPasswordUseCase = ForgotPasswordUseCase(passwordRepository)
 
         //Coach
@@ -73,7 +85,8 @@ interface ProvideViewModel {
         private val parentDataSource = FirebaseParentDataSource(fireBaseFirestore)
 
         //Get role of current user
-        private val currentUserDataSource = FirebaseCurrentDataSource(fireBaseAuth, coachDataSource, parentDataSource)
+        private val currentUserDataSource =
+            FirebaseCurrentDataSource(fireBaseAuth, coachDataSource, parentDataSource)
         private val currentUserRepository = CurrentUserRepositoryImpl(currentUserDataSource)
         private val currentUserLiveDataWrapper = CurrentUserLiveDataWrapper.Base()
         private val getCurrentUserRoleUseCase = GetCurrentUserRoleUseCase(currentUserRepository)
@@ -82,6 +95,17 @@ interface ProvideViewModel {
         private val trainingDataSource = FirebaseTrainingDataSource(fireBaseFirestore)
         private val trainingsRepository = TrainingRepositoryImpl(trainingDataSource)
         private val trainingsLiveDataWrapper = TrainingsLiveDataWrapper.Base()
+        private val addTrainingUiStateLiveDataWrapper = AddTrainingUiStateLiveDataWrapper.Base()
+
+        //Shop
+        private val shopDataSource = FirebaseShopDataSource(fireBaseFirestore)
+        private val shopRepository = ShopRepositoryImpl(shopDataSource)
+        private val addShopUseCase = AddShopUseCase(shopRepository)
+        private val deleteShopUseCase = DeleteShopUseCase(shopRepository)
+        private val getShopsUseCase = GetShopsUseCase(shopRepository)
+        private val uploadShopImageUseCase = UploadShopImageUseCase(shopRepository)
+        private val addShopUiStateLiveDataWrapper = AddShopUiStateLiveDataWrapper.Base()
+
 
         override fun <T : ViewModel> viewModel(viewModelClass: Class<T>): T {
             return when (viewModelClass) {
@@ -122,6 +146,25 @@ interface ProvideViewModel {
                     trainingsRepository,
                     viewModelScope
                 )
+
+                TrainingCoachViewModel::class.java -> TrainingCoachViewModel(
+                    trainingsRepository,
+                    trainingsLiveDataWrapper,
+                    addTrainingUiStateLiveDataWrapper,
+                    navigation,
+                    viewModelScope
+                )
+
+                ShopViewModel::class.java -> ShopViewModel(
+                    addShopUseCase,
+                    deleteShopUseCase,
+                    uploadShopImageUseCase,
+                    navigation,
+                    addShopUiStateLiveDataWrapper,
+                   // imageProcessor,
+                    viewModelScope
+                )
+
                 else -> throw IllegalStateException("unknown viewModelClass $viewModelClass")
             } as T
 

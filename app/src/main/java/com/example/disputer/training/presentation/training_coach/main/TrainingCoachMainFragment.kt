@@ -1,4 +1,4 @@
-package com.example.disputer.training.presentation.training_parent
+package com.example.disputer.training.presentation.training_coach.main
 
 import android.content.Intent
 import android.net.Uri
@@ -8,18 +8,20 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import com.example.disputer.shop.data.Shop
-import com.example.disputer.training.data.Training
 import com.example.disputer.authentication.presentation.main.MainActivity
 import com.example.disputer.core.AbstractFragment
-
 import com.example.disputer.core.ProvideViewModel
-import com.example.disputer.databinding.FragmentTrainingParentMainBinding
+import com.example.disputer.databinding.FragmentTrainingCoachMainBinding
+import com.example.disputer.training.data.Training
+import com.example.disputer.training.presentation.training_coach.TrainingCoachViewModel
+import com.example.disputer.training.presentation.training_parent.ShopsRcViewAdapter
+import com.example.disputer.training.presentation.training_parent.TrainingsRecyclerViewAdapter
 
-class TrainingParentMainFragment : AbstractFragment<FragmentTrainingParentMainBinding>() {
+class TrainingCoachMainFragment : AbstractFragment<FragmentTrainingCoachMainBinding>() {
 
     private lateinit var trainingAdapter: TrainingsRecyclerViewAdapter
     private lateinit var shopAdapter: ShopsRcViewAdapter
-    private lateinit var viewModel: TrainingParentMainViewModel
+    private lateinit var viewModel: TrainingCoachViewModel
 
     private val shopsList = arrayListOf(
         Shop(
@@ -35,18 +37,16 @@ class TrainingParentMainFragment : AbstractFragment<FragmentTrainingParentMainBi
     override fun bind(
         inflater: LayoutInflater,
         container: ViewGroup?
-    ): FragmentTrainingParentMainBinding =
-        FragmentTrainingParentMainBinding.inflate(inflater, container, false)
+    ): FragmentTrainingCoachMainBinding =
+        FragmentTrainingCoachMainBinding.inflate(inflater, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         (requireActivity() as MainActivity).showHeaderBottomNav()
 
-        viewModel = (activity as ProvideViewModel).viewModel(TrainingParentMainViewModel::class.java)
+        viewModel = (activity as ProvideViewModel).viewModel(TrainingCoachViewModel::class.java)
         initRcView()
-//        viewModel.trainingsLiveData().observe(viewLifecycleOwner) { list ->
-//            trainingAdapter.update(ArrayList(list))
-//        }
+
 
         trainingAdapter.update(ArrayList(viewModel.trainingsLiveData().value ?: listOf<Training>()))
         shopAdapter.update(shopsList)
@@ -68,6 +68,14 @@ class TrainingParentMainFragment : AbstractFragment<FragmentTrainingParentMainBi
             }
         })
         binding.rcViewShops.adapter = shopAdapter
+
+        binding.addTraining.setOnClickListener {
+            viewModel.addTrainingScreen()
+        }
+
+        binding.addShop.setOnClickListener {
+            viewModel.addShopScreen()
+        }
     }
 
     private fun openUrl(url: String) {

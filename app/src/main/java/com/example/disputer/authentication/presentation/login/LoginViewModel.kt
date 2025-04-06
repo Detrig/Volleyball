@@ -3,14 +3,13 @@ package com.example.disputer.authentication.presentation.login
 import androidx.lifecycle.ViewModel
 import com.example.disputer.authentication.data.AuthUser
 import com.example.disputer.authentication.domain.usecase.GetCurrentUserRoleUseCase
-import com.example.disputer.authentication.domain.usecase.IsLoggedInUseCase
 import com.example.disputer.authentication.domain.usecase.LoginUseCase
 import com.example.disputer.authentication.domain.utils.CurrentUserLiveDataWrapper
 import com.example.disputer.authentication.presentation.forgotpassword.ForgotPasswordScreen
 import com.example.disputer.authentication.presentation.register.RegisterScreen
 import com.example.disputer.core.Navigation
 import com.example.disputer.core.Resource
-import com.example.disputer.training.presentation.training_coach.TrainingCoachMainScreen
+import com.example.disputer.training.presentation.training_coach.main.TrainingCoachMainScreen
 import com.example.disputer.training.presentation.training_parent.TrainingParentMainScreen
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope

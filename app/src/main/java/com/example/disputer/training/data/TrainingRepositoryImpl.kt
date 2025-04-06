@@ -1,5 +1,6 @@
 package com.example.disputer.training.data
 
+import androidx.lifecycle.LiveData
 import com.example.disputer.core.Resource
 import com.example.disputer.training.domain.repository.TrainingDataSource
 import com.example.disputer.training.domain.repository.TrainingsRepository
@@ -27,4 +28,6 @@ class TrainingRepositoryImpl(
     override suspend fun deleteTraining(training: Training): Resource<Training> =
         dataSource.deleteTraining(training)
 
+    override suspend fun observeTrainingsLiveData(): LiveData<Resource<List<Training>>> =
+        dataSource.observeTrainingsLiveData()
 }

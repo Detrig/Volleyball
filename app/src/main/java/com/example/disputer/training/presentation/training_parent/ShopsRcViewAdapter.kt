@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.disputer.R
-import com.example.disputer.authentication.data.Shop
+import com.example.disputer.shop.data.Shop
 import com.example.disputer.databinding.ShopRcViewItemBinding
 
 class ShopsRcViewAdapter(private val listener : OnShopClickListener) : RecyclerView.Adapter<ShopsRcViewAdapter.ViewHolder>() {

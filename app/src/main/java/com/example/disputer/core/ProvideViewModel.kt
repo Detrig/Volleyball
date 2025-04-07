@@ -3,29 +3,54 @@ package com.example.disputer.core
 import androidx.lifecycle.ViewModel
 import com.example.disputer.authentication.presentation.login.LoginViewModel
 import com.example.disputer.authentication.data.AuthRepository
+import com.example.disputer.authentication.data.CurrentUserRepositoryImpl
+import com.example.disputer.authentication.data.FirebaseCurrentDataSource
 import com.example.disputer.authentication.data.PasswordRepository
-import com.example.disputer.authentication.data.User
 import com.example.disputer.authentication.data.UserRepository
-import com.example.disputer.authentication.domain.ForgotPasswordUseCase
-import com.example.disputer.authentication.domain.IsLoggedInUseCase
-import com.example.disputer.authentication.domain.LoginUseCase
-import com.example.disputer.authentication.domain.RegistrationUseCase
+import com.example.disputer.authentication.domain.usecase.ForgotPasswordUseCase
+import com.example.disputer.authentication.domain.usecase.GetCurrentUserRoleUseCase
+import com.example.disputer.authentication.domain.usecase.IsLoggedInUseCase
+import com.example.disputer.authentication.domain.usecase.LoginUseCase
+import com.example.disputer.authentication.domain.usecase.RegistrationUseCase
+import com.example.disputer.authentication.domain.utils.CurrentUserLiveDataWrapper
 import com.example.disputer.authentication.presentation.forgotpassword.ForgotPasswordUiStateLiveDataWrapper
 import com.example.disputer.authentication.presentation.login.LoginUiStateLiveDataWrapper
 import com.example.disputer.authentication.presentation.register.RegisterUiStateLiveDataWrapper
 import com.example.disputer.authentication.presentation.forgotpassword.ForgotPasswordViewModel
 import com.example.disputer.authentication.presentation.main.MainViewModel
 import com.example.disputer.authentication.presentation.register.RegisterViewModel
-import com.example.disputer.training.data.TrainingsRepository
-import com.example.disputer.training.presentation.main.TrainingMainViewModel
-import com.example.disputer.training.presentation.main.TrainingsLiveDataWrapper
-import com.example.disputer.training.presentation.schedule.ScheduleViewModel
+import com.example.disputer.children.data.ChildrenRepositoryImpl
+import com.example.disputer.children.data.FirebaseChildrenDataSource
+import com.example.disputer.coach.data.FirebaseCoachDataSource
+import com.example.disputer.coach.domain.CoachDataSource
+import com.example.disputer.parents.data.FirebaseParentDataSource
+import com.example.disputer.training.domain.repository.TrainingsRepository
+import com.example.disputer.training.presentation.training_parent.TrainingParentMainViewModel
+import com.example.disputer.training.domain.repository.utils.TrainingsLiveDataWrapper
+import com.example.disputer.schedule.ScheduleViewModel
+import com.example.disputer.shop.data.FirebaseShopDataSource
+import com.example.disputer.shop.data.ShopRepositoryImpl
+import com.example.disputer.shop.domain.usecase.AddShopUseCase
+import com.example.disputer.shop.domain.usecase.DeleteShopUseCase
+import com.example.disputer.shop.domain.usecase.GetShopsUseCase
+import com.example.disputer.shop.domain.utils.AddShopUiStateLiveDataWrapper
+import com.example.disputer.shop.domain.utils.ImageProcessor
+import com.example.disputer.shop.presentation.ShopViewModel
+import com.example.disputer.training.data.FirebaseTrainingDataSource
+import com.example.disputer.training.data.TrainingRepositoryImpl
+import com.example.disputer.training.domain.repository.AddTrainingUiStateLiveDataWrapper
+import com.example.disputer.shop.domain.utils.ShopsLiveDataWrapper
+import com.example.disputer.training.domain.repository.utils.ClickedTrainingLiveDataWrapper
+import com.example.disputer.training.domain.repository.utils.SignedUpForTrainingChildrensLiveDataWrapper
+import com.example.disputer.training.presentation.training_coach.TrainingCoachViewModel
+import com.example.disputer.training.presentation.training_sign_up.TrainingSignUpViewModel
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
+import org.checkerframework.checker.units.qual.Current
 
 interface ProvideViewModel {
 
@@ -58,8 +83,42 @@ interface ProvideViewModel {
             ForgotPasswordUiStateLiveDataWrapper.Base()
         private val forgotPasswordUseCase = ForgotPasswordUseCase(passwordRepository)
 
-        private val trainingsRepository = TrainingsRepository.Base(fireBaseAuth, fireBaseFirestore)
+        //Coach
+        private val coachDataSource = FirebaseCoachDataSource(fireBaseFirestore)
+
+        //Parent
+        private val parentDataSource = FirebaseParentDataSource(fireBaseFirestore)
+
+        //Get role of current user
+        private val currentUserDataSource =
+            FirebaseCurrentDataSource(fireBaseAuth, coachDataSource, parentDataSource)
+        private val currentUserRepository = CurrentUserRepositoryImpl(currentUserDataSource)
+        private val currentUserLiveDataWrapper = CurrentUserLiveDataWrapper.Base()
+        private val getCurrentUserRoleUseCase = GetCurrentUserRoleUseCase(currentUserRepository)
+
+        //Training
+        private val trainingDataSource = FirebaseTrainingDataSource(fireBaseFirestore)
+        private val trainingsRepository = TrainingRepositoryImpl(trainingDataSource)
         private val trainingsLiveDataWrapper = TrainingsLiveDataWrapper.Base()
+        private val clickedTrainingLiveDataWrapper = ClickedTrainingLiveDataWrapper.Base()
+        private val addTrainingUiStateLiveDataWrapper = AddTrainingUiStateLiveDataWrapper.Base()
+
+        //Shop
+        private val shopDataSource = FirebaseShopDataSource(fireBaseFirestore)
+        private val shopRepository = ShopRepositoryImpl(shopDataSource)
+
+        private val addShopUseCase = AddShopUseCase(shopRepository)
+        private val deleteShopUseCase = DeleteShopUseCase(shopRepository)
+        private val getShopsUseCase = GetShopsUseCase(shopRepository)
+
+        private val addShopUiStateLiveDataWrapper = AddShopUiStateLiveDataWrapper.Base()
+        private val shopsLiveDataWrapper = ShopsLiveDataWrapper.Base()
+
+        //Children
+        private val childrenDataSource = FirebaseChildrenDataSource(fireBaseFirestore)
+        private val childrenRepository = ChildrenRepositoryImpl(childrenDataSource)
+        private val signedUpForTrainingChildrensLiveDataWrapper =
+            SignedUpForTrainingChildrensLiveDataWrapper.Base()
 
         override fun <T : ViewModel> viewModel(viewModelClass: Class<T>): T {
             return when (viewModelClass) {
@@ -67,12 +126,13 @@ interface ProvideViewModel {
                 LoginViewModel::class.java -> LoginViewModel(
                     navigation,
                     loginUiStateLiveDataWrapper,
+                    currentUserLiveDataWrapper,
                     loginUseCase,
-                    isLoggedInUseCase,
+                    getCurrentUserRoleUseCase,
                     viewModelScope
                 )
 
-                MainViewModel::class.java -> MainViewModel(navigation)
+                MainViewModel::class.java -> MainViewModel(navigation, currentUserLiveDataWrapper)
 
                 RegisterViewModel::class.java -> RegisterViewModel(
                     navigation,
@@ -89,9 +149,13 @@ interface ProvideViewModel {
                     viewModelScope
                 )
 
-                TrainingMainViewModel::class.java -> TrainingMainViewModel(
+                TrainingParentMainViewModel::class.java -> TrainingParentMainViewModel(
+                    navigation,
                     trainingsRepository,
+                    shopRepository,
                     trainingsLiveDataWrapper,
+                    shopsLiveDataWrapper,
+                    clickedTrainingLiveDataWrapper,
                     viewModelScope
                 )
 
@@ -99,6 +163,35 @@ interface ProvideViewModel {
                     trainingsRepository,
                     viewModelScope
                 )
+
+                TrainingCoachViewModel::class.java -> TrainingCoachViewModel(
+                    trainingsRepository,
+                    shopRepository,
+                    trainingsLiveDataWrapper,
+                    shopsLiveDataWrapper,
+                    addTrainingUiStateLiveDataWrapper,
+                    navigation,
+                    viewModelScope
+                )
+
+                ShopViewModel::class.java -> ShopViewModel(
+                    addShopUseCase,
+                    deleteShopUseCase,
+                    navigation,
+                    addShopUiStateLiveDataWrapper,
+                    // imageProcessor,
+                    viewModelScope
+                )
+
+                TrainingSignUpViewModel::class.java -> TrainingSignUpViewModel(
+                    childrenRepository,
+                    trainingsRepository,
+                    currentUserLiveDataWrapper,
+                    clickedTrainingLiveDataWrapper,
+                    signedUpForTrainingChildrensLiveDataWrapper,
+                    viewModelScope
+                    )
+
                 else -> throw IllegalStateException("unknown viewModelClass $viewModelClass")
             } as T
 

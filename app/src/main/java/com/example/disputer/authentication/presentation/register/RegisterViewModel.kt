@@ -1,7 +1,7 @@
 package com.example.disputer.authentication.presentation.register
 
 import androidx.lifecycle.ViewModel
-import com.example.disputer.authentication.domain.RegistrationUseCase
+import com.example.disputer.authentication.domain.usecase.RegistrationUseCase
 import com.example.disputer.authentication.presentation.login.LoginScreen
 import com.example.disputer.core.Navigation
 import kotlinx.coroutines.CoroutineDispatcher
@@ -23,13 +23,13 @@ class RegisterViewModel(
         registerUiStateLiveDataWrapper.update(RegisterUiState.Initial)
     }
 
-    fun register(email: String, password: String, repeatPassword: String, isCoach: Boolean) {
+    fun register(email: String, password: String, repeatPassword: String, isCoach: Boolean, isParent: Boolean) {
         registerUiStateLiveDataWrapper.update(RegisterUiState.Loading)
 
         if (password == repeatPassword) {
             viewModelScope.launch(dispatcher) {
                 try {
-                    registerUseCase.invoke(email, password, isCoach)
+                    registerUseCase.invoke(email, password, isCoach, isParent)
                     withContext(dispatcherMain) {
                         registerUiStateLiveDataWrapper.update(RegisterUiState.Success("Подтвердите почту!"))
                         loginScreen()

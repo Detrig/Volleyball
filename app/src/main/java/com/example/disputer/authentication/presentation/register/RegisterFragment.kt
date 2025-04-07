@@ -24,6 +24,7 @@ class RegisterFragment : AbstractFragment<FragmentRegistrationBinding>() {
         super.onViewCreated(view, savedInstanceState)
         (activity as? MainActivity)?.hideHeaderBottomNav()
         var isCoach = false
+        var isParent = true
 
         viewModel = (activity as ProvideViewModel).viewModel(RegisterViewModel::class.java)
 
@@ -37,7 +38,7 @@ class RegisterFragment : AbstractFragment<FragmentRegistrationBinding>() {
             val password = binding.passwordEditText.text.toString()
             val repeatPassword = binding.repeatPasswordEditText.text.toString()
 
-            viewModel.register(email, password, repeatPassword, isCoach)
+            viewModel.register(email, password, repeatPassword, isCoach, isParent)
         }
 
         setUpButtons()
@@ -46,6 +47,7 @@ class RegisterFragment : AbstractFragment<FragmentRegistrationBinding>() {
             when (checkedId) {
                 R.id.btnParent -> if (isChecked) {
                     isCoach = false
+                    isParent = true
                     binding.btnParent.setTextColor(resources.getColor(R.color.blue))
                     binding.btnCoach.setTextColor(resources.getColor(R.color.white))
 
@@ -55,6 +57,7 @@ class RegisterFragment : AbstractFragment<FragmentRegistrationBinding>() {
 
                 R.id.btnCoach -> if (isChecked) {
                     isCoach = true
+                    isParent = false
                     binding.btnCoach.setTextColor(resources.getColor(R.color.blue))
                     binding.btnParent.setTextColor(resources.getColor(R.color.white))
 

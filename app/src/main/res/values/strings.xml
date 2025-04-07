@@ -11,17 +11,26 @@
     <string name="repeatPasswordHint">Повторите пароль</string>
     <string name="registration">Регистрация</string>
     <string name="recoveringPasswordTextHeader">Восстановление пароля</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="CreateDispute">Создать спор</string>
-    <string name="welcome_phrase">ПОРА ПРОИГРАТЬ ВСЕ СВОИ ДЕНЬГИ</string>
-    <string name="default_dispute_loading_error">Ошибка загрузки споров 😨</string>
+
     <string name="retry_loading">Повторить попытку</string>
-    <string name="active">Активный</string>
-    <string name="bank">Банк:</string>
     <string name="findBracelet">Поиск устройств</string>
     <string name="parent">Родитель</string>
     <string name="coach">Тренер</string>
     <string name="writings">Записи</string>
     <string name="schedule">Расписание</string>
+    <string name="training_details">Детали тренировки</string>
+    <string name="title">Заголовок</string>
+    <string name="description">Описание</string>
+    <string name="date">Дата (yyyy-MM-dd)</string>
+    <string name="time">Время начала</string>
+    <string name="max_participants">Максимум человек</string>
+    <string name="address">Адрес</string>
+    <string name="additional_address_info">Адрес (доп информация: учреждение, зал)</string>
+    <string name="group">Группа</string>
+    <string name="birth_year">Год рождения</string>
+    <string name="save">Сохранить</string>
+    <string name="shop_link">Ссылка на магазин</string>
+    <string name="partner_link">Ссылка на партнера</string>
+    <string name="image_link">Ссылка на изображение</string>
+    <string name="sign_up">Записать</string>
 </resources>

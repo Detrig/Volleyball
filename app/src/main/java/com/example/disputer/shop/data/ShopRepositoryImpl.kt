@@ -1,6 +1,7 @@
 package com.example.disputer.shop.data
 
 import android.net.Uri
+import androidx.lifecycle.LiveData
 import com.example.disputer.core.Resource
 import com.example.disputer.shop.domain.repo.ShopDataSource
 import com.example.disputer.shop.domain.repo.ShopRepository
@@ -18,6 +19,6 @@ class ShopRepositoryImpl(
     override suspend fun deleteShop(shop: Shop): Resource<Unit> =
         shopDataSource.deleteShop(shop)
 
-    override suspend fun uploadShopImage(imageBytes: ByteArray): Resource<String> =
-        shopDataSource.uploadShopImage(imageBytes)
+    override fun observeShopsLiveData(): LiveData<Resource<List<Shop>>> =
+        shopDataSource.observeShopsLiveData()
 }

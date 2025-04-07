@@ -19,26 +19,31 @@ import com.example.disputer.authentication.presentation.register.RegisterUiState
 import com.example.disputer.authentication.presentation.forgotpassword.ForgotPasswordViewModel
 import com.example.disputer.authentication.presentation.main.MainViewModel
 import com.example.disputer.authentication.presentation.register.RegisterViewModel
+import com.example.disputer.children.data.ChildrenRepositoryImpl
+import com.example.disputer.children.data.FirebaseChildrenDataSource
 import com.example.disputer.coach.data.FirebaseCoachDataSource
 import com.example.disputer.coach.domain.CoachDataSource
 import com.example.disputer.parents.data.FirebaseParentDataSource
 import com.example.disputer.training.domain.repository.TrainingsRepository
 import com.example.disputer.training.presentation.training_parent.TrainingParentMainViewModel
-import com.example.disputer.training.presentation.training_parent.TrainingsLiveDataWrapper
+import com.example.disputer.training.domain.repository.utils.TrainingsLiveDataWrapper
 import com.example.disputer.schedule.ScheduleViewModel
 import com.example.disputer.shop.data.FirebaseShopDataSource
 import com.example.disputer.shop.data.ShopRepositoryImpl
 import com.example.disputer.shop.domain.usecase.AddShopUseCase
 import com.example.disputer.shop.domain.usecase.DeleteShopUseCase
 import com.example.disputer.shop.domain.usecase.GetShopsUseCase
-import com.example.disputer.shop.domain.usecase.UploadShopImageUseCase
 import com.example.disputer.shop.domain.utils.AddShopUiStateLiveDataWrapper
 import com.example.disputer.shop.domain.utils.ImageProcessor
 import com.example.disputer.shop.presentation.ShopViewModel
 import com.example.disputer.training.data.FirebaseTrainingDataSource
 import com.example.disputer.training.data.TrainingRepositoryImpl
 import com.example.disputer.training.domain.repository.AddTrainingUiStateLiveDataWrapper
+import com.example.disputer.shop.domain.utils.ShopsLiveDataWrapper
+import com.example.disputer.training.domain.repository.utils.ClickedTrainingLiveDataWrapper
+import com.example.disputer.training.domain.repository.utils.SignedUpForTrainingChildrensLiveDataWrapper
 import com.example.disputer.training.presentation.training_coach.TrainingCoachViewModel
+import com.example.disputer.training.presentation.training_sign_up.TrainingSignUpViewModel
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -95,17 +100,25 @@ interface ProvideViewModel {
         private val trainingDataSource = FirebaseTrainingDataSource(fireBaseFirestore)
         private val trainingsRepository = TrainingRepositoryImpl(trainingDataSource)
         private val trainingsLiveDataWrapper = TrainingsLiveDataWrapper.Base()
+        private val clickedTrainingLiveDataWrapper = ClickedTrainingLiveDataWrapper.Base()
         private val addTrainingUiStateLiveDataWrapper = AddTrainingUiStateLiveDataWrapper.Base()
 
         //Shop
         private val shopDataSource = FirebaseShopDataSource(fireBaseFirestore)
         private val shopRepository = ShopRepositoryImpl(shopDataSource)
+
         private val addShopUseCase = AddShopUseCase(shopRepository)
         private val deleteShopUseCase = DeleteShopUseCase(shopRepository)
         private val getShopsUseCase = GetShopsUseCase(shopRepository)
-        private val uploadShopImageUseCase = UploadShopImageUseCase(shopRepository)
-        private val addShopUiStateLiveDataWrapper = AddShopUiStateLiveDataWrapper.Base()
 
+        private val addShopUiStateLiveDataWrapper = AddShopUiStateLiveDataWrapper.Base()
+        private val shopsLiveDataWrapper = ShopsLiveDataWrapper.Base()
+
+        //Children
+        private val childrenDataSource = FirebaseChildrenDataSource(fireBaseFirestore)
+        private val childrenRepository = ChildrenRepositoryImpl(childrenDataSource)
+        private val signedUpForTrainingChildrensLiveDataWrapper =
+            SignedUpForTrainingChildrensLiveDataWrapper.Base()
 
         override fun <T : ViewModel> viewModel(viewModelClass: Class<T>): T {
             return when (viewModelClass) {
@@ -119,7 +132,7 @@ interface ProvideViewModel {
                     viewModelScope
                 )
 
-                MainViewModel::class.java -> MainViewModel(navigation)
+                MainViewModel::class.java -> MainViewModel(navigation, currentUserLiveDataWrapper)
 
                 RegisterViewModel::class.java -> RegisterViewModel(
                     navigation,
@@ -137,8 +150,12 @@ interface ProvideViewModel {
                 )
 
                 TrainingParentMainViewModel::class.java -> TrainingParentMainViewModel(
+                    navigation,
                     trainingsRepository,
+                    shopRepository,
                     trainingsLiveDataWrapper,
+                    shopsLiveDataWrapper,
+                    clickedTrainingLiveDataWrapper,
                     viewModelScope
                 )
 
@@ -149,7 +166,9 @@ interface ProvideViewModel {
 
                 TrainingCoachViewModel::class.java -> TrainingCoachViewModel(
                     trainingsRepository,
+                    shopRepository,
                     trainingsLiveDataWrapper,
+                    shopsLiveDataWrapper,
                     addTrainingUiStateLiveDataWrapper,
                     navigation,
                     viewModelScope
@@ -158,12 +177,20 @@ interface ProvideViewModel {
                 ShopViewModel::class.java -> ShopViewModel(
                     addShopUseCase,
                     deleteShopUseCase,
-                    uploadShopImageUseCase,
                     navigation,
                     addShopUiStateLiveDataWrapper,
-                   // imageProcessor,
+                    // imageProcessor,
                     viewModelScope
                 )
+
+                TrainingSignUpViewModel::class.java -> TrainingSignUpViewModel(
+                    childrenRepository,
+                    trainingsRepository,
+                    currentUserLiveDataWrapper,
+                    clickedTrainingLiveDataWrapper,
+                    signedUpForTrainingChildrensLiveDataWrapper,
+                    viewModelScope
+                    )
 
                 else -> throw IllegalStateException("unknown viewModelClass $viewModelClass")
             } as T

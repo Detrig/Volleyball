@@ -24,7 +24,7 @@ class LoginViewModel(
     private val loginUseCase: LoginUseCase,
     private val getCurrentUserRoleUseCase: GetCurrentUserRoleUseCase,
     private val viewModelScope: CoroutineScope,
-    private val dispatcher: CoroutineDispatcher = Dispatchers.IO,
+    private val dispatcherIo: CoroutineDispatcher = Dispatchers.IO,
     private val dispatcherMain: CoroutineDispatcher = Dispatchers.Main
 ) : ViewModel() {
 
@@ -36,7 +36,7 @@ class LoginViewModel(
 
         loginUiStateLiveDataWrapper.update(LoginUiState.Loading)
 
-        viewModelScope.launch(dispatcher) {
+        viewModelScope.launch(dispatcherIo) {
             try {
                 loginUseCase.invoke(email, password)
 

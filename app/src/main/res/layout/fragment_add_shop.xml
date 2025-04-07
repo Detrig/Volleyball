@@ -4,6 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
+    android:focusable="true"
     android:fillViewport="true"
     android:padding="16dp">
 
@@ -18,7 +20,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
-            <!-- Заголовок -->
+
             <TextView
                 android:id="@+id/titleTextView"
                 style="@style/TextAppearance.MaterialComponents.Headline6"
@@ -26,49 +28,9 @@
                 android:layout_height="wrap_content"
                 android:text="Магазин"
                 android:textAlignment="center"
-                app:layout_constraintBottom_toBottomOf="@+id/deleteButton"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <ImageButton
-                android:id="@+id/deleteButton"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:background="@drawable/trash"
-                android:visibility="invisible"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
 
-            <!-- Превью изображения -->
-            <ImageView
-                android:id="@+id/shopImageView"
-                android:layout_width="200dp"
-                android:layout_height="200dp"
-                android:layout_marginTop="16dp"
-                android:background="@drawable/image_gallery"
-                android:scaleType="centerCrop"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/titleTextView" />
-
-            <!-- Кнопка выбора изображения -->
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/selectImageButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
-                android:background="@drawable/rounded_stroke"
-                android:clickable="true"
-                android:focusable="true"
-                android:fontFamily="@font/onest_medium"
-                android:foreground="?attr/selectableItemBackground"
-                android:padding="16dp"
-                android:text="Выбрать изображение"
-                android:textSize="16sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/shopImageView" />
-
-            <!-- Поле для ссылки -->
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/urlInputLayout"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -76,10 +38,28 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
                 android:hint="@string/partner_link"
-                app:layout_constraintTop_toBottomOf="@+id/selectImageButton">
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/titleTextView">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/urlEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textUri"
+                    android:singleLine="true" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/imageUrlInputLayout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/image_link"
+                android:layout_marginTop="16dp"
+                app:layout_constraintTop_toBottomOf="@+id/urlInputLayout">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/imageUrlEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textUri"
@@ -92,11 +72,13 @@
                 style="@style/AuthMarginHorizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
                 android:layout_marginStart="32dp"
-                android:layout_marginTop="32dp"
                 android:layout_marginEnd="32dp"
                 android:text="@string/save"
-                app:layout_constraintTop_toBottomOf="@+id/urlInputLayout" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imageUrlInputLayout" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

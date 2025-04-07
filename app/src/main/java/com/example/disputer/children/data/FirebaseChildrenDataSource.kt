@@ -1,5 +1,6 @@
-package com.example.disputer.children
+package com.example.disputer.children.data
 
+import com.example.disputer.children.domain.repo.ChildrenDataSource
 import com.example.disputer.training.data.Training
 import com.example.disputer.core.Resource
 import com.google.firebase.firestore.FirebaseFirestore
@@ -57,12 +58,12 @@ class FirebaseChildrenDataSource(
 
     override suspend fun getChildrenTrainings(children: Student): Resource<List<Training>> {
         return try {
-            if (children.trainings.isEmpty()) {
+            if (children.trainingIds.isEmpty()) {
                 return Resource.Success(emptyList())
             }
 
             val trainings = fireStore.collection(TRAININGS_COLLECTION)
-                .whereIn("id", children.trainings.map { it.id })
+                .whereIn("id", children.trainingIds)
                 .get()
                 .await()
                 .documents

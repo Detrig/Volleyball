@@ -28,6 +28,13 @@ class TrainingRepositoryImpl(
     override suspend fun deleteTraining(training: Training): Resource<Training> =
         dataSource.deleteTraining(training)
 
-    override suspend fun observeTrainingsLiveData(): LiveData<Resource<List<Training>>> =
+    override fun observeTrainingsLiveData(): LiveData<Resource<List<Training>>> =
         dataSource.observeTrainingsLiveData()
+
+    override suspend fun signUpForTraining(
+        trainingId: String,
+        childIds: List<String>
+    ): Resource<Unit> =
+        dataSource.signUpForTraining(trainingId, childIds)
+
 }

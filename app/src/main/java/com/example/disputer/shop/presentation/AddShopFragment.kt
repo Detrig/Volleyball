@@ -15,8 +15,6 @@ import com.example.disputer.shop.data.Shop
 class AddShopFragment : AbstractFragment<FragmentAddShopBinding>() {
 
     private lateinit var viewModel : ShopViewModel
-    private var selectedImageUri: Uri? = null
-
 
     override fun bind(
         inflater: LayoutInflater,
@@ -29,27 +27,13 @@ class AddShopFragment : AbstractFragment<FragmentAddShopBinding>() {
 
         viewModel = (activity as ProvideViewModel).viewModel(ShopViewModel::class.java)
 
-        binding.selectImageButton.setOnClickListener {
-            openImagePicker()
-        }
 
         binding.saveButton.setOnClickListener {
             val shop = Shop(
-                binding.titleTextView.text.toString(),
-                binding.shopImageView.toString()
+                url = binding.urlEditText.text.toString(),
+                imageUrl = binding.imageUrlEditText.text.toString()
             )
             viewModel.addShop(shop)
         }
-    }
-
-    private fun openImagePicker() {
-        val intent = Intent(Intent.ACTION_PICK)
-        intent.type = "image/*"
-        startActivityForResult(intent, REQUEST_IMAGE_PICK)
-    }
-
-    companion object {
-        private const val REQUEST_IMAGE_PICK = 1001
-        private const val MAX_IMAGE_SIZE = 990_000 // ~1MB
     }
 }

@@ -1,9 +1,12 @@
 package com.example.disputer.shop.data
 
 import android.util.Base64
+import android.util.Log
+import androidx.lifecycle.LiveData
 import com.example.disputer.core.Resource
 import com.example.disputer.shop.domain.repo.ShopDataSource
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ListenerRegistration
 import kotlinx.coroutines.tasks.await
 
 class FirebaseShopDataSource(
@@ -12,8 +15,40 @@ class FirebaseShopDataSource(
 
     private companion object {
         const val SHOPS_COLLECTION = "shop"
-        const val STORAGE_SHOP_IMAGES_PATH = "shop_images/"
-        const val MAX_IMAGE_SIZE = 990_000
+    }
+
+    override fun observeShopsLiveData(): LiveData<Resource<List<Shop>>> {
+        return object : LiveData<Resource<List<Shop>>>() {
+            private var listener: ListenerRegistration? = null
+
+            override fun onActive() {
+                super.onActive()
+                listener = firestore.collection(SHOPS_COLLECTION)
+                    .addSnapshotListener { snapshot, error ->
+                        when {
+                            error != null -> {
+                                postValue(Resource.Error(error.message ?: "Unknown error"))
+                            }
+                            snapshot != null -> {
+                                val shops = snapshot.documents.mapNotNull { document ->
+                                    try {
+                                        document.toObject(Shop::class.java)?.copy(id = document.id)
+                                    } catch (e: Exception) {
+                                        null
+                                    }
+                                }
+                                postValue(Resource.Success(shops))
+                            }
+                        }
+                    }
+            }
+
+            override fun onInactive() {
+                super.onInactive()
+                listener?.remove()
+                listener = null
+            }
+        }
     }
 
     override suspend fun getShops(): Resource<List<Shop>> {
@@ -72,18 +107,6 @@ class FirebaseShopDataSource(
             Resource.Success(Unit)
         } catch (e: Exception) {
             Resource.Error(e.localizedMessage ?: "Failed to delete shop")
-        }
-    }
-
-    override suspend fun uploadShopImage(imageBytes: ByteArray): Resource<String> {
-        return try {
-            if (imageBytes.size > MAX_IMAGE_SIZE) {
-                return Resource.Error("Image too large (max ${MAX_IMAGE_SIZE / 1024}KB)")
-            }
-            val base64 = Base64.encodeToString(imageBytes, Base64.DEFAULT)
-            Resource.Success(base64)
-        } catch (e: Exception) {
-            Resource.Error("Image encoding failed: ${e.message}")
         }
     }
 }

@@ -23,7 +23,7 @@ class FirebaseTrainingDataSource(
         val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
     }
 
-    override suspend fun observeTrainingsLiveData(): LiveData<Resource<List<Training>>> {
+    override fun observeTrainingsLiveData(): LiveData<Resource<List<Training>>> {
         return object : LiveData<Resource<List<Training>>>() {
             private var listener: ListenerRegistration? = null
 
@@ -52,6 +52,32 @@ class FirebaseTrainingDataSource(
         }
     }
 
+    //Sign up
+    override suspend fun signUpForTraining(
+        trainingId: String,
+        childIds: List<String>
+    ): Resource<Unit> {
+        return try {
+            val trainingRef = firestore.collection(TRAININGS_COLLECTION).document(trainingId)
+
+            firestore.runTransaction { transaction ->
+                val training = transaction.get(trainingRef).toObject(Training::class.java)
+                    ?: throw Exception("Training not found")
+
+                val updatedStudentIds = training.studentIdsList.toMutableSet().apply {
+                    addAll(childIds)
+                }
+
+                transaction.update(trainingRef, "studentIdsList", updatedStudentIds.toList())
+            }.await()
+
+            Resource.Success(Unit)
+        } catch (e: Exception) {
+            Resource.Error(e.localizedMessage ?: "Failed to sign up for training")
+        }
+    }
+
+    //Crud trainings
     override suspend fun getFutureTrainings(): Resource<List<Training>> {
         return try {
             val currentDate = dateFormat.format(Date())

@@ -3,7 +3,7 @@ package com.example.disputer.parents.presentation
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.disputer.children.Student
+import com.example.disputer.children.data.Student
 import com.example.disputer.core.Resource
 import com.example.disputer.parents.domain.usecase.GetParentChildrenUseCase
 import com.example.disputer.parents.domain.usecase.GetParentUseCase

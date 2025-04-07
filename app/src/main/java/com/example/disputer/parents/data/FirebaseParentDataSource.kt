@@ -1,6 +1,6 @@
 package com.example.disputer.parents.data
 
-import com.example.disputer.children.Student
+import com.example.disputer.children.data.Student
 import com.example.disputer.core.Resource
 import com.example.disputer.parents.domain.repository.ParentDataSource
 import com.google.firebase.firestore.FirebaseFirestore

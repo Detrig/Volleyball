@@ -21,17 +21,6 @@ class TrainingParentMainFragment : AbstractFragment<FragmentTrainingParentMainBi
     private lateinit var shopAdapter: ShopsRcViewAdapter
     private lateinit var viewModel: TrainingParentMainViewModel
 
-    private val shopsList = arrayListOf(
-        Shop(
-            "https://sun9-28.userapi.com/s/v1/ig2/c1AfiGNW03K0d2BN-YyjKuWhLnN30S8dcPCyLSuI0k21JlCMcIRw08aXncY3YXkx2vEBfhiEOnA1zRKlxhInZYHm.jpg?quality=96&as=32x32,48x48,72x72,108x108,160x160,240x240,360x360,480x480,540x540,640x640,720x720,1080x1080&from=bu&u=zzlqzlhXHEcXmXW8GvPyEJFSiscUwzlHkhyNJiNPwjc&cs=1080x1080",
-            "https://google.com"
-        ),
-        Shop(
-            "https://sun9-28.userapi.fsdfsdf/s/v1/ig80",
-            "https://vk.com/wall-211429303_10"
-        )
-    )
-
     override fun bind(
         inflater: LayoutInflater,
         container: ViewGroup?
@@ -44,19 +33,18 @@ class TrainingParentMainFragment : AbstractFragment<FragmentTrainingParentMainBi
 
         viewModel = (activity as ProvideViewModel).viewModel(TrainingParentMainViewModel::class.java)
         initRcView()
-//        viewModel.trainingsLiveData().observe(viewLifecycleOwner) { list ->
-//            trainingAdapter.update(ArrayList(list))
-//        }
 
-        trainingAdapter.update(ArrayList(viewModel.trainingsLiveData().value ?: listOf<Training>()))
-        shopAdapter.update(shopsList)
+        loadRcViewLists()
+        observeTrainingAndShop()
+
+
     }
 
     private fun initRcView() {
         trainingAdapter = TrainingsRecyclerViewAdapter(object :
             TrainingsRecyclerViewAdapter.OnTrainingClickListener {
             override fun onClick(training: Training) {
-                Toast.makeText(requireContext(), training.coachName, Toast.LENGTH_SHORT).show()
+                viewModel.trainingDetailsScreen(training)
             }
 
         })
@@ -78,4 +66,30 @@ class TrainingParentMainFragment : AbstractFragment<FragmentTrainingParentMainBi
             Toast.makeText(requireContext(), "Ошибка при открытии ссылки: ${e.message}", Toast.LENGTH_SHORT).show()
         }
     }
+
+    private fun loadRcViewLists() {
+        viewModel.shopsLiveData().value?.let {
+            shopAdapter.update(ArrayList(it))
+        }
+
+        viewModel.trainingsLiveData().value?.let {
+            trainingAdapter.update(ArrayList(it))
+        }
+    }
+
+    private fun observeTrainingAndShop() {
+        viewModel.trainingsLiveData().observe(viewLifecycleOwner) { trainings ->
+            trainings?.let {
+                trainingAdapter.update(ArrayList(trainings))
+            }
+        }
+
+        viewModel.shopsLiveData().observe(viewLifecycleOwner) { shops ->
+            shops?.let {
+                shopAdapter.update(ArrayList(shops))
+            }
+        }
+    }
+
+
 }

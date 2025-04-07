@@ -1,4 +1,4 @@
-package com.example.disputer.coach
+package com.example.disputer.coach.presentation
 
 import android.view.LayoutInflater
 import android.view.View

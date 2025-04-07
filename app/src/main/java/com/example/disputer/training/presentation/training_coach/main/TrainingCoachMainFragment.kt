@@ -23,17 +23,6 @@ class TrainingCoachMainFragment : AbstractFragment<FragmentTrainingCoachMainBind
     private lateinit var shopAdapter: ShopsRcViewAdapter
     private lateinit var viewModel: TrainingCoachViewModel
 
-    private val shopsList = arrayListOf(
-        Shop(
-            "https://sun9-28.userapi.com/s/v1/ig2/c1AfiGNW03K0d2BN-YyjKuWhLnN30S8dcPCyLSuI0k21JlCMcIRw08aXncY3YXkx2vEBfhiEOnA1zRKlxhInZYHm.jpg?quality=96&as=32x32,48x48,72x72,108x108,160x160,240x240,360x360,480x480,540x540,640x640,720x720,1080x1080&from=bu&u=zzlqzlhXHEcXmXW8GvPyEJFSiscUwzlHkhyNJiNPwjc&cs=1080x1080",
-            "https://google.com"
-        ),
-        Shop(
-            "https://sun9-28.userapi.fsdfsdf/s/v1/ig80",
-            "https://vk.com/wall-211429303_10"
-        )
-    )
-
     override fun bind(
         inflater: LayoutInflater,
         container: ViewGroup?
@@ -47,9 +36,29 @@ class TrainingCoachMainFragment : AbstractFragment<FragmentTrainingCoachMainBind
         viewModel = (activity as ProvideViewModel).viewModel(TrainingCoachViewModel::class.java)
         initRcView()
 
+        loadRcViewLists()
 
-        trainingAdapter.update(ArrayList(viewModel.trainingsLiveData().value ?: listOf<Training>()))
-        shopAdapter.update(shopsList)
+        viewModel.trainingsLiveData().observe(viewLifecycleOwner) { trainings ->
+            trainings?.let {
+                trainingAdapter.update(ArrayList(trainings))
+            }
+        }
+
+        viewModel.shopsLiveData().observe(viewLifecycleOwner) { shops ->
+            shops?.let {
+                shopAdapter.update(ArrayList(shops))
+            }
+        }
+
+        binding.addTraining.setOnClickListener {
+            viewModel.addTrainingScreen()
+        }
+
+        binding.addShop.setOnClickListener {
+            viewModel.addShopScreen()
+        }
+
+
     }
 
     private fun initRcView() {
@@ -68,14 +77,6 @@ class TrainingCoachMainFragment : AbstractFragment<FragmentTrainingCoachMainBind
             }
         })
         binding.rcViewShops.adapter = shopAdapter
-
-        binding.addTraining.setOnClickListener {
-            viewModel.addTrainingScreen()
-        }
-
-        binding.addShop.setOnClickListener {
-            viewModel.addShopScreen()
-        }
     }
 
     private fun openUrl(url: String) {
@@ -84,6 +85,16 @@ class TrainingCoachMainFragment : AbstractFragment<FragmentTrainingCoachMainBind
             startActivity(intent)
         } catch (e: Exception) {
             Toast.makeText(requireContext(), "Ошибка при открытии ссылки: ${e.message}", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun loadRcViewLists() {
+        viewModel.shopsLiveData().value?.let {
+            shopAdapter.update(ArrayList(it))
+        }
+
+        viewModel.trainingsLiveData().value?.let {
+            trainingAdapter.update(ArrayList(it))
         }
     }
 }

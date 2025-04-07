@@ -1,6 +1,6 @@
 package com.example.disputer.coach.data
 
-import com.example.disputer.children.Student
+import com.example.disputer.children.data.Student
 import com.example.disputer.training.data.Training
 
 data class Coach(
@@ -13,5 +13,6 @@ data class Coach(
     val telegram: String = "",
     val trainings: List<Training> = emptyList(),
     val students: List<Student> = emptyList(),
-    val address: List<String> = emptyList()
+    val address: List<String> = emptyList(),
+    val photoBase64: String = ""
 )

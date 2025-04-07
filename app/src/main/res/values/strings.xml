@@ -31,4 +31,6 @@
     <string name="save">Сохранить</string>
     <string name="shop_link">Ссылка на магазин</string>
     <string name="partner_link">Ссылка на партнера</string>
+    <string name="image_link">Ссылка на изображение</string>
+    <string name="sign_up">Записать</string>
 </resources>

@@ -10,5 +10,7 @@ interface TrainingDataSource {
     suspend fun getAllTrainings(): Resource<List<Training>>
     suspend fun addTraining(training: Training): Resource<Training>
     suspend fun deleteTraining(training: Training): Resource<Training>
-    suspend fun observeTrainingsLiveData() : LiveData<Resource<List<Training>>>
+    fun observeTrainingsLiveData() : LiveData<Resource<List<Training>>>
+
+    suspend fun signUpForTraining(trainingId: String, childIds: List<String>) : Resource<Unit>
 }

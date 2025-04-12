@@ -37,18 +37,7 @@ class TrainingCoachMainFragment : AbstractFragment<FragmentTrainingCoachMainBind
         initRcView()
 
         loadRcViewLists()
-
-        viewModel.trainingsLiveData().observe(viewLifecycleOwner) { trainings ->
-            trainings?.let {
-                trainingAdapter.update(ArrayList(trainings))
-            }
-        }
-
-        viewModel.shopsLiveData().observe(viewLifecycleOwner) { shops ->
-            shops?.let {
-                shopAdapter.update(ArrayList(shops))
-            }
-        }
+        setUpObservers()
 
         binding.addTraining.setOnClickListener {
             viewModel.addTrainingScreen()
@@ -58,14 +47,13 @@ class TrainingCoachMainFragment : AbstractFragment<FragmentTrainingCoachMainBind
             viewModel.addShopScreen()
         }
 
-
     }
 
     private fun initRcView() {
         trainingAdapter = TrainingsRecyclerViewAdapter(object :
             TrainingsRecyclerViewAdapter.OnTrainingClickListener {
             override fun onClick(training: Training) {
-                Toast.makeText(requireContext(), training.coachName, Toast.LENGTH_SHORT).show()
+                viewModel.addTrainingScreen(training)
             }
 
         })
@@ -95,6 +83,20 @@ class TrainingCoachMainFragment : AbstractFragment<FragmentTrainingCoachMainBind
 
         viewModel.trainingsLiveData().value?.let {
             trainingAdapter.update(ArrayList(it))
+        }
+    }
+
+    private fun setUpObservers() {
+        viewModel.trainingsLiveData().observe(viewLifecycleOwner) { trainings ->
+            trainings?.let {
+                trainingAdapter.update(ArrayList(trainings))
+            }
+        }
+
+        viewModel.shopsLiveData().observe(viewLifecycleOwner) { shops ->
+            shops?.let {
+                shopAdapter.update(ArrayList(shops))
+            }
         }
     }
 }

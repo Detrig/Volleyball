@@ -16,7 +16,8 @@
             android:id="@+id/addTrainingContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="16dp"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -36,8 +37,8 @@
 
             <ImageButton
                 android:id="@+id/deleteButton"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:background="@drawable/trash"
                 android:visibility="invisible"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -141,7 +142,6 @@
                     android:inputType="number" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <!-- Адрес -->
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/addressInputLayout"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -151,11 +151,13 @@
                 android:hint="@string/address"
                 app:layout_constraintTop_toBottomOf="@+id/maxPersonInputLayout">
 
-                <com.google.android.material.textfield.TextInputEditText
+                <AutoCompleteTextView
                     android:id="@+id/addressEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="textPostalAddress" />
+                    android:padding="16dp"
+                    android:inputType="textPostalAddress"
+                    android:completionThreshold="1" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <!-- Доп. информация об адресе -->

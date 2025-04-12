@@ -1,6 +1,10 @@
 package com.example.disputer.training.presentation.training_coach
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
+import com.example.disputer.authentication.data.AuthUser
+import com.example.disputer.authentication.domain.utils.CurrentUserLiveDataWrapper
+import com.example.disputer.coach.data.Coach
 import com.example.disputer.core.Navigation
 import com.example.disputer.shop.domain.repo.ShopRepository
 import com.example.disputer.shop.presentation.AddShopScreen
@@ -8,6 +12,7 @@ import com.example.disputer.training.data.Training
 import com.example.disputer.training.domain.repository.AddTrainingUiStateLiveDataWrapper
 import com.example.disputer.training.domain.repository.TrainingsRepository
 import com.example.disputer.shop.domain.utils.ShopsLiveDataWrapper
+import com.example.disputer.training.domain.repository.utils.ClickedTrainingLiveDataWrapper
 import com.example.disputer.training.presentation.training_coach.add_training.AddTrainingScreen
 import com.example.disputer.training.presentation.training_coach.add_training.AddTrainingUiState
 import com.example.disputer.training.presentation.training_coach.main.TrainingCoachMainScreen
@@ -24,7 +29,9 @@ class TrainingCoachViewModel(
     private val shopRepository: ShopRepository,
     private val trainingsLiveDataWrapper: TrainingsLiveDataWrapper,
     private val shopsLiveDataWrapper: ShopsLiveDataWrapper,
+    private val currentUserLiveDataWrapper: CurrentUserLiveDataWrapper,
     private val addTrainingUiStateLiveDataWrapper: AddTrainingUiStateLiveDataWrapper,
+    private val clickedTrainingLiveDataWrapper: ClickedTrainingLiveDataWrapper,
     private val navigation: Navigation,
     private val viewModelScope: CoroutineScope,
     private val dispatcherMain: CoroutineDispatcher = Dispatchers.Main,
@@ -47,6 +54,18 @@ class TrainingCoachViewModel(
         observeTrainingsAndShops()
     }
 
+    fun getCoachAddresses(): List<String> {
+        return currentCoach()?.address ?: emptyList()
+    }
+
+    private fun currentCoach(): Coach? {
+        val currentUser = currentUserLiveDataWrapper.liveData().value
+        if (currentUser is AuthUser.CoachUser) {
+            return currentUser.coach
+        }
+        return null
+    }
+
     fun addTraining(training: Training) {
         addTrainingUiStateLiveDataWrapper.update(AddTrainingUiState.Loading)
         viewModelScope.launch(dispatcherIO) {
@@ -67,12 +86,28 @@ class TrainingCoachViewModel(
         }
     }
 
-    fun addTrainingScreen() = navigation.update(AddTrainingScreen)
+    fun addTrainingScreen(training: Training = Training()) {
+        if (training.id != "") {
+            clickedTrainingLiveDataWrapper.update(training)
+            Log.d(
+                "VB-03",
+                "Not null: $training, currentTraining: ${clickedTrainingLiveData().value}"
+            )
+            navigation.update(AddTrainingScreen)
+        } else {
+            Log.d("VB-03", "Null: $training, currentTraining: ${clickedTrainingLiveData().value}")
+            navigation.update(AddTrainingScreen)
+        }
+    }
+
     fun addShopScreen() = navigation.update(AddShopScreen)
 
     fun addTrainingUiStateLiveData() = addTrainingUiStateLiveDataWrapper.liveData()
     fun trainingsLiveData() = trainingsLiveDataWrapper.liveData()
     fun shopsLiveData() = shopsLiveDataWrapper.liveData()
+
+    fun clickedTrainingLiveData() = clickedTrainingLiveDataWrapper.liveData()
+    fun clearClickedTrainingLiveData() = clickedTrainingLiveDataWrapper.update(Training())
 
     fun observeTrainingsAndShops() {
         trainingsRepository.observeTrainingsLiveData().observeForever {

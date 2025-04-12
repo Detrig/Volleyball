@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Размеры для ArrowButton -->
+    <dimen name="button_padding_horizontal">16dp</dimen>
+    <dimen name="button_padding_vertical">4dp</dimen>
+    <dimen name="button_text_margin_start">16dp</dimen>
+    <dimen name="button_text_padding">8dp</dimen>
+    <dimen name="button_icon_size">32dp</dimen>
+    <dimen name="button_icon_margin_end">24dp</dimen>
+</resources>

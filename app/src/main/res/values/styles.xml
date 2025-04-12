@@ -48,6 +48,12 @@
         <item name="android:textSize">22sp</item>
     </style>
 
+    <style name="InfoTextViewStyle" parent="Widget.MaterialComponents.TextView">
+        <item name="fontFamily">@font/onest_medium</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
     <style name="RoundedWhiteButton" parent="Widget.AppCompat.ImageButton">
         <item name="background">@drawable/rounded_white_button_bg</item>
         <item name="android:scaleType">fitCenter</item>

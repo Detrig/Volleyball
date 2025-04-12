@@ -3,10 +3,6 @@ package com.example.disputer.shop.presentation
 import android.view.View
 import android.widget.Toast
 import com.example.disputer.databinding.FragmentAddShopBinding
-import com.example.disputer.databinding.FragmentParentProfileBinding
-import com.example.disputer.parents.presentation.ParentUiState
-import com.example.disputer.parents.presentation.adapter.ChildrenRcViewAdapter
-import com.example.disputer.training.presentation.training_parent.TrainingsRecyclerViewAdapter
 
 interface AddShopUiState {
 

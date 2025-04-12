@@ -24,7 +24,8 @@
             <!-- Заголовок тренировки -->
             <TextView
                 android:id="@+id/titleTextView"
-                style="@style/TextAppearance.MaterialComponents.Headline5"
+                style="@style/InfoTextViewStyle"
+                android:textSize="20sp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textAlignment="center"
@@ -35,6 +36,7 @@
                 android:id="@+id/descriptionTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                style="@style/InfoTextViewStyle"
                 android:layout_marginTop="16dp"
                 android:textSize="16sp"
                 app:layout_constraintTop_toBottomOf="@+id/titleTextView" />
@@ -54,6 +56,7 @@
                     android:id="@+id/dateTextView"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    style="@style/InfoTextViewStyle"
                     android:layout_weight="1"
                     android:textSize="16sp"
                     android:textStyle="bold" />
@@ -63,6 +66,7 @@
                     android:id="@+id/timeTextView"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    style="@style/InfoTextViewStyle"
                     android:layout_weight="1"
                     android:textSize="16sp"
                     android:textStyle="bold" />
@@ -73,6 +77,7 @@
                 android:id="@+id/addressTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                style="@style/InfoTextViewStyle"
                 android:layout_marginTop="16dp"
                 android:textSize="16sp"
                 app:layout_constraintTop_toBottomOf="@+id/dateTimeLayout" />
@@ -82,6 +87,7 @@
                 android:id="@+id/addressInfoTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                style="@style/InfoTextViewStyle"
                 android:layout_marginTop="8dp"
                 android:textSize="14sp"
                 app:layout_constraintTop_toBottomOf="@+id/addressTextView" />
@@ -101,6 +107,7 @@
                     android:id="@+id/groupTextView"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    style="@style/InfoTextViewStyle"
                     android:layout_weight="1"
                     android:textSize="16sp" />
 
@@ -109,6 +116,7 @@
                     android:id="@+id/birthYearTextView"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    style="@style/InfoTextViewStyle"
                     android:layout_weight="1"
                     android:textSize="16sp" />
             </LinearLayout>
@@ -118,6 +126,7 @@
                 android:id="@+id/coachTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                style="@style/InfoTextViewStyle"
                 android:layout_marginTop="16dp"
                 android:textSize="16sp"
                 app:layout_constraintTop_toBottomOf="@+id/groupBirthLayout" />
@@ -127,6 +136,7 @@
                 android:id="@+id/participantsCountTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                style="@style/InfoTextViewStyle"
                 android:layout_marginTop="16dp"
                 android:textSize="16sp"
                 app:layout_constraintTop_toBottomOf="@+id/coachTextView" />
@@ -137,6 +147,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
+                style="@style/InfoTextViewStyle"
+                android:textSize="18sp"
                 android:text="Выберите детей для записи"
                 android:textStyle="bold"
                 app:layout_constraintTop_toBottomOf="@+id/participantsCountTextView" />

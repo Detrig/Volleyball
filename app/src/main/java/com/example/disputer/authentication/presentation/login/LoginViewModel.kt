@@ -1,5 +1,6 @@
 package com.example.disputer.authentication.presentation.login
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.example.disputer.authentication.data.AuthUser
 import com.example.disputer.authentication.domain.usecase.GetCurrentUserRoleUseCase
@@ -64,6 +65,7 @@ class LoginViewModel(
         when (authUser) {
             is AuthUser.CoachUser -> navigation.update(TrainingCoachMainScreen)
             is AuthUser.ParentUser -> navigation.update(TrainingParentMainScreen)
+            is AuthUser.Empty -> Log.d("VB-04", "Empty user")
         }
     }
 

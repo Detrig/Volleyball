@@ -2,9 +2,9 @@ package com.example.disputer.authentication.data
 
 import android.util.Log
 import com.example.disputer.authentication.domain.repository.CurrentUserRepository
-import com.example.disputer.coach.domain.CoachDataSource
+import com.example.disputer.coach.domain.repo.CoachDataSource
 import com.example.disputer.core.Resource
-import com.example.disputer.parents.domain.repository.ParentDataSource
+import com.example.disputer.parent.domain.repository.ParentDataSource
 import com.google.firebase.auth.FirebaseAuth
 
 class FirebaseCurrentDataSource(

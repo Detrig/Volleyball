@@ -36,8 +36,6 @@ class TrainingParentMainFragment : AbstractFragment<FragmentTrainingParentMainBi
 
         loadRcViewLists()
         observeTrainingAndShop()
-
-
     }
 
     private fun initRcView() {

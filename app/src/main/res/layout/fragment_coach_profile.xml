@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:focusable="true"
+    android:fillViewport="true">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/coachDetailsContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <!-- Фото тренера -->
+            <ImageView
+                android:id="@+id/coachImageView"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:layout_marginTop="16dp"
+                android:contentDescription="Фото тренера"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <!-- Имя тренера -->
+            <TextView
+                android:id="@+id/nameTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/InfoTextViewStyle"
+                android:layout_marginTop="16dp"
+                android:textAlignment="center"
+                app:layout_constraintTop_toBottomOf="@+id/coachImageView" />
+
+            <!-- Квалификация -->
+            <TextView
+                android:id="@+id/qualificationTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/InfoTextViewStyle"
+                android:layout_marginTop="8dp"
+                android:textAlignment="center"
+                app:layout_constraintTop_toBottomOf="@+id/nameTextView" />
+
+            <!-- Контактная информация -->
+            <TextView
+                android:id="@+id/contactsLabel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                style="@style/InfoTextViewStyle"
+                android:textSize="18sp"
+                android:text="Контактная информация"
+                android:textStyle="bold"
+                app:layout_constraintTop_toBottomOf="@+id/qualificationTextView" />
+
+            <!-- Телефон -->
+            <TextView
+                android:id="@+id/phoneTextView"
+                android:layout_width="match_parent"
+                style="@style/InfoTextViewStyle"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:textSize="16sp"
+                app:layout_constraintTop_toBottomOf="@+id/contactsLabel" />
+
+            <!-- Email -->
+            <TextView
+                android:id="@+id/emailTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/InfoTextViewStyle"
+                android:layout_marginTop="8dp"
+                android:textSize="16sp"
+                app:layout_constraintTop_toBottomOf="@+id/phoneTextView" />
+
+            <!-- Telegram -->
+            <TextView
+                android:id="@+id/telegramTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/InfoTextViewStyle"
+                android:layout_marginTop="8dp"
+                android:textSize="16sp"
+                app:layout_constraintTop_toBottomOf="@+id/emailTextView" />
+
+            <!-- Адреса -->
+            <TextView
+                android:id="@+id/addressesLabel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                style="@style/InfoTextViewStyle"
+                android:textSize="18sp"
+                android:text="Адреса тренировок"
+                android:textStyle="bold"
+                app:layout_constraintTop_toBottomOf="@+id/telegramTextView" />
+
+            <!-- Список адресов -->
+            <LinearLayout
+                android:id="@+id/addressesContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="8dp"
+                android:minHeight="50dp"
+                app:layout_constraintTop_toBottomOf="@+id/addressesLabel" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rounded_stroke"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/onest_medium"
+                android:textStyle="bold"
+                android:text="@string/sign_up"
+                app:layout_constraintTop_toBottomOf="@+id/addressesContainer"
+                tools:layout_editor_absoluteX="16dp" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

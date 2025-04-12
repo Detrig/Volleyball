@@ -1,9 +1,8 @@
 package com.example.disputer.coach.data
 
 import android.util.Log
-import com.example.disputer.coach.domain.CoachDataSource
+import com.example.disputer.coach.domain.repo.CoachDataSource
 import com.example.disputer.core.Resource
-import com.example.disputer.training.data.Training
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
 
@@ -34,25 +33,38 @@ class FirebaseCoachDataSource(
         }
     }
 
-    override suspend fun addCoach(coach: Coach): Resource<Unit> {
+    override suspend fun updateCoach(coach: Coach): Resource<Unit> {
         return try {
-            if (coach.uid.isEmpty()) {
-                fireStore.collection(COACHES_COLLECTION)
-                    .add(coach)
-                    .await()
-            } else {
-                fireStore.collection(COACHES_COLLECTION)
-                    .document(coach.uid)
-                    .set(coach)
-                    .await()
-            }
+            Log.d("VB-04", "FirebaseCoachDataSource ${coach.toString()}")
+//            if (coach.uid.isEmpty()) {
+//                fireStore.collection(COACHES_COLLECTION)
+//                    .add(coach)
+//                    .await()
+            val result = fireStore.collection(COACHES_COLLECTION)
+                .document(coach.uid)
+                .set(coach)
+                .await()
+
+            Log.d("VB-04", "result $result")
             Resource.Success(Unit)
         } catch (e: Exception) {
             Resource.Error(e.localizedMessage ?: "Failed to add/update coach")
         }
     }
 
-    override suspend fun getCoachTrainings(coach: Coach): Resource<List<Training>> {
-        TODO("Not yet implemented")
+    override suspend fun getAllCoachs(): Resource<List<Coach>> {
+        return try {
+            val querySnapshot = fireStore.collection(COACHES_COLLECTION)
+                .get()
+                .await()
+
+            val coachs = querySnapshot.documents.mapNotNull { document ->
+                document.toObject(Coach::class.java)?.copy(uid = document.id)
+            }
+            Resource.Success(coachs)
+        } catch (e: Exception) {
+            Resource.Error(e.localizedMessage ?: "Failed to load coachs")
+        }
     }
+
 }

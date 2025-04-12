@@ -5,7 +5,7 @@ import com.example.disputer.authentication.data.AuthUser
 import com.example.disputer.authentication.domain.utils.CurrentUserLiveDataWrapper
 import com.example.disputer.authentication.presentation.login.LoginScreen
 import com.example.disputer.core.Navigation
-import com.example.disputer.coach.presentation.CoachScreen
+import com.example.disputer.coach.presentation.list.CoachScreen
 import com.example.disputer.info.InfoScreen
 import com.example.disputer.training.presentation.training_parent.TrainingParentMainScreen
 import com.example.disputer.schedule.ScheduleScreen

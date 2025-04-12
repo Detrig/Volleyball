@@ -12,6 +12,7 @@
     android:padding="4dp"
     android:clickable="true"
     android:focusable="true"
+    android:duplicateParentState="true"
     android:foreground="?attr/selectableItemBackground"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"

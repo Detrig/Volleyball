@@ -14,7 +14,7 @@
     android:padding="24dp">
 
     <ImageView
-        android:id="@+id/childAvatar"
+        android:id="@+id/childImage"
         android:layout_width="48dp"
         android:layout_height="48dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -29,7 +29,7 @@
         tools:text="Алексей Иванов"
         android:textColor="@color/black"
         android:textSize="16sp"
-        app:layout_constraintStart_toEndOf="@+id/childAvatar"
+        app:layout_constraintStart_toEndOf="@+id/childImage"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView

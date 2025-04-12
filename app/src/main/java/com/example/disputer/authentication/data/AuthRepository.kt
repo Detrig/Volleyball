@@ -2,7 +2,7 @@ package com.example.disputer.authentication.data
 
 import android.util.Patterns
 import com.example.disputer.coach.data.Coach
-import com.example.disputer.parents.data.Parent
+import com.example.disputer.parent.data.Parent
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.CancellationException

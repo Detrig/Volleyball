@@ -6,7 +6,8 @@ import com.example.disputer.core.Resource
 
 interface ChildrenDataSource {
     suspend fun getChildrenById(childrenId: String) : Resource<Student>
-    suspend fun addChildren(children: Student) : Resource<Unit>
+    //suspend fun addChildren(children: Student) : Resource<Unit>
     suspend fun getChildrenTrainings(children: Student) : Resource<List<Training>>
-    //suspend fun getChildrenCoachs(children: Student) : Resource<List<Coach>>
+    suspend fun addChildren(parentId: String, child: Student): Resource<Pair<String, Unit>>
+    suspend fun deleteChildren(children: Student) : Resource<Student>
 }

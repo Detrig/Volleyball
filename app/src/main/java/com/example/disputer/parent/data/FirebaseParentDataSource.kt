@@ -13,7 +13,6 @@ class FirebaseParentDataSource(
     private companion object {
         const val PARENTS_COLLECTION = "parent"
         const val STUDENTS_COLLECTION = "student"
-        const val TRAININGS_COLLECTION = "training"
     }
 
     override suspend fun getParent(id: String): Resource<Parent> {
@@ -111,4 +110,6 @@ class FirebaseParentDataSource(
             Resource.Error(e.localizedMessage ?: "Failed to load parent's children")
         }
     }
+
+
 }

@@ -1,4 +1,4 @@
-package com.example.disputer.schedule
+package com.example.disputer.schedule.presentation
 
 import com.example.disputer.core.Screen
 

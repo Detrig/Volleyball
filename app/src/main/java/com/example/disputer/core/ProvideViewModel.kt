@@ -22,7 +22,13 @@ import com.example.disputer.authentication.presentation.main.MainViewModel
 import com.example.disputer.authentication.presentation.register.RegisterViewModel
 import com.example.disputer.children.data.ChildrenRepositoryImpl
 import com.example.disputer.children.data.FirebaseChildrenDataSource
+import com.example.disputer.children.domain.usecases.AddChildrenUseCase
+import com.example.disputer.children.domain.usecases.DeleteChildrenUseCase
+import com.example.disputer.children.domain.usecases.GetChildrenByIdUseCase
+import com.example.disputer.children.domain.usecases.GetChildrenTrainings
+import com.example.disputer.children.domain.utils.AddChildrenUiStateLiveDataWrapper
 import com.example.disputer.children.domain.utils.ClickedChildrenLiveDataWrapper
+import com.example.disputer.children.presentation.add.AddChildrenViewModel
 import com.example.disputer.children.presentation.list.ChildrenViewModel
 import com.example.disputer.coach.data.CoachRepositoryImpl
 import com.example.disputer.coach.data.FirebaseCoachDataSource
@@ -33,13 +39,15 @@ import com.example.disputer.coach.domain.utils.CoachListLiveDataWrapper
 import com.example.disputer.coach.presentation.edit_profile.EditCoachProfileViewModel
 import com.example.disputer.coach.presentation.list.CoachListViewModel
 import com.example.disputer.coach.presentation.profile.CoachInfoViewModel
-import com.example.disputer.coach.presentation.profile.CoachProfileInfoFragment
-import com.example.disputer.coach.presentation.profile.CoachProfileInfoScreen
 import com.example.disputer.info.InfoViewModel
 import com.example.disputer.parent.data.FirebaseParentDataSource
+import com.example.disputer.parent.data.ParentRepositoryImpl
+import com.example.disputer.parent.domain.usecase.UpdateParentUseCase
+import com.example.disputer.parent.domain.utils.ParentChildsListLiveDataWrapper
+import com.example.disputer.parent.presentation.edit_profile.EditParentProfileViewModel
 import com.example.disputer.training.presentation.training_parent.TrainingParentMainViewModel
 import com.example.disputer.training.domain.repository.utils.TrainingsLiveDataWrapper
-import com.example.disputer.schedule.ScheduleViewModel
+import com.example.disputer.schedule.presentation.ScheduleViewModel
 import com.example.disputer.shop.data.FirebaseShopDataSource
 import com.example.disputer.shop.data.ShopRepositoryImpl
 import com.example.disputer.shop.domain.usecase.AddShopUseCase
@@ -49,9 +57,10 @@ import com.example.disputer.shop.domain.utils.AddShopUiStateLiveDataWrapper
 import com.example.disputer.shop.presentation.ShopViewModel
 import com.example.disputer.training.data.FirebaseTrainingDataSource
 import com.example.disputer.training.data.TrainingRepositoryImpl
-import com.example.disputer.training.domain.repository.AddTrainingUiStateLiveDataWrapper
+import com.example.disputer.training.domain.repository.utils.AddTrainingUiStateLiveDataWrapper
 import com.example.disputer.shop.domain.utils.ShopsLiveDataWrapper
 import com.example.disputer.training.domain.repository.utils.ClickedTrainingLiveDataWrapper
+import com.example.disputer.training.domain.repository.utils.FutureTrainingListLiveDataWrapper
 import com.example.disputer.training.domain.repository.utils.SignedUpForTrainingChildrensLiveDataWrapper
 import com.example.disputer.training.presentation.training_coach.TrainingCoachViewModel
 import com.example.disputer.training.presentation.training_sign_up.TrainingSignUpViewModel
@@ -106,6 +115,9 @@ interface ProvideViewModel {
 
         //Parent
         private val parentDataSource = FirebaseParentDataSource(fireBaseFirestore)
+        private val parentRepository = ParentRepositoryImpl(parentDataSource)
+        private val updateParentUseCase = UpdateParentUseCase(parentRepository)
+        private val parentChildsListLiveDataWrapper = ParentChildsListLiveDataWrapper.Base()
 
         //Get role of current user
         private val currentUserDataSource =
@@ -119,6 +131,7 @@ interface ProvideViewModel {
         private val trainingsRepository = TrainingRepositoryImpl(trainingDataSource)
         private val trainingsLiveDataWrapper = TrainingsLiveDataWrapper.Base()
         private val clickedTrainingLiveDataWrapper = ClickedTrainingLiveDataWrapper.Base()
+        private val futureTrainingListLiveDataWrapper = FutureTrainingListLiveDataWrapper.Base()
         private val addTrainingUiStateLiveDataWrapper = AddTrainingUiStateLiveDataWrapper.Base()
 
         //Shop
@@ -135,7 +148,12 @@ interface ProvideViewModel {
         //Children
         private val childrenDataSource = FirebaseChildrenDataSource(fireBaseFirestore)
         private val childrenRepository = ChildrenRepositoryImpl(childrenDataSource)
+        private val getChildrenByIdUseCase = GetChildrenByIdUseCase(childrenRepository)
+        private val addChildrenUseCase = AddChildrenUseCase(childrenRepository)
+        private val deleteChildrenUseCase = DeleteChildrenUseCase(childrenRepository)
+        private val getChildrenTrainings = GetChildrenTrainings(childrenRepository)
         private val clickedChildrenLiveDataWrapper = ClickedChildrenLiveDataWrapper.Base()
+        private val addChildrenUiStateLiveDataWrapper = AddChildrenUiStateLiveDataWrapper.Base()
         private val signedUpForTrainingChildrensLiveDataWrapper =
             SignedUpForTrainingChildrensLiveDataWrapper.Base()
 
@@ -170,9 +188,11 @@ interface ProvideViewModel {
 
                 TrainingParentMainViewModel::class.java -> TrainingParentMainViewModel(
                     navigation,
-                    trainingsRepository,
                     shopRepository,
-                    trainingsLiveDataWrapper,
+                    getChildrenByIdUseCase,
+                    getChildrenTrainings,
+                    currentUserLiveDataWrapper,
+                    futureTrainingListLiveDataWrapper,
                     shopsLiveDataWrapper,
                     clickedTrainingLiveDataWrapper,
                     viewModelScope
@@ -180,6 +200,8 @@ interface ProvideViewModel {
 
                 ScheduleViewModel::class.java -> ScheduleViewModel(
                     trainingsRepository,
+                    currentUserLiveDataWrapper,
+                    trainingsLiveDataWrapper,
                     viewModelScope
                 )
 
@@ -205,8 +227,9 @@ interface ProvideViewModel {
                 )
 
                 TrainingSignUpViewModel::class.java -> TrainingSignUpViewModel(
-                    childrenRepository,
                     trainingsRepository,
+                    getChildrenByIdUseCase,
+                    getChildrenTrainings,
                     currentUserLiveDataWrapper,
                     clickedTrainingLiveDataWrapper,
                     signedUpForTrainingChildrensLiveDataWrapper,
@@ -243,6 +266,27 @@ interface ProvideViewModel {
                 ChildrenViewModel::class.java -> ChildrenViewModel(
                     navigation,
                     clickedChildrenLiveDataWrapper
+                )
+
+                AddChildrenViewModel::class.java -> AddChildrenViewModel(
+                    navigation,
+                    addChildrenUseCase,
+                    deleteChildrenUseCase,
+                    currentUserLiveDataWrapper,
+                    clickedChildrenLiveDataWrapper,
+                    parentChildsListLiveDataWrapper,
+                    addChildrenUiStateLiveDataWrapper,
+                    viewModelScope
+                )
+
+                EditParentProfileViewModel::class.java -> EditParentProfileViewModel(
+                    navigation,
+                    updateParentUseCase,
+                    getChildrenByIdUseCase,
+                    currentUserLiveDataWrapper,
+                    clickedChildrenLiveDataWrapper,
+                    parentChildsListLiveDataWrapper,
+                    viewModelScope
                 )
                 else -> throw IllegalStateException("unknown viewModelClass $viewModelClass")
             } as T

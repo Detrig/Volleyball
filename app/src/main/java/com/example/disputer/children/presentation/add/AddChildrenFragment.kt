@@ -3,6 +3,7 @@ package com.example.disputer.children.presentation.add
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,20 +19,22 @@ import java.util.UUID
 class AddChildrenFragment : AbstractFragment<FragmentAddChildrenBinding>() {
 
     private lateinit var viewModel: AddChildrenViewModel
-    private lateinit var currentChildren: Student
+    private var currentChildren = Student()
     private var selectedImageUri: Uri? = null
-    private val pickImageLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
-        uri?.let {
-            selectedImageUri = it
-            loadSelectedImage(it)
+    private val pickImageLauncher =
+        registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+            uri?.let {
+                selectedImageUri = it
+                loadSelectedImage(it)
+            }
         }
-    }
 
     override fun bind(
         inflater: LayoutInflater,
         container: ViewGroup?
     ): FragmentAddChildrenBinding =
         FragmentAddChildrenBinding.inflate(inflater, container, false)
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -47,13 +50,13 @@ class AddChildrenFragment : AbstractFragment<FragmentAddChildrenBinding>() {
 
     private fun setupViews() {
         currentChildren = viewModel.clickedChildrenLiveData().value ?: Student()
+        Log.d("VB-10", "clickedChildren: $currentChildren")
+        if (currentChildren.uid.isNotEmpty()) binding.deleteButton.visibility = View.VISIBLE
 
-        currentChildren.let { children ->
-            with(binding) {
-                nameEditText.setText(children.name)
-                ageEditText.setText(children.age)
-                phoneEditText.setText(children.phoneNumber)
-            }
+        with(binding) {
+            nameEditText.setText(currentChildren.name)
+            ageEditText.setText(currentChildren.age.toString())
+            phoneEditText.setText(currentChildren.phoneNumber)
         }
 
         binding.selectPhotoButton.setOnClickListener {
@@ -63,8 +66,11 @@ class AddChildrenFragment : AbstractFragment<FragmentAddChildrenBinding>() {
         binding.saveButton.setOnClickListener {
             saveChildWithPhoto()
         }
-    }
 
+        binding.deleteButton.setOnClickListener {
+            viewModel.deleteChildren(currentChildren)
+        }
+    }
 
     private fun loadSelectedImage(uri: Uri) {
         try {
@@ -76,7 +82,8 @@ class AddChildrenFragment : AbstractFragment<FragmentAddChildrenBinding>() {
             val compressedBitmap = ImageHelper.compressBitmap(bitmap, 800)
             binding.childPhotoImageView.setImageBitmap(compressedBitmap)
         } catch (e: Exception) {
-            Toast.makeText(requireContext(), "Ошибка загрузки изображения", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), "Ошибка загрузки изображения", Toast.LENGTH_SHORT)
+                .show()
         }
     }
 
@@ -86,7 +93,8 @@ class AddChildrenFragment : AbstractFragment<FragmentAddChildrenBinding>() {
         val phone = binding.phoneEditText.text.toString()
 
         if (name.isEmpty() || age <= 0) {
-            Toast.makeText(requireContext(), "Заполните обязательные поля", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), "Заполните обязательные поля", Toast.LENGTH_SHORT)
+                .show()
             return
         }
 
@@ -103,18 +111,29 @@ class AddChildrenFragment : AbstractFragment<FragmentAddChildrenBinding>() {
             }
         } ?: ""
 
+        var children = Student()
+        if (currentChildren.uid == "") {
+            children = Student(
+                name = name,
+                age = age,
+                phoneNumber = phone,
+                parentId = viewModel.getCurrentParentId(),
+                trainingIds = emptyList(),
+                photoBase64 = photoBase64
+            )
+        } else {
+            children = Student(
+                uid = currentChildren.uid,
+                name = name,
+                age = age,
+                phoneNumber = phone,
+                parentId = viewModel.getCurrentParentId(),
+                trainingIds = emptyList(),
+                photoBase64 = photoBase64
+            )
+        }
 
-        val student = Student(
-            uid = UUID.randomUUID().toString(),
-            name = name,
-            age = age,
-            phoneNumber = phone,
-            parentId = viewModel.getCurrentParentId(),
-            trainingIds = emptyList(),
-            photoBase64 = photoBase64
-        )
-
-        viewModel.addChild(student)
+        viewModel.addChild(children)
     }
 
     override fun onDestroy() {

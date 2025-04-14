@@ -6,10 +6,11 @@ import com.example.disputer.authentication.data.AuthUser
 import com.example.disputer.authentication.domain.utils.CurrentUserLiveDataWrapper
 import com.example.disputer.coach.data.Coach
 import com.example.disputer.core.Navigation
+import com.example.disputer.core.Screen
 import com.example.disputer.shop.domain.repo.ShopRepository
 import com.example.disputer.shop.presentation.AddShopScreen
 import com.example.disputer.training.data.Training
-import com.example.disputer.training.domain.repository.AddTrainingUiStateLiveDataWrapper
+import com.example.disputer.training.domain.repository.utils.AddTrainingUiStateLiveDataWrapper
 import com.example.disputer.training.domain.repository.TrainingsRepository
 import com.example.disputer.shop.domain.utils.ShopsLiveDataWrapper
 import com.example.disputer.training.domain.repository.utils.ClickedTrainingLiveDataWrapper
@@ -81,7 +82,7 @@ class TrainingCoachViewModel(
         viewModelScope.launch(dispatcherIO) {
             trainingsRepository.deleteTraining(training)
             withContext(dispatcherMain) {
-                navigation.update(TrainingCoachMainScreen)
+                navigation.update(Screen.Pop)
             }
         }
     }

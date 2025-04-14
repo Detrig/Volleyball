@@ -1,6 +1,7 @@
 package com.example.disputer.children.presentation.list
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -30,8 +31,8 @@ class ChildrenFragment : AbstractFragment<FragmentMyChildrensBinding>() {
 
     private fun initRcView() {
         childrenRcViewAdapter = ChildrenRcViewAdapter(object : ChildrenRcViewAdapter.OnChildrenClickListener {
-            override fun onClick(student: Student) {
-                viewModel.addChildrenScreen(student)
+            override fun onClick(children: Student) {
+                viewModel.addChildrenScreen(children)
             }
         })
         binding.childrenRcView.adapter = childrenRcViewAdapter

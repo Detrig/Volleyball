@@ -14,8 +14,7 @@
         android:paddingStart="16dp"
         android:paddingEnd="16dp">
 
-        <!-- Фото профиля -->
-        <ImageButton
+        <ImageView
             android:id="@+id/profileImage"
             android:layout_width="120dp"
             android:layout_height="120dp"
@@ -32,7 +31,7 @@
             android:layout_marginTop="8dp"
             android:background="@drawable/rounded_stroke"
             android:padding="16dp"
-            android:text="Изменить фото"
+            android:text="@string/edit_image"
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="@id/profileImage"
             app:layout_constraintStart_toStartOf="@id/profileImage"
@@ -66,7 +65,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
-            android:hint="Имя"
+            android:hint="@string/name"
             app:layout_constraintTop_toBottomOf="@id/emailInputLayout">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -84,7 +83,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:hint="Телефон"
+            android:hint="@string/phone_number"
             app:layout_constraintTop_toBottomOf="@id/nameInputLayout">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -102,7 +101,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:hint="Квалификация"
+            android:hint="@string/qualification"
             app:layout_constraintTop_toBottomOf="@id/phoneInputLayout">
 
             <com.google.android.material.textfield.TextInputEditText

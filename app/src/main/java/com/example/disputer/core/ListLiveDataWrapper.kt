@@ -1,18 +1,20 @@
 package com.example.disputer.core
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 
 interface ListLiveDataWrapper<T> {
     interface Read<T : Any> {
-        fun liveData() : LiveData<List<T>>
+        fun liveData(): LiveData<List<T>>
     }
 
     interface Update<T : Any> {
-        fun update(value : List<T>)
+        fun update(value: List<T>)
     }
 
     interface Add<T : Any> {
-        fun add(value : T)
+        fun add(value: T)
+        fun addAll(value: List<T>)
     }
 
     interface Mutable<T : Any> : Read<T>, Update<T>
@@ -21,7 +23,7 @@ interface ListLiveDataWrapper<T> {
 
 
     abstract class Abstract<T : Any>(
-        protected val liveData : SingleLiveEvent<List<T>> = SingleLiveEvent()
+        protected val liveData: SingleLiveEvent<List<T>> = SingleLiveEvent()
     ) : All<T> {
         override fun liveData(): LiveData<List<T>> = liveData
 
@@ -29,9 +31,16 @@ interface ListLiveDataWrapper<T> {
             liveData.value = value
         }
 
-        override fun add(value : T) {
-            val list = liveData.value?.let { ArrayList(it) }
-            list?.add(value)
+        override fun add(value: T) {
+            val list = ArrayList(liveData.value ?: emptyList())
+            list.add(value)
+            update(list)
+        }
+
+        override fun addAll(value: List<T>) {
+            val list = ArrayList(liveData.value ?: emptyList())
+            list.addAll(value)
+            update(list)
         }
     }
 

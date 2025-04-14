@@ -33,4 +33,10 @@
     <string name="partner_link">Ссылка на партнера</string>
     <string name="image_link">Ссылка на изображение</string>
     <string name="sign_up">Записаться</string>
+    <string name="name">Имя</string>
+    <string name="phone_number">Телефон</string>
+    <string name="qualification">Квалификация</string>
+    <string name="childrens">Дети:</string>
+    <string name="add_children">+ Добавить ребенка</string>
+    <string name="edit_image">Изменить фото</string>
 </resources>

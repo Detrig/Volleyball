@@ -1,5 +1,6 @@
 package com.example.disputer.children.presentation.list
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.example.disputer.children.data.Student
 import com.example.disputer.children.domain.utils.ClickedChildrenLiveDataWrapper

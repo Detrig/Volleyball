@@ -5,6 +5,8 @@ import com.example.disputer.authentication.data.AuthUser
 import com.example.disputer.authentication.domain.utils.CurrentUserLiveDataWrapper
 import com.example.disputer.children.data.Student
 import com.example.disputer.children.domain.repo.ChildrenRepository
+import com.example.disputer.children.domain.usecases.GetChildrenByIdUseCase
+import com.example.disputer.children.domain.usecases.GetChildrenTrainings
 import com.example.disputer.training.domain.repository.TrainingsRepository
 import com.example.disputer.training.domain.repository.utils.ClickedTrainingLiveDataWrapper
 import com.example.disputer.training.domain.repository.utils.SignedUpForTrainingChildrensLiveDataWrapper
@@ -15,8 +17,9 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class TrainingSignUpViewModel(
-    private val childrenRepository: ChildrenRepository,
     private val trainingRepository: TrainingsRepository,
+    private val getChildrenByIdUseCase: GetChildrenByIdUseCase,
+    private val getChildrenTrainings: GetChildrenTrainings,
     private val currentUserLiveDataWrapper: CurrentUserLiveDataWrapper,
     private val clickedTrainingLiveDataWrapper: ClickedTrainingLiveDataWrapper,
     private val signedUpForTrainingChildrensLiveDataWrapper: SignedUpForTrainingChildrensLiveDataWrapper,
@@ -33,7 +36,7 @@ class TrainingSignUpViewModel(
             currentUser?.let {
                 if (currentUser is AuthUser.ParentUser)
                     currentUser.parent.childIds.forEach { id ->
-                        childrenList.add(childrenRepository.getChildrenById(id).data!!)
+                        childrenList.add(getChildrenByIdUseCase.invoke(id).data!!)
                     }
             }
 

@@ -70,13 +70,13 @@ class TrainingParentMainFragment : AbstractFragment<FragmentTrainingParentMainBi
             shopAdapter.update(ArrayList(it))
         }
 
-        viewModel.trainingsLiveData().value?.let {
+        viewModel.futureTrainingsLiveData().value?.let {
             trainingAdapter.update(ArrayList(it))
         }
     }
 
     private fun observeTrainingAndShop() {
-        viewModel.trainingsLiveData().observe(viewLifecycleOwner) { trainings ->
+        viewModel.futureTrainingsLiveData().observe(viewLifecycleOwner) { trainings ->
             trainings?.let {
                 trainingAdapter.update(ArrayList(trainings))
             }

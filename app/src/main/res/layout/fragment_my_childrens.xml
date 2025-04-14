@@ -4,20 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     android:orientation="vertical"
     android:padding="16dp">
-
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/addChildButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:text="Добавить ребенка"
-        android:background="@drawable/rounded_bg"
-        android:fontFamily="@font/onest_medium"
-        android:textColor="@color/white"
-        app:iconGravity="textStart"
-        app:iconPadding="8dp"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/childrenRcView"
@@ -27,4 +16,15 @@
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:listitem="@layout/child_rc_view_item"/>
 
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/addChildButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:text="Добавить ребенка"
+        android:background="@drawable/rounded_bg"
+        android:fontFamily="@font/onest_bold"
+        android:textColor="@color/white"
+        app:iconGravity="textStart"
+        app:iconPadding="8dp"/>
 </LinearLayout>

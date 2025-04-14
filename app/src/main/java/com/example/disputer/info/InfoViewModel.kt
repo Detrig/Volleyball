@@ -9,6 +9,7 @@ import com.example.disputer.children.presentation.add.AddChildrenScreen
 import com.example.disputer.children.presentation.list.ChildrensScreen
 import com.example.disputer.coach.presentation.edit_profile.EditCoachProfileScreen
 import com.example.disputer.core.Navigation
+import com.example.disputer.parent.presentation.edit_profile.EditParentProfileScreen
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -25,6 +26,7 @@ class InfoViewModel(
 ) : ViewModel() {
 
     fun editCoachProfileScreen() = navigation.update(EditCoachProfileScreen)
+    fun editParentProfileScreen() = navigation.update(EditParentProfileScreen)
     fun childrensScreen() = navigation.update(ChildrensScreen)
 
     fun currentUser() = currentUserLiveDataWrapper.liveData().value

@@ -8,7 +8,7 @@ import com.example.disputer.core.Navigation
 import com.example.disputer.coach.presentation.list.CoachScreen
 import com.example.disputer.info.InfoScreen
 import com.example.disputer.training.presentation.training_parent.TrainingParentMainScreen
-import com.example.disputer.schedule.ScheduleScreen
+import com.example.disputer.schedule.presentation.ScheduleScreen
 import com.example.disputer.training.presentation.training_coach.main.TrainingCoachMainScreen
 
 class MainViewModel(

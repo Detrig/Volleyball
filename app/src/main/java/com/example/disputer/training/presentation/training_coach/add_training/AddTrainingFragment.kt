@@ -103,7 +103,6 @@ class AddTrainingFragment : AbstractFragment<FragmentAddTrainingBinding>() {
     }
 
     private fun setupAddressSelection() {
-        // Получаем адреса тренера
         val addresses = viewModel.getCoachAddresses()
 
         // Если есть сохраненные адреса, показываем выпадающий список
@@ -131,7 +130,6 @@ class AddTrainingFragment : AbstractFragment<FragmentAddTrainingBinding>() {
             }
         }
     }
-
 
     private fun showDeleteConfirmationDialog() {
         AlertDialog.Builder(requireContext())

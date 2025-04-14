@@ -1,11 +1,11 @@
 package com.example.disputer.children.presentation.list
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.example.disputer.R
 import com.example.disputer.children.data.Student
 import com.example.disputer.core.ImageHelper
@@ -47,6 +47,8 @@ class ChildrenRcViewAdapter(private val listener : OnChildrenClickListener) : Re
     fun update(newList : ArrayList<Student>) {
         val diffUtil = DiffUtilCallBack(list, newList)
         val diff = DiffUtil.calculateDiff(diffUtil)
+
+        Log.d("VB-07", "childs rcView: $newList")
 
         list.clear()
         list.addAll(newList)

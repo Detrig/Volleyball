@@ -13,11 +13,21 @@ class ChildrenRepositoryImpl(
         childrenDataSource.getChildrenById(childrenId)
 
 
-    override suspend fun addChildren(children: Student): Resource<Unit> =
-        childrenDataSource.addChildren(children)
+//    override suspend fun addChildren(children: Student): Resource<Unit> =
+//        childrenDataSource.addChildren(children)
 
 
     override suspend fun getChildrenTrainings(children: Student): Resource<List<Training>> =
         childrenDataSource.getChildrenTrainings(children)
+
+    override suspend fun addChildren(
+        parentId: String,
+        child: Student
+    ): Resource<Pair<String, Unit>> =
+        childrenDataSource.addChildren(parentId, child)
+
+    override suspend fun deleteChildren(children: Student): Resource<Student> =
+        childrenDataSource.deleteChildren(children)
+
 
 }

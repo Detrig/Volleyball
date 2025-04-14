@@ -31,6 +31,7 @@ class InfoFragment : AbstractFragment<FragmentInformationBinding>() {
 
     private fun setUpViews(currentUser : AuthUser?) {
         Log.d("VB-06", "SetUpViews ${currentUser.toString()}")
+
         if (currentUser is AuthUser.ParentUser) {
             val parent = currentUser.parent
             if (parent.name.isEmpty())
@@ -39,6 +40,7 @@ class InfoFragment : AbstractFragment<FragmentInformationBinding>() {
                 binding.userNameTV.text = parent.name
                 binding.phoneNumberTV.text = parent.phoneNumber
             }
+
         } else if (currentUser is AuthUser.CoachUser) {
             val coach = currentUser.coach
             if (coach.name.isEmpty())
@@ -63,6 +65,8 @@ class InfoFragment : AbstractFragment<FragmentInformationBinding>() {
             Log.d("VB-04", currentUser.toString())
             if (currentUser is AuthUser.CoachUser) {
                 viewModel.editCoachProfileScreen()
+            } else if (currentUser is AuthUser.ParentUser) {
+                viewModel.editParentProfileScreen()
             }
         }
     }

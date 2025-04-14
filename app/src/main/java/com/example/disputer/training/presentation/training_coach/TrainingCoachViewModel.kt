@@ -18,7 +18,6 @@ import com.example.disputer.training.presentation.training_coach.add_training.Ad
 import com.example.disputer.training.presentation.training_coach.add_training.AddTrainingUiState
 import com.example.disputer.training.presentation.training_coach.main.TrainingCoachMainScreen
 import com.example.disputer.training.domain.repository.utils.TrainingsLiveDataWrapper
-import com.example.disputer.training.presentation.training_parent.TrainingParentMainViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

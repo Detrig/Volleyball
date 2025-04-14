@@ -1,4 +1,4 @@
-package com.example.disputer.schedule
+package com.example.disputer.schedule.presentation
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -27,13 +27,17 @@ class ScheduleFragment : AbstractFragment<FragmentScheduleBinding>() {
         viewModel = (activity as ProvideViewModel).viewModel(ScheduleViewModel::class.java)
         
         initRcView()
-        adapter.update(ArrayList(viewModel.getAllTrainings()))
+
+        viewModel.getTrainings()
+        viewModel.futureTrainingsLiveData().observe(viewLifecycleOwner) {
+            adapter.update(ArrayList(it))
+        }
     }
 
     private fun initRcView() {
         adapter = TrainingsRecyclerViewAdapter(object : TrainingsRecyclerViewAdapter.OnTrainingClickListener {
             override fun onClick(training: Training) {
-                TODO("Not yet implemented")
+                viewModel.trainingSignUpScreen(training)
             }
         })
         binding.rcViewSchedule.adapter = adapter

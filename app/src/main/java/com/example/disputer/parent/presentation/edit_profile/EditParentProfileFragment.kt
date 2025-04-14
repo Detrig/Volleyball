@@ -23,6 +23,7 @@ class EditParentProfileFragment : AbstractFragment<FragmentEditParentProfileBind
     ): FragmentEditParentProfileBinding =
         FragmentEditParentProfileBinding.inflate(inflater, container, false)
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -45,20 +46,19 @@ class EditParentProfileFragment : AbstractFragment<FragmentEditParentProfileBind
             }
 
             //Update children live data
-            viewModel.getParentChilds(it.childIds)
-            viewModel.parentChildsListLiveDataWrapper().observe(viewLifecycleOwner) {
+            viewModel.getParentChilds(it.uid)
+            viewModel.parentChildsListLiveData().observe(viewLifecycleOwner) {
                 childrenAdapter.update(ArrayList(it))
             }
         }
 
         binding.saveButton.setOnClickListener {
-            currentParent = viewModel.getCurrentParent()
             val parent = Parent(
                 uid = viewModel.getCurrentParent()?.uid ?: "",
                 name = binding.nameEditText.text.toString(),
                 email = binding.emailEditText.text.toString(),
                 phoneNumber = binding.phoneEditText.text.toString(),
-                childIds =  currentParent?.childIds ?: listOf()
+                childIds =  viewModel.parentChildsListLiveData().value?.map { it.uid } ?: listOf()
             )
             viewModel.updateParent(parent)
         }

@@ -10,4 +10,5 @@ interface ParentDataSource {
     suspend fun updateParent(parent: Parent): Resource<Unit>
     suspend fun getParentsList(): Resource<List<Parent>>
     suspend fun getParentChildren(parentId: String): Resource<List<Student>>
+    suspend fun removeChildFromParent(parentId: String, childId: String): Resource<Unit>
 }

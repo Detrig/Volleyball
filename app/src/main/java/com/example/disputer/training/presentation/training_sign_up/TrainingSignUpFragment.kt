@@ -1,9 +1,11 @@
 package com.example.disputer.training.presentation.training_sign_up
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import com.example.disputer.children.presentation.ChildrenSingUpRcViewAdapter
 import com.example.disputer.core.AbstractFragment
 import com.example.disputer.core.ProvideViewModel
@@ -28,24 +30,39 @@ class TrainingSignUpFragment : AbstractFragment<FragmentSignUpTrainingBinding>()
         viewModel = (activity as ProvideViewModel).viewModel(TrainingSignUpViewModel::class.java)
 
         getCurrentTraining()
-        viewModel.loadChildren(currentTraining.id)
 
-        val alreadySignedUpIds = viewModel.signedUpForTrainingChildrensLiveData().value
-        alreadySignedUpIds?.let {
-            initRcView(alreadySignedUpIds.map { it.uid }.toSet())
-        }
+        initRcView()
+        setUpObservers()
+
+        viewModel.loadChildren(currentTraining.id)
 
         signUpListener()
     }
 
-    private fun initRcView(alreadySignedUpIds: Set<String>) {
+    private fun initRcView() {
         childrenRcViewAdapter = ChildrenSingUpRcViewAdapter(
             onSelectionChanged = { selectedChildren ->
                 binding.signUpButton.isEnabled = selectedChildren.isNotEmpty()
-            },
-            alreadySignedUpIds = alreadySignedUpIds
+            }
         )
         binding.childrenRecyclerView.adapter = childrenRcViewAdapter
+    }
+
+    private fun setUpObservers() {
+        viewModel.currentParentChildrenListLiveData().observe(viewLifecycleOwner) { allChildren ->
+//            val signedUpChildren = viewModel.signedUpForTrainingChildrensLiveData().value ?: emptySet()
+//            val signedUpIds = signedUpChildren.map { it.uid }.toSet()
+            childrenRcViewAdapter.update(allChildren)
+        }
+
+        viewModel.signedUpForTrainingChildrensLiveData().observe(viewLifecycleOwner) { signedUpChildren ->
+            val allChildren = viewModel.currentParentChildrenListLiveData().value ?: emptyList()
+            childrenRcViewAdapter.update(allChildren, signedUpChildren.map { it.uid}.toSet())
+        }
+
+        viewModel.signUpMessageLiveData.observe(viewLifecycleOwner) { message ->
+            Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun signUpListener() {
@@ -58,8 +75,8 @@ class TrainingSignUpFragment : AbstractFragment<FragmentSignUpTrainingBinding>()
     }
 
     private fun getCurrentTraining() {
-        currentTraining = viewModel.clickedTrainingLiveData().value ?: Training()
-
+        currentTraining = viewModel.clickedTrainingToSignUpLiveData().value ?: Training()
+        Log.d("VB-12", "clickedTrainingSignUp: $currentTraining")
         currentTraining.let { training ->
             with(binding) {
                 titleTextView.text = training.title

@@ -2,6 +2,7 @@ package com.example.disputer.training.data
 
 import android.util.Log
 import androidx.lifecycle.LiveData
+import com.example.disputer.children.data.Student
 import com.example.disputer.core.Resource
 import com.example.disputer.training.domain.repository.TrainingDataSource
 import com.google.firebase.firestore.FirebaseFirestore
@@ -18,6 +19,7 @@ class FirebaseTrainingDataSource(
 
     private companion object {
         const val TRAININGS_COLLECTION = "training"
+        const val STUDENTS_COLLECTION = "student"
         const val DATE_FIELD = "date"
 
         val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
@@ -52,28 +54,54 @@ class FirebaseTrainingDataSource(
         }
     }
 
-    //Sign up
     override suspend fun signUpForTraining(
         trainingId: String,
         childIds: List<String>
     ): Resource<Unit> {
         return try {
             val trainingRef = firestore.collection(TRAININGS_COLLECTION).document(trainingId)
+            val studentsRef = firestore.collection(STUDENTS_COLLECTION)
 
             firestore.runTransaction { transaction ->
-                val training = transaction.get(trainingRef).toObject(Training::class.java)
-                    ?: throw Exception("Training not found")
+                // 1. Сначала выполняем все чтения
 
+                // Получаем тренировку
+                val training = transaction.get(trainingRef).toObject(Training::class.java)
+                    ?: throw Exception("Занятие не найдено")
+
+                // Проверяем, есть ли еще места
+                if (training.studentIdsList.size + childIds.size > training.maxPersonCount) {
+                    throw Exception("Записано максимальное количество человек")
+                }
+
+                // Получаем всех студентов
+                val students = childIds.map { studentId ->
+                    val studentRef = studentsRef.document(studentId)
+                    transaction.get(studentRef).toObject(Student::class.java)
+                        ?: throw Exception("Студент $studentId не найден")
+                }
+
+                // 2. Затем выполняем все записи
+
+                // Обновляем список студентов в тренировке
                 val updatedStudentIds = training.studentIdsList.toMutableSet().apply {
                     addAll(childIds)
                 }
-
                 transaction.update(trainingRef, "studentIdsList", updatedStudentIds.toList())
+
+                // Обновляем список тренировок у каждого студента
+                students.forEach { student ->
+                    val studentRef = studentsRef.document(student.uid)
+                    val updatedTrainingIds = student.trainingIds.toMutableSet().apply {
+                        add(trainingId)
+                    }
+                    transaction.update(studentRef, "trainingIds", updatedTrainingIds.toList())
+                }
             }.await()
 
             Resource.Success(Unit)
         } catch (e: Exception) {
-            Resource.Error(e.localizedMessage ?: "Failed to sign up for training")
+            Resource.Error(e.localizedMessage ?: "Не удалось записаться на занятие: ${e.message}")
         }
     }
 

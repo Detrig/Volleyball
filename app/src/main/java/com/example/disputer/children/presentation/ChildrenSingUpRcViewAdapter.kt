@@ -12,7 +12,7 @@ import com.example.disputer.databinding.ChildPickRcViewItemBinding
 
 class ChildrenSingUpRcViewAdapter(
     private val onSelectionChanged: (Set<Student>) -> Unit,
-    private val alreadySignedUpIds: Set<String> = emptySet()
+    private var alreadySignedUpIds: Set<String> = emptySet()
 ) : RecyclerView.Adapter<ChildrenSingUpRcViewAdapter.ViewHolder>() {
 
     private val list: ArrayList<Student> = arrayListOf()
@@ -37,7 +37,7 @@ class ChildrenSingUpRcViewAdapter(
                 root.isEnabled = false
             } else {
                 childCheckBox.isEnabled = true
-                childNameTextView.setTextColor(Color.BLACK)
+                childNameTextView.setTextColor(Color.WHITE)
                 root.isEnabled = true
             }
 
@@ -55,12 +55,16 @@ class ChildrenSingUpRcViewAdapter(
         }
     }
 
-    fun update(newList: List<Student>, signedUpIds: Set<String> = emptySet()) {
+    fun update(newList: List<Student>, signedUp: Set<String> = emptySet()) {
         val diffUtil = DiffUtilCallBack(list, newList)
         val diff = DiffUtil.calculateDiff(diffUtil)
 
         list.clear()
         list.addAll(newList)
+
+//        selectedChildren.clear() // Сброс выбора (если нужно)
+        alreadySignedUpIds = signedUp
+
         diff.dispatchUpdatesTo(this)
     }
 

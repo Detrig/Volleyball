@@ -11,6 +11,7 @@ import com.example.disputer.children.presentation.add.AddChildrenScreen
 import com.example.disputer.core.Navigation
 import com.example.disputer.info.InfoScreen
 import com.example.disputer.parent.data.Parent
+import com.example.disputer.parent.domain.usecase.GetParentChildrensUseCase
 import com.example.disputer.parent.domain.usecase.UpdateParentUseCase
 import com.example.disputer.parent.domain.utils.ParentChildsListLiveDataWrapper
 import kotlinx.coroutines.CoroutineDispatcher
@@ -23,6 +24,7 @@ class EditParentProfileViewModel(
     private val navigation: Navigation,
     private val updateParentUseCase: UpdateParentUseCase,
     private val getChildrenByIdUseCase: GetChildrenByIdUseCase,
+    private val getParentChildrensUseCase: GetParentChildrensUseCase,
     private val currentUserLiveDataWrapper: CurrentUserLiveDataWrapper,
     private val clickedChildrenLiveDataWrapper: ClickedChildrenLiveDataWrapper,
     private val parentChildsListLiveDataWrapper: ParentChildsListLiveDataWrapper,
@@ -31,8 +33,8 @@ class EditParentProfileViewModel(
     private val dispatcherIo: CoroutineDispatcher = Dispatchers.IO
 ) : ViewModel() {
 
-    fun parentChildsListLiveDataWrapper() = parentChildsListLiveDataWrapper.liveData()
-    fun clickedChildrenLiveDataWrapper() = clickedChildrenLiveDataWrapper.liveData()
+    fun parentChildsListLiveData() = parentChildsListLiveDataWrapper.liveData()
+    fun clickedChildrenLiveData() = clickedChildrenLiveDataWrapper.liveData()
     fun clearClickedChildrenLiveData() = clickedChildrenLiveDataWrapper.update(Student())
 
     fun getCurrentParent() : Parent? {
@@ -54,14 +56,12 @@ class EditParentProfileViewModel(
         }
     }
 
-    fun getParentChilds(childIds: List<String>) {
+    fun getParentChilds(parentId: String) {
         viewModelScope.launch(dispatcherIo) {
-            val children = childIds.mapNotNull {
-                getChildrenByIdUseCase.invoke(it).data
-            }
+            val childrens = getParentChildrensUseCase.invoke(parentId).data ?: listOf()
+            Log.d("VB-11", "EditParentProfileViewModel childs: $childrens")
             withContext(dispatcherMain) {
-                parentChildsListLiveDataWrapper.update(children)
-                Log.d("VB-09", "EditParentProfileViewModel childs: $children")
+                parentChildsListLiveDataWrapper.update(childrens)
             }
         }
     }

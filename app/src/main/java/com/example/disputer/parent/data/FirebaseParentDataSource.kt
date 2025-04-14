@@ -111,5 +111,28 @@ class FirebaseParentDataSource(
         }
     }
 
+    override suspend fun removeChildFromParent(parentId: String, childId: String): Resource<Unit> {
+        return try {
+            val parentDocRef = fireStore.collection(PARENTS_COLLECTION).document(parentId)
+            val document = parentDocRef.get().await()
 
+            if (!document.exists()) {
+                return Resource.Error("Parent not found")
+            }
+
+            val parent = document.toObject(Parent::class.java)
+                ?: return Resource.Error("Failed to parse parent data")
+
+            val updatedChildIds = parent.childIds.toMutableList().apply {
+                remove(childId)
+            }
+
+            val updatedParent = parent.copy(uid = document.id, childIds = updatedChildIds)
+            parentDocRef.set(updatedParent).await()
+
+            Resource.Success(Unit)
+        } catch (e: Exception) {
+            Resource.Error(e.localizedMessage ?: "Failed to remove child from parent")
+        }
+    }
 }

@@ -24,9 +24,9 @@ class ParentRepositoryImpl(
 
     override suspend fun updateParent(parent: Parent) = dataSource.updateParent(parent)
 
-    override suspend fun getParentChildren(parentId: String): Resource<List<Student>> {
-        TODO("Not yet implemented")
-    }
+    override suspend fun getParentChildren(parentId: String): Resource<List<Student>> =
+        dataSource.getParentChildren(parentId)
+
 
 //        // Сложные методы могут комбинировать данные
 //        override suspend fun getParentChildren(parentId: String): Resource<List<Student>> {
@@ -43,4 +43,11 @@ class ParentRepositoryImpl(
     override suspend fun getParentTrainings(parentId: String): Resource<List<Training>> {
         TODO("Not yet impelemnted")
     }
+
+    override suspend fun removeChildFromParent(
+        parentId: String,
+        childId: String
+    ): Resource<Unit> =
+        dataSource.removeChildFromParent(parentId, childId)
+
 }

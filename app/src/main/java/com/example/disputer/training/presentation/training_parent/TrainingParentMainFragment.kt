@@ -34,6 +34,7 @@ class TrainingParentMainFragment : AbstractFragment<FragmentTrainingParentMainBi
         viewModel = (activity as ProvideViewModel).viewModel(TrainingParentMainViewModel::class.java)
         initRcView()
 
+        viewModel.getYourChildrenTrainings()
         loadRcViewLists()
         observeTrainingAndShop()
     }
@@ -70,13 +71,13 @@ class TrainingParentMainFragment : AbstractFragment<FragmentTrainingParentMainBi
             shopAdapter.update(ArrayList(it))
         }
 
-        viewModel.futureTrainingsLiveData().value?.let {
+        viewModel.yourChildrenTrainingsLiveData().value?.let {
             trainingAdapter.update(ArrayList(it))
         }
     }
 
     private fun observeTrainingAndShop() {
-        viewModel.futureTrainingsLiveData().observe(viewLifecycleOwner) { trainings ->
+        viewModel.yourChildrenTrainingsLiveData().observe(viewLifecycleOwner) { trainings ->
             trainings?.let {
                 trainingAdapter.update(ArrayList(trainings))
             }

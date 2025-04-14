@@ -5,7 +5,6 @@ import androidx.lifecycle.ViewModel
 import com.example.disputer.authentication.data.AuthUser
 import com.example.disputer.authentication.domain.utils.CurrentUserLiveDataWrapper
 import com.example.disputer.children.data.Student
-import com.example.disputer.children.domain.repo.ChildrenRepository
 import com.example.disputer.children.domain.usecases.AddChildrenUseCase
 import com.example.disputer.children.domain.usecases.DeleteChildrenUseCase
 import com.example.disputer.children.domain.utils.AddChildrenUiStateLiveDataWrapper
@@ -14,7 +13,10 @@ import com.example.disputer.core.Navigation
 import com.example.disputer.core.Resource
 import com.example.disputer.core.Screen
 import com.example.disputer.parent.data.Parent
+import com.example.disputer.parent.domain.usecase.DeleteChildrenFromParentUseCase
+import com.example.disputer.parent.domain.usecase.GetParentChildrensUseCase
 import com.example.disputer.parent.domain.utils.ParentChildsListLiveDataWrapper
+import com.example.disputer.parent.presentation.edit_profile.EditParentProfileScreen
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -25,9 +27,10 @@ class AddChildrenViewModel(
     private val navigation: Navigation,
     private val addChildrenUseCase: AddChildrenUseCase,
     private val deleteChildrenUseCase: DeleteChildrenUseCase,
+    private val deleteChildrenFromParentUseCase: DeleteChildrenFromParentUseCase,
     private val currentUserLiveDataWrapper: CurrentUserLiveDataWrapper,
-    private val clickedChildrenLiveDataWrapper: ClickedChildrenLiveDataWrapper,
     private val parentChildsListLiveDataWrapper: ParentChildsListLiveDataWrapper,
+    private val clickedChildrenLiveDataWrapper: ClickedChildrenLiveDataWrapper,
     private val addChildrenUiStateLiveDataWrapper: AddChildrenUiStateLiveDataWrapper,
     private val viewModelScope: CoroutineScope,
     private val dispatcherMain: CoroutineDispatcher = Dispatchers.Main,
@@ -42,12 +45,7 @@ class AddChildrenViewModel(
                 val result = addChildrenUseCase.invoke(it.uid, children)
                 withContext(dispatcherMain) {
                     if (result is Resource.Success) {
-                        val newUid = result.data?.first ?: children.uid
-                        val studentWithRealUid = children.copy(uid = newUid)
-
-                        parentChildsListLiveDataWrapper.add(studentWithRealUid)
-                        addChildrenToCurrentParent(studentWithRealUid)
-                        navigation.update(Screen.Pop)
+                        navigation.update(EditParentProfileScreen)
                     } else if (result is Resource.Error)
                         addChildrenUiStateLiveDataWrapper.update(AddChildrenUiState.Error(result.message!!))
                 }
@@ -57,8 +55,9 @@ class AddChildrenViewModel(
 
     fun clickedChildrenLiveData() = clickedChildrenLiveDataWrapper.liveData()
     fun clearClickedChildrenLiveData() = clickedChildrenLiveDataWrapper.update(Student())
-
     fun addChildrenUiStateLiveData() = addChildrenUiStateLiveDataWrapper.liveData()
+    fun parentChildsListLiveData() = parentChildsListLiveDataWrapper.liveData()
+
 
     fun getCurrentParent(): Parent? {
         val user = currentUserLiveDataWrapper.liveData().value
@@ -81,22 +80,19 @@ class AddChildrenViewModel(
         addChildrenUiStateLiveDataWrapper.update(AddChildrenUiState.Loading)
         viewModelScope.launch(dispatcherIO) {
             deleteChildrenUseCase.invoke(children)
+            deleteChildrenFromParentUseCase.invoke(getCurrentParentId(), children.uid)
             withContext(dispatcherMain) {
-                val childs = parentChildsListLiveDataWrapper.liveData().value?.toMutableList() ?: mutableListOf()
-                childs.remove(children)
-                Log.d("VB-10", "new childs: $childs")
-                parentChildsListLiveDataWrapper.update(childs)
                 navigation.update(Screen.Pop)
             }
         }
     }
 
-    private fun addChildrenToCurrentParent(child: Student) {
-        val oldChildIds = getCurrentParent()?.childIds ?: listOf()
-        val newChildIds = oldChildIds.toMutableList().apply { add(child.uid) }
-
-        val parentWithNewList = getCurrentParent()?.copy(childIds = newChildIds) ?: Parent()
-        Log.d("VB-09", "child: $child parentWithNewList $parentWithNewList")
-        currentUserLiveDataWrapper.update(AuthUser.ParentUser(parentWithNewList))
-    }
+//    private fun addChildrenToCurrentParent(child: Student) {
+//        val oldChildIds = getCurrentParent()?.childIds ?: listOf()
+//        val newChildIds = oldChildIds.toMutableList().apply { add(child.uid) }
+//
+//        val parentWithNewList = getCurrentParent()?.copy(childIds = newChildIds) ?: Parent()
+//        Log.d("VB-09", "child: $child parentWithNewList $parentWithNewList")
+//        currentUserLiveDataWrapper.update(AuthUser.ParentUser(parentWithNewList))
+//    }
 }

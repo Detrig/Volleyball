@@ -66,7 +66,9 @@ import com.example.disputer.shop.domain.utils.ShopsLiveDataWrapper
 import com.example.disputer.training.domain.repository.utils.ClickedTrainingLiveDataWrapper
 import com.example.disputer.training.domain.repository.utils.FutureTrainingListLiveDataWrapper
 import com.example.disputer.training.domain.repository.utils.SignedUpForTrainingChildrensByParentLiveDataWrapper
+import com.example.disputer.training.domain.repository.utils.YourChildrenFutureTrainingLiveLiveDataWrapper
 import com.example.disputer.training.domain.repository.utils.YourChildrenTrainingLiveLiveDataWrapper
+import com.example.disputer.training.presentation.all_my_training_parent_list.MyAllTrainingParentViewModel
 import com.example.disputer.training.presentation.training_coach.TrainingCoachViewModel
 import com.example.disputer.training.presentation.training_sign_up.TrainingSignUpViewModel
 import com.google.firebase.auth.ktx.auth
@@ -143,6 +145,8 @@ interface ProvideViewModel {
         private val addTrainingUiStateLiveDataWrapper = AddTrainingUiStateLiveDataWrapper.Base()
         private val yourChildrenTrainingsLiveDataWrapper =
             YourChildrenTrainingLiveLiveDataWrapper.Base()
+        private val yourChildrenFutureTrainingsLiveDataWrapper =
+            YourChildrenFutureTrainingLiveLiveDataWrapper.Base()
         private val clickedTrainingToSignUpLiveDataWrapper =
             ClickedTrainingToSignUpLiveDataWrapper.Base()
 
@@ -206,7 +210,7 @@ interface ProvideViewModel {
                     getChildrenByIdUseCase,
                     getChildrenTrainings,
                     currentUserLiveDataWrapper,
-                    yourChildrenTrainingsLiveDataWrapper,
+                    yourChildrenFutureTrainingsLiveDataWrapper,
                     shopsLiveDataWrapper,
                     clickedTrainingLiveDataWrapper,
                     viewModelScope
@@ -308,6 +312,14 @@ interface ProvideViewModel {
                     currentUserLiveDataWrapper,
                     clickedChildrenLiveDataWrapper,
                     parentChildsListLiveDataWrapper,
+                    viewModelScope
+                )
+
+                MyAllTrainingParentViewModel::class.java -> MyAllTrainingParentViewModel(
+                    getChildrenByIdUseCase,
+                    getChildrenTrainings,
+                    currentUserLiveDataWrapper,
+                    yourChildrenTrainingsLiveDataWrapper,
                     viewModelScope
                 )
 

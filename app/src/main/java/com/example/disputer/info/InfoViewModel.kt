@@ -10,6 +10,7 @@ import com.example.disputer.children.presentation.list.ChildrensScreen
 import com.example.disputer.coach.presentation.edit_profile.EditCoachProfileScreen
 import com.example.disputer.core.Navigation
 import com.example.disputer.parent.presentation.edit_profile.EditParentProfileScreen
+import com.example.disputer.training.presentation.all_my_training_parent_list.MyAllTrainingParentScreen
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -41,4 +42,6 @@ class InfoViewModel(
             }
         }
     }
+
+    fun myAllTrainingParentScreen() = navigation.update(MyAllTrainingParentScreen)
 }

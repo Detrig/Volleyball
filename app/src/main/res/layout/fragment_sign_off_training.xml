@@ -5,8 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    android:focusable="true"
-    android:fillViewport="true">
+    android:fillViewport="true"
+    android:focusable="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -26,18 +26,18 @@
             <TextView
                 android:id="@+id/titleTextView"
                 style="@style/InfoTextViewStyle"
-                android:textSize="20sp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textAlignment="center"
+                android:textSize="20sp"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <!-- Описание тренировки -->
             <TextView
                 android:id="@+id/descriptionTextView"
+                style="@style/InfoTextViewStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                style="@style/InfoTextViewStyle"
                 android:layout_marginTop="16dp"
                 android:textSize="16sp"
                 app:layout_constraintTop_toBottomOf="@+id/titleTextView" />
@@ -55,9 +55,9 @@
                 <!-- Дата -->
                 <TextView
                     android:id="@+id/dateTextView"
+                    style="@style/InfoTextViewStyle"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    style="@style/InfoTextViewStyle"
                     android:layout_weight="1"
                     android:textSize="16sp"
                     android:textStyle="bold" />
@@ -65,9 +65,9 @@
                 <!-- Время -->
                 <TextView
                     android:id="@+id/timeTextView"
+                    style="@style/InfoTextViewStyle"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    style="@style/InfoTextViewStyle"
                     android:layout_weight="1"
                     android:textSize="16sp"
                     android:textStyle="bold" />
@@ -76,9 +76,9 @@
             <!-- Адрес -->
             <TextView
                 android:id="@+id/addressTextView"
+                style="@style/InfoTextViewStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                style="@style/InfoTextViewStyle"
                 android:layout_marginTop="16dp"
                 android:textSize="16sp"
                 app:layout_constraintTop_toBottomOf="@+id/dateTimeLayout" />
@@ -86,9 +86,9 @@
             <!-- Доп. информация об адресе -->
             <TextView
                 android:id="@+id/addressInfoTextView"
+                style="@style/InfoTextViewStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                style="@style/InfoTextViewStyle"
                 android:layout_marginTop="8dp"
                 android:textSize="14sp"
                 app:layout_constraintTop_toBottomOf="@+id/addressTextView" />
@@ -103,31 +103,57 @@
                 android:weightSum="2"
                 app:layout_constraintTop_toBottomOf="@+id/addressInfoTextView">
 
-                <!-- Группа -->
-                <TextView
-                    android:id="@+id/groupTextView"
+                <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    style="@style/InfoTextViewStyle"
-                    android:layout_weight="1"
-                    android:textSize="16sp" />
+                    android:layout_weight="0.7"
+                    android:orientation="horizontal">
+                    <!-- Группа -->
+                    <TextView
+                        style="@style/InfoTextViewStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Группа:" />
 
-                <!-- Год рождения -->
-                <TextView
-                    android:id="@+id/birthYearTextView"
+                    <TextView
+                        android:id="@+id/groupTextView"
+                        style="@style/InfoTextViewStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:textSize="16sp"
+                        tools:text="1" />
+                </LinearLayout>
+
+                <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    style="@style/InfoTextViewStyle"
-                    android:layout_weight="1"
-                    android:textSize="16sp" />
+                    android:layout_weight="1.3">
+                    <!-- Год рождения -->
+
+                    <TextView
+                        style="@style/InfoTextViewStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Год рождения:" />
+
+                    <TextView
+                        android:id="@+id/birthYearTextView"
+                        style="@style/InfoTextViewStyle"
+                        android:layout_width="0dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textSize="16sp" />
+                </LinearLayout>
             </LinearLayout>
 
             <!-- Тренер -->
             <TextView
                 android:id="@+id/coachTextView"
+                style="@style/InfoTextViewStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                style="@style/InfoTextViewStyle"
                 android:layout_marginTop="16dp"
                 android:textSize="16sp"
                 app:layout_constraintTop_toBottomOf="@+id/groupBirthLayout" />
@@ -135,9 +161,9 @@
             <!-- Количество участников -->
             <TextView
                 android:id="@+id/participantsCountTextView"
+                style="@style/InfoTextViewStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                style="@style/InfoTextViewStyle"
                 android:layout_marginTop="16dp"
                 android:textSize="16sp"
                 app:layout_constraintTop_toBottomOf="@+id/coachTextView" />
@@ -145,12 +171,12 @@
             <!-- Выбор детей -->
             <TextView
                 android:id="@+id/selectChildrenLabel"
+                style="@style/InfoTextViewStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
-                style="@style/InfoTextViewStyle"
-                android:textSize="18sp"
                 android:text="Записанные дети"
+                android:textSize="18sp"
                 android:textStyle="bold"
                 app:layout_constraintTop_toBottomOf="@+id/participantsCountTextView" />
 
@@ -160,23 +186,23 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 android:minHeight="100dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintTop_toBottomOf="@+id/selectChildrenLabel" />
 
             <!-- Кнопка записи -->
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/signOffButton"
-                android:background="@drawable/rounded_bg"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="16dp"
-                android:textColor="@color/white"
-                android:fontFamily="@font/onest_bold"
                 android:layout_marginStart="32dp"
                 android:layout_marginTop="24dp"
                 android:layout_marginEnd="32dp"
+                android:background="@drawable/rounded_bg"
+                android:fontFamily="@font/onest_bold"
+                android:padding="16dp"
                 android:text="Отписаться от тренировки"
+                android:textColor="@color/white"
                 app:layout_constraintTop_toBottomOf="@+id/childrenRecyclerView" />
 
             <!-- Статус записи -->

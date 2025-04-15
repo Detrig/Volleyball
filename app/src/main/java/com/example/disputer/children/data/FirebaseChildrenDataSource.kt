@@ -4,6 +4,7 @@ import com.example.disputer.children.domain.repo.ChildrenDataSource
 import com.example.disputer.training.data.Training
 import com.example.disputer.core.Resource
 import com.example.disputer.parent.data.Parent
+import com.google.firebase.firestore.FieldPath
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
 
@@ -65,7 +66,7 @@ class FirebaseChildrenDataSource(
             }
 
             val trainings = fireStore.collection(TRAININGS_COLLECTION)
-                .whereIn("id", children.trainingIds)
+                .whereIn(FieldPath.documentId(), children.trainingIds)
                 .get()
                 .await()
                 .documents

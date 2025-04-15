@@ -218,7 +218,40 @@
                         android:layout_height="wrap_content"
                         android:inputType="number" />
                 </com.google.android.material.textfield.TextInputLayout>
+
             </LinearLayout>
+
+            <TextView
+                android:id="@+id/signedUpChildrenCountLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/onest_bold"
+                android:text="Записано: "
+                android:layout_marginTop="8dp"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="@+id/groupBirthLayout"
+                app:layout_constraintTop_toBottomOf="@+id/groupBirthLayout" />
+
+            <TextView
+                android:id="@+id/signedUpChildrenTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/onest_medium"
+                android:textSize="16sp"
+                android:layout_marginStart="8dp"
+                app:layout_constraintBottom_toBottomOf="@+id/signedUpChildrenCountLabel"
+                app:layout_constraintStart_toEndOf="@+id/signedUpChildrenCountLabel"
+                app:layout_constraintTop_toTopOf="@+id/signedUpChildrenCountLabel"
+                tools:text="15/30" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/signedUpChildrensRcView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:minHeight="50dp"
+                app:layout_constraintTop_toBottomOf="@+id/signedUpChildrenCountLabel"
+                tools:layout_editor_absoluteX="16dp" />
 
             <!-- Кнопка сохранения -->
             <com.google.android.material.button.MaterialButton
@@ -230,7 +263,8 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="32dp"
                 android:text="@string/save"
-                app:layout_constraintTop_toBottomOf="@+id/groupBirthLayout" />
+                app:layout_constraintTop_toBottomOf="@+id/signedUpChildrensRcView" />
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

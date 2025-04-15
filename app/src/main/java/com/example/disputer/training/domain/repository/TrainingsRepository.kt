@@ -1,6 +1,7 @@
 package com.example.disputer.training.domain.repository
 
 import androidx.lifecycle.LiveData
+import com.example.disputer.children.data.Student
 import com.example.disputer.core.Resource
 import com.example.disputer.training.data.Training
 
@@ -13,4 +14,9 @@ interface TrainingsRepository {
     fun observeTrainingsLiveData() : LiveData<Resource<List<Training>>>
 
     suspend fun signUpForTraining(trainingId: String, childIds: List<String>) : Resource<Unit>
+    suspend fun signOffTraining(
+        trainingId: String,
+        childIds: List<String>
+    ): Resource<Unit>
+    suspend fun getChildrensSignedUpForTraining(trainingId: String) : Resource<List<Student>>
 }

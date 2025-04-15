@@ -3,6 +3,7 @@ package com.example.disputer.training.presentation.training_parent
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -31,7 +32,8 @@ class TrainingParentMainFragment : AbstractFragment<FragmentTrainingParentMainBi
         super.onViewCreated(view, savedInstanceState)
         (requireActivity() as MainActivity).showHeaderBottomNav()
 
-        viewModel = (activity as ProvideViewModel).viewModel(TrainingParentMainViewModel::class.java)
+        viewModel =
+            (activity as ProvideViewModel).viewModel(TrainingParentMainViewModel::class.java)
         initRcView()
 
         viewModel.getYourChildrenTrainings()
@@ -62,7 +64,11 @@ class TrainingParentMainFragment : AbstractFragment<FragmentTrainingParentMainBi
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
             startActivity(intent)
         } catch (e: Exception) {
-            Toast.makeText(requireContext(), "Ошибка при открытии ссылки: ${e.message}", Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                requireContext(),
+                "Ошибка при открытии ссылки: ${e.message}",
+                Toast.LENGTH_SHORT
+            ).show()
         }
     }
 
@@ -78,9 +84,9 @@ class TrainingParentMainFragment : AbstractFragment<FragmentTrainingParentMainBi
 
     private fun observeTrainingAndShop() {
         viewModel.yourChildrenTrainingsLiveData().observe(viewLifecycleOwner) { trainings ->
-            trainings?.let {
-                trainingAdapter.update(ArrayList(trainings))
-            }
+            Log.d("VB-19", "myChildrenTrainings: ${trainings.map { it.id} }")
+            trainingAdapter.update(ArrayList(trainings))
+
         }
 
         viewModel.shopsLiveData().observe(viewLifecycleOwner) { shops ->

@@ -65,7 +65,7 @@ import com.example.disputer.training.domain.repository.utils.AddTrainingUiStateL
 import com.example.disputer.shop.domain.utils.ShopsLiveDataWrapper
 import com.example.disputer.training.domain.repository.utils.ClickedTrainingLiveDataWrapper
 import com.example.disputer.training.domain.repository.utils.FutureTrainingListLiveDataWrapper
-import com.example.disputer.training.domain.repository.utils.SignedUpForTrainingChildrensLiveDataWrapper
+import com.example.disputer.training.domain.repository.utils.SignedUpForTrainingChildrensByParentLiveDataWrapper
 import com.example.disputer.training.domain.repository.utils.YourChildrenTrainingLiveLiveDataWrapper
 import com.example.disputer.training.presentation.training_coach.TrainingCoachViewModel
 import com.example.disputer.training.presentation.training_sign_up.TrainingSignUpViewModel
@@ -168,8 +168,8 @@ interface ProvideViewModel {
         private val currentParentChildrenListLiveDataWrapper =
             CurrentParentChildrenListLiveDataWrapper.Base()
         private val addChildrenUiStateLiveDataWrapper = AddChildrenUiStateLiveDataWrapper.Base()
-        private val signedUpForTrainingChildrensLiveDataWrapper =
-            SignedUpForTrainingChildrensLiveDataWrapper.Base()
+        private val signedUpForTrainingChildrensByParentLiveDataWrapper =
+            SignedUpForTrainingChildrensByParentLiveDataWrapper.Base()
 
         override fun <T : ViewModel> viewModel(viewModelClass: Class<T>): T {
             return when (viewModelClass) {
@@ -217,11 +217,13 @@ interface ProvideViewModel {
                     trainingsRepository,
                     currentUserLiveDataWrapper,
                     futureTrainingListLiveDataWrapper,
-                    clickedTrainingToSignUpLiveDataWrapper,
+                    clickedTrainingLiveDataWrapper,
+                    //clickedTrainingToSignUpLiveDataWrapper,
                     viewModelScope
                 )
 
                 TrainingCoachViewModel::class.java -> TrainingCoachViewModel(
+                    navigation,
                     trainingsRepository,
                     shopRepository,
                     trainingsLiveDataWrapper,
@@ -229,7 +231,7 @@ interface ProvideViewModel {
                     currentUserLiveDataWrapper,
                     addTrainingUiStateLiveDataWrapper,
                     clickedTrainingLiveDataWrapper,
-                    navigation,
+                    signedUpForTrainingChildrensByParentLiveDataWrapper,
                     viewModelScope
                 )
 
@@ -248,8 +250,9 @@ interface ProvideViewModel {
                     getParentChildrensUseCase,
                     currentUserLiveDataWrapper,
                     currentParentChildrenListLiveDataWrapper,
-                    clickedTrainingToSignUpLiveDataWrapper,
-                    signedUpForTrainingChildrensLiveDataWrapper,
+                    clickedTrainingLiveDataWrapper,
+                    //clickedTrainingToSignUpLiveDataWrapper,
+                    signedUpForTrainingChildrensByParentLiveDataWrapper,
                     viewModelScope
                 )
 

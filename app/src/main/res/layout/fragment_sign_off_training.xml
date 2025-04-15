@@ -150,7 +150,7 @@
                 android:layout_marginTop="24dp"
                 style="@style/InfoTextViewStyle"
                 android:textSize="18sp"
-                android:text="Выберите детей для записи"
+                android:text="Записанные дети"
                 android:textStyle="bold"
                 app:layout_constraintTop_toBottomOf="@+id/participantsCountTextView" />
 
@@ -166,7 +166,7 @@
 
             <!-- Кнопка записи -->
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/signUpButton"
+                android:id="@+id/signOffButton"
                 android:background="@drawable/rounded_bg"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -176,7 +176,7 @@
                 android:layout_marginStart="32dp"
                 android:layout_marginTop="24dp"
                 android:layout_marginEnd="32dp"
-                android:text="Записать выбранных детей"
+                android:text="Отписаться от тренировки"
                 app:layout_constraintTop_toBottomOf="@+id/childrenRecyclerView" />
 
             <!-- Статус записи -->

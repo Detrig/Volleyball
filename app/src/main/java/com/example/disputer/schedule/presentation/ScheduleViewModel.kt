@@ -8,6 +8,7 @@ import com.example.disputer.parent.data.Parent
 import com.example.disputer.schedule.domain.ClickedTrainingToSignUpLiveDataWrapper
 import com.example.disputer.training.data.Training
 import com.example.disputer.training.domain.repository.TrainingsRepository
+import com.example.disputer.training.domain.repository.utils.ClickedTrainingLiveDataWrapper
 import com.example.disputer.training.domain.repository.utils.FutureTrainingListLiveDataWrapper
 import com.example.disputer.training.presentation.training_sign_up.TrainingSignUpScreen
 import kotlinx.coroutines.CoroutineDispatcher
@@ -21,7 +22,8 @@ class ScheduleViewModel(
     private val trainingsRepository: TrainingsRepository,
     private val currentUserLiveDataWrapper: CurrentUserLiveDataWrapper,
     private val futureTrainingListLiveDataWrapper: FutureTrainingListLiveDataWrapper,
-    private val clickedTrainingToSignUpLiveDataWrapper: ClickedTrainingToSignUpLiveDataWrapper,
+    //private val clickedTrainingToSignUpLiveDataWrapper: ClickedTrainingToSignUpLiveDataWrapper,
+    private val clickedTrainingLiveDataWrapper: ClickedTrainingLiveDataWrapper,
     private val viewModelScope: CoroutineScope,
     private val dispatcherMain: CoroutineDispatcher = Dispatchers.Main,
     private val dispatcherIO: CoroutineDispatcher = Dispatchers.IO
@@ -61,7 +63,8 @@ class ScheduleViewModel(
     }
 
     fun trainingSignUpScreen(training: Training) {
-        clickedTrainingToSignUpLiveDataWrapper.update(training)
+        //clickedTrainingToSignUpLiveDataWrapper.update(training)
+        clickedTrainingLiveDataWrapper.update(training)
         navigation.update(TrainingSignUpScreen)
     }
 

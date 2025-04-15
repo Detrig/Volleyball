@@ -1,6 +1,7 @@
 package com.example.disputer.training.data
 
 import androidx.lifecycle.LiveData
+import com.example.disputer.children.data.Student
 import com.example.disputer.core.Resource
 import com.example.disputer.training.domain.repository.TrainingDataSource
 import com.example.disputer.training.domain.repository.TrainingsRepository
@@ -36,5 +37,16 @@ class TrainingRepositoryImpl(
         childIds: List<String>
     ): Resource<Unit> =
         dataSource.signUpForTraining(trainingId, childIds)
+
+    override suspend fun signOffTraining(
+        trainingId: String,
+        childIds: List<String>
+    ): Resource<Unit> =
+        dataSource.signOffTraining(trainingId, childIds)
+
+
+    override suspend fun getChildrensSignedUpForTraining(trainingId: String): Resource<List<Student>> =
+        dataSource.getChildrensSignedUpForTraining(trainingId)
+
 
 }

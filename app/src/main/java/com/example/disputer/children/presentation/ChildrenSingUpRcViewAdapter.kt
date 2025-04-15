@@ -1,6 +1,7 @@
 package com.example.disputer.children.presentation
 
 import android.graphics.Color
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -61,9 +62,10 @@ class ChildrenSingUpRcViewAdapter(
 
         list.clear()
         list.addAll(newList)
-
-//        selectedChildren.clear() // Сброс выбора (если нужно)
+        
         alreadySignedUpIds = signedUp
+        selectedChildren.clear()
+        selectedChildren.addAll(signedUp)
 
         diff.dispatchUpdatesTo(this)
     }

@@ -1,6 +1,5 @@
 package com.example.disputer.training.presentation.training_parent
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.example.disputer.authentication.data.AuthUser
 import com.example.disputer.authentication.domain.utils.CurrentUserLiveDataWrapper
@@ -12,13 +11,17 @@ import com.example.disputer.shop.domain.repo.ShopRepository
 import com.example.disputer.shop.domain.utils.ShopsLiveDataWrapper
 import com.example.disputer.training.data.Training
 import com.example.disputer.training.domain.repository.utils.ClickedTrainingLiveDataWrapper
-import com.example.disputer.training.domain.repository.utils.YourChildrenTrainingLiveLiveDataWrapper
+import com.example.disputer.training.domain.repository.utils.YourChildrenFutureTrainingLiveLiveDataWrapper
+import com.example.disputer.training.presentation.all_my_training_parent_list.MyAllTrainingParentScreen
 import com.example.disputer.training.presentation.training_sign_off.TrainingSignOffScreen
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 open class TrainingParentMainViewModel(
     private val navigation: Navigation,
@@ -26,13 +29,16 @@ open class TrainingParentMainViewModel(
     private val getChildrenByIdUseCase: GetChildrenByIdUseCase,
     private val getChildrenTrainings: GetChildrenTrainings,
     private val currentUserLiveDataWrapper: CurrentUserLiveDataWrapper,
-    private val yourChildrenTrainingLiveLiveDataWrapper: YourChildrenTrainingLiveLiveDataWrapper,
+    private val yourChildrenFutureTrainingLiveLiveDataWrapper: YourChildrenFutureTrainingLiveLiveDataWrapper,
     private val shopsLiveDataWrapper: ShopsLiveDataWrapper,
     private val clickedTrainingLiveDataWrapper: ClickedTrainingLiveDataWrapper,
     private val viewModelScope: CoroutineScope,
     private val dispatcherMain: CoroutineDispatcher = Dispatchers.Main,
     private val dispatcherIO: CoroutineDispatcher = Dispatchers.IO,
 ) : ViewModel() {
+
+    val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+    val currentDate = sdf.format(Date())
 
     init {
         viewModelScope.launch(dispatcherIO) {
@@ -47,7 +53,7 @@ open class TrainingParentMainViewModel(
         observeShops()
     }
 
-    fun getYourChildrenTrainings() {
+    fun getYourChildrenFutureTrainings() {
         viewModelScope.launch(dispatcherIO) {
             val currentParent = getCurrentParent() ?: Parent()
             val allTrainings = mutableSetOf<Training>()
@@ -55,11 +61,11 @@ open class TrainingParentMainViewModel(
                 val children = getChildrenByIdUseCase.invoke(childId).data
                 children?.let {
                     val trainings = getChildrenTrainings.invoke(it).data ?: emptyList()
-                    allTrainings.addAll(trainings)
+                    allTrainings.addAll(trainings.filter { it.date >= currentDate })
                 }
             }
             withContext(dispatcherMain) {
-                yourChildrenTrainingLiveLiveDataWrapper.update(allTrainings.toList())
+                yourChildrenFutureTrainingLiveLiveDataWrapper.update(allTrainings.toList())
             }
         }
     }
@@ -73,13 +79,14 @@ open class TrainingParentMainViewModel(
         return null
     }
 
-    fun yourChildrenTrainingsLiveData() = yourChildrenTrainingLiveLiveDataWrapper.liveData()
+    fun yourChildrenFutureTrainingsLiveData() = yourChildrenFutureTrainingLiveLiveDataWrapper.liveData()
     fun shopsLiveData() = shopsLiveDataWrapper.liveData()
 
     fun trainingDetailsScreen(training: Training) {
         clickedTrainingLiveDataWrapper.update(training)
         navigation.update(TrainingSignOffScreen)
     }
+
 
     fun observeShops() {
         shopRepository.observeShopsLiveData().observeForever {

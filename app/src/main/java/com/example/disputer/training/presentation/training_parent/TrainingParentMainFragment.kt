@@ -36,10 +36,11 @@ class TrainingParentMainFragment : AbstractFragment<FragmentTrainingParentMainBi
             (activity as ProvideViewModel).viewModel(TrainingParentMainViewModel::class.java)
         initRcView()
 
-        viewModel.getYourChildrenTrainings()
+        viewModel.getYourChildrenFutureTrainings()
         loadRcViewLists()
         observeTrainingAndShop()
     }
+
 
     private fun initRcView() {
         trainingAdapter = TrainingsRecyclerViewAdapter(object :
@@ -77,13 +78,13 @@ class TrainingParentMainFragment : AbstractFragment<FragmentTrainingParentMainBi
             shopAdapter.update(ArrayList(it))
         }
 
-        viewModel.yourChildrenTrainingsLiveData().value?.let {
+        viewModel.yourChildrenFutureTrainingsLiveData().value?.let {
             trainingAdapter.update(ArrayList(it))
         }
     }
 
     private fun observeTrainingAndShop() {
-        viewModel.yourChildrenTrainingsLiveData().observe(viewLifecycleOwner) { trainings ->
+        viewModel.yourChildrenFutureTrainingsLiveData().observe(viewLifecycleOwner) { trainings ->
             Log.d("VB-19", "myChildrenTrainings: ${trainings.map { it.id} }")
             trainingAdapter.update(ArrayList(trainings))
 

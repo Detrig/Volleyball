@@ -42,6 +42,8 @@ class InfoFragment : AbstractFragment<FragmentInformationBinding>() {
             }
 
         } else if (currentUser is AuthUser.CoachUser) {
+            binding.myChildrenButton.visibility = View.GONE
+            binding.myTrainingsButton.visibility = View.GONE
             val coach = currentUser.coach
             if (coach.name.isEmpty())
                 binding.userNameTV.text = coach.email
@@ -68,6 +70,10 @@ class InfoFragment : AbstractFragment<FragmentInformationBinding>() {
             } else if (currentUser is AuthUser.ParentUser) {
                 viewModel.editParentProfileScreen()
             }
+        }
+
+        binding.myTrainingsButton.setOnClickListener {
+            viewModel.myAllTrainingParentScreen()
         }
     }
 

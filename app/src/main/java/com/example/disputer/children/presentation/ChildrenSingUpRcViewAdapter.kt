@@ -1,6 +1,7 @@
 package com.example.disputer.children.presentation
 
 import android.graphics.Color
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,7 +13,7 @@ import com.example.disputer.databinding.ChildPickRcViewItemBinding
 
 class ChildrenSingUpRcViewAdapter(
     private val onSelectionChanged: (Set<Student>) -> Unit,
-    private val alreadySignedUpIds: Set<String> = emptySet()
+    private var alreadySignedUpIds: Set<String> = emptySet()
 ) : RecyclerView.Adapter<ChildrenSingUpRcViewAdapter.ViewHolder>() {
 
     private val list: ArrayList<Student> = arrayListOf()
@@ -37,7 +38,7 @@ class ChildrenSingUpRcViewAdapter(
                 root.isEnabled = false
             } else {
                 childCheckBox.isEnabled = true
-                childNameTextView.setTextColor(Color.BLACK)
+                childNameTextView.setTextColor(Color.WHITE)
                 root.isEnabled = true
             }
 
@@ -55,12 +56,17 @@ class ChildrenSingUpRcViewAdapter(
         }
     }
 
-    fun update(newList: List<Student>, signedUpIds: Set<String> = emptySet()) {
+    fun update(newList: List<Student>, signedUp: Set<String> = emptySet()) {
         val diffUtil = DiffUtilCallBack(list, newList)
         val diff = DiffUtil.calculateDiff(diffUtil)
 
         list.clear()
         list.addAll(newList)
+        
+        alreadySignedUpIds = signedUp
+        selectedChildren.clear()
+        selectedChildren.addAll(signedUp)
+
         diff.dispatchUpdatesTo(this)
     }
 

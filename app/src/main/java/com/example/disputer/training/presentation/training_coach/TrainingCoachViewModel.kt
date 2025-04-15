@@ -1,11 +1,14 @@
 package com.example.disputer.training.presentation.training_coach
 
 import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.disputer.authentication.data.AuthUser
 import com.example.disputer.authentication.domain.utils.CurrentUserLiveDataWrapper
 import com.example.disputer.coach.data.Coach
 import com.example.disputer.core.Navigation
+import com.example.disputer.core.Result
 import com.example.disputer.core.Screen
 import com.example.disputer.shop.domain.repo.ShopRepository
 import com.example.disputer.shop.presentation.AddShopScreen
@@ -14,11 +17,11 @@ import com.example.disputer.training.domain.repository.utils.AddTrainingUiStateL
 import com.example.disputer.training.domain.repository.TrainingsRepository
 import com.example.disputer.shop.domain.utils.ShopsLiveDataWrapper
 import com.example.disputer.training.domain.repository.utils.ClickedTrainingLiveDataWrapper
+import com.example.disputer.training.domain.repository.utils.SignedUpForTrainingChildrensByParentLiveDataWrapper
 import com.example.disputer.training.presentation.training_coach.add_training.AddTrainingScreen
 import com.example.disputer.training.presentation.training_coach.add_training.AddTrainingUiState
 import com.example.disputer.training.presentation.training_coach.main.TrainingCoachMainScreen
 import com.example.disputer.training.domain.repository.utils.TrainingsLiveDataWrapper
-import com.example.disputer.training.presentation.training_parent.TrainingParentMainViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -26,6 +29,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class TrainingCoachViewModel(
+    private val navigation: Navigation,
     private val trainingsRepository: TrainingsRepository,
     private val shopRepository: ShopRepository,
     private val trainingsLiveDataWrapper: TrainingsLiveDataWrapper,
@@ -33,7 +37,7 @@ class TrainingCoachViewModel(
     private val currentUserLiveDataWrapper: CurrentUserLiveDataWrapper,
     private val addTrainingUiStateLiveDataWrapper: AddTrainingUiStateLiveDataWrapper,
     private val clickedTrainingLiveDataWrapper: ClickedTrainingLiveDataWrapper,
-    private val navigation: Navigation,
+    private val signedUpForTrainingChildrensByParentLiveDataWrapper: SignedUpForTrainingChildrensByParentLiveDataWrapper,
     private val viewModelScope: CoroutineScope,
     private val dispatcherMain: CoroutineDispatcher = Dispatchers.Main,
     private val dispatcherIO: CoroutineDispatcher = Dispatchers.IO,
@@ -57,6 +61,16 @@ class TrainingCoachViewModel(
 
     fun getCoachAddresses(): List<String> {
         return currentCoach()?.address ?: emptyList()
+    }
+
+    fun getChildrenSignedUpForTraining(trainingId: String) {
+        viewModelScope.launch(dispatcherIO) {
+            val resultSignedUpChildrens = trainingsRepository.getChildrensSignedUpForTraining(trainingId).data ?: listOf()
+            Log.d("VB-14", "signed up childrens: $resultSignedUpChildrens, trainingId: $trainingId")
+            withContext(dispatcherMain) {
+                signedUpForTrainingChildrensByParentLiveDataWrapper.update(resultSignedUpChildrens)
+            }
+        }
     }
 
     private fun currentCoach(): Coach? {
@@ -106,6 +120,7 @@ class TrainingCoachViewModel(
     fun addTrainingUiStateLiveData() = addTrainingUiStateLiveDataWrapper.liveData()
     fun trainingsLiveData() = trainingsLiveDataWrapper.liveData()
     fun shopsLiveData() = shopsLiveDataWrapper.liveData()
+    fun signedUpForTrainingChildrensByParentLiveData() = signedUpForTrainingChildrensByParentLiveDataWrapper.liveData()
 
     fun clickedTrainingLiveData() = clickedTrainingLiveDataWrapper.liveData()
     fun clearClickedTrainingLiveData() = clickedTrainingLiveDataWrapper.update(Training())

@@ -12,4 +12,5 @@ interface ParentRepository {
     suspend fun getParentsList(): Resource<List<Parent>>
     suspend fun getParentChildren(parentId: String): Resource<List<Student>>
     suspend fun getParentTrainings(parentId: String): Resource<List<Training>>
+    suspend fun removeChildFromParent(parentId: String, childId: String): Resource<Unit>
 }

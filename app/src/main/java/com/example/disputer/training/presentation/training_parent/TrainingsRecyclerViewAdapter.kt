@@ -17,6 +17,7 @@ class TrainingsRecyclerViewAdapter(private val listener: OnTrainingClickListener
         private val binding = TrainingsRcViewItemBinding.bind(view)
 
         fun bind(training: Training, listener : OnTrainingClickListener) = with(binding) {
+            closableData.text = training.group + " группа " + training.birthYear + " гг."
             time.text = training.time
             date.text = training.date
             addressInfoTV.text = training.addressInfo

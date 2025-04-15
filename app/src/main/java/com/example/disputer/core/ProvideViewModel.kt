@@ -28,6 +28,7 @@ import com.example.disputer.children.domain.usecases.GetChildrenByIdUseCase
 import com.example.disputer.children.domain.usecases.GetChildrenTrainings
 import com.example.disputer.children.domain.utils.AddChildrenUiStateLiveDataWrapper
 import com.example.disputer.children.domain.utils.ClickedChildrenLiveDataWrapper
+import com.example.disputer.children.domain.utils.CurrentParentChildrenListLiveDataWrapper
 import com.example.disputer.children.presentation.add.AddChildrenViewModel
 import com.example.disputer.children.presentation.list.ChildrenViewModel
 import com.example.disputer.coach.data.CoachRepositoryImpl
@@ -42,9 +43,12 @@ import com.example.disputer.coach.presentation.profile.CoachInfoViewModel
 import com.example.disputer.info.InfoViewModel
 import com.example.disputer.parent.data.FirebaseParentDataSource
 import com.example.disputer.parent.data.ParentRepositoryImpl
+import com.example.disputer.parent.domain.usecase.DeleteChildrenFromParentUseCase
+import com.example.disputer.parent.domain.usecase.GetParentChildrensUseCase
 import com.example.disputer.parent.domain.usecase.UpdateParentUseCase
 import com.example.disputer.parent.domain.utils.ParentChildsListLiveDataWrapper
 import com.example.disputer.parent.presentation.edit_profile.EditParentProfileViewModel
+import com.example.disputer.schedule.domain.ClickedTrainingToSignUpLiveDataWrapper
 import com.example.disputer.training.presentation.training_parent.TrainingParentMainViewModel
 import com.example.disputer.training.domain.repository.utils.TrainingsLiveDataWrapper
 import com.example.disputer.schedule.presentation.ScheduleViewModel
@@ -61,7 +65,8 @@ import com.example.disputer.training.domain.repository.utils.AddTrainingUiStateL
 import com.example.disputer.shop.domain.utils.ShopsLiveDataWrapper
 import com.example.disputer.training.domain.repository.utils.ClickedTrainingLiveDataWrapper
 import com.example.disputer.training.domain.repository.utils.FutureTrainingListLiveDataWrapper
-import com.example.disputer.training.domain.repository.utils.SignedUpForTrainingChildrensLiveDataWrapper
+import com.example.disputer.training.domain.repository.utils.SignedUpForTrainingChildrensByParentLiveDataWrapper
+import com.example.disputer.training.domain.repository.utils.YourChildrenTrainingLiveLiveDataWrapper
 import com.example.disputer.training.presentation.training_coach.TrainingCoachViewModel
 import com.example.disputer.training.presentation.training_sign_up.TrainingSignUpViewModel
 import com.google.firebase.auth.ktx.auth
@@ -117,6 +122,9 @@ interface ProvideViewModel {
         private val parentDataSource = FirebaseParentDataSource(fireBaseFirestore)
         private val parentRepository = ParentRepositoryImpl(parentDataSource)
         private val updateParentUseCase = UpdateParentUseCase(parentRepository)
+        private val getParentChildrensUseCase = GetParentChildrensUseCase(parentRepository)
+        private val deleteChildrenFromParentUseCase =
+            DeleteChildrenFromParentUseCase(parentRepository)
         private val parentChildsListLiveDataWrapper = ParentChildsListLiveDataWrapper.Base()
 
         //Get role of current user
@@ -133,6 +141,10 @@ interface ProvideViewModel {
         private val clickedTrainingLiveDataWrapper = ClickedTrainingLiveDataWrapper.Base()
         private val futureTrainingListLiveDataWrapper = FutureTrainingListLiveDataWrapper.Base()
         private val addTrainingUiStateLiveDataWrapper = AddTrainingUiStateLiveDataWrapper.Base()
+        private val yourChildrenTrainingsLiveDataWrapper =
+            YourChildrenTrainingLiveLiveDataWrapper.Base()
+        private val clickedTrainingToSignUpLiveDataWrapper =
+            ClickedTrainingToSignUpLiveDataWrapper.Base()
 
         //Shop
         private val shopDataSource = FirebaseShopDataSource(fireBaseFirestore)
@@ -153,9 +165,11 @@ interface ProvideViewModel {
         private val deleteChildrenUseCase = DeleteChildrenUseCase(childrenRepository)
         private val getChildrenTrainings = GetChildrenTrainings(childrenRepository)
         private val clickedChildrenLiveDataWrapper = ClickedChildrenLiveDataWrapper.Base()
+        private val currentParentChildrenListLiveDataWrapper =
+            CurrentParentChildrenListLiveDataWrapper.Base()
         private val addChildrenUiStateLiveDataWrapper = AddChildrenUiStateLiveDataWrapper.Base()
-        private val signedUpForTrainingChildrensLiveDataWrapper =
-            SignedUpForTrainingChildrensLiveDataWrapper.Base()
+        private val signedUpForTrainingChildrensByParentLiveDataWrapper =
+            SignedUpForTrainingChildrensByParentLiveDataWrapper.Base()
 
         override fun <T : ViewModel> viewModel(viewModelClass: Class<T>): T {
             return when (viewModelClass) {
@@ -192,20 +206,24 @@ interface ProvideViewModel {
                     getChildrenByIdUseCase,
                     getChildrenTrainings,
                     currentUserLiveDataWrapper,
-                    futureTrainingListLiveDataWrapper,
+                    yourChildrenTrainingsLiveDataWrapper,
                     shopsLiveDataWrapper,
                     clickedTrainingLiveDataWrapper,
                     viewModelScope
                 )
 
                 ScheduleViewModel::class.java -> ScheduleViewModel(
+                    navigation,
                     trainingsRepository,
                     currentUserLiveDataWrapper,
-                    trainingsLiveDataWrapper,
+                    futureTrainingListLiveDataWrapper,
+                    clickedTrainingLiveDataWrapper,
+                    //clickedTrainingToSignUpLiveDataWrapper,
                     viewModelScope
                 )
 
                 TrainingCoachViewModel::class.java -> TrainingCoachViewModel(
+                    navigation,
                     trainingsRepository,
                     shopRepository,
                     trainingsLiveDataWrapper,
@@ -213,7 +231,7 @@ interface ProvideViewModel {
                     currentUserLiveDataWrapper,
                     addTrainingUiStateLiveDataWrapper,
                     clickedTrainingLiveDataWrapper,
-                    navigation,
+                    signedUpForTrainingChildrensByParentLiveDataWrapper,
                     viewModelScope
                 )
 
@@ -227,12 +245,14 @@ interface ProvideViewModel {
                 )
 
                 TrainingSignUpViewModel::class.java -> TrainingSignUpViewModel(
+                    navigation,
                     trainingsRepository,
-                    getChildrenByIdUseCase,
-                    getChildrenTrainings,
+                    getParentChildrensUseCase,
                     currentUserLiveDataWrapper,
+                    currentParentChildrenListLiveDataWrapper,
                     clickedTrainingLiveDataWrapper,
-                    signedUpForTrainingChildrensLiveDataWrapper,
+                    //clickedTrainingToSignUpLiveDataWrapper,
+                    signedUpForTrainingChildrensByParentLiveDataWrapper,
                     viewModelScope
                 )
 
@@ -272,9 +292,10 @@ interface ProvideViewModel {
                     navigation,
                     addChildrenUseCase,
                     deleteChildrenUseCase,
+                    deleteChildrenFromParentUseCase,
                     currentUserLiveDataWrapper,
-                    clickedChildrenLiveDataWrapper,
                     parentChildsListLiveDataWrapper,
+                    clickedChildrenLiveDataWrapper,
                     addChildrenUiStateLiveDataWrapper,
                     viewModelScope
                 )
@@ -283,11 +304,13 @@ interface ProvideViewModel {
                     navigation,
                     updateParentUseCase,
                     getChildrenByIdUseCase,
+                    getParentChildrensUseCase,
                     currentUserLiveDataWrapper,
                     clickedChildrenLiveDataWrapper,
                     parentChildsListLiveDataWrapper,
                     viewModelScope
                 )
+
                 else -> throw IllegalStateException("unknown viewModelClass $viewModelClass")
             } as T
 

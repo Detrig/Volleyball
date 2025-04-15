@@ -1,5 +1,6 @@
 package com.example.disputer.training.presentation.training_parent
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.example.disputer.authentication.data.AuthUser
 import com.example.disputer.authentication.domain.utils.CurrentUserLiveDataWrapper
@@ -8,13 +9,11 @@ import com.example.disputer.children.domain.usecases.GetChildrenTrainings
 import com.example.disputer.core.Navigation
 import com.example.disputer.parent.data.Parent
 import com.example.disputer.shop.domain.repo.ShopRepository
-import com.example.disputer.training.domain.repository.TrainingsRepository
 import com.example.disputer.shop.domain.utils.ShopsLiveDataWrapper
 import com.example.disputer.training.data.Training
 import com.example.disputer.training.domain.repository.utils.ClickedTrainingLiveDataWrapper
-import com.example.disputer.training.domain.repository.utils.FutureTrainingListLiveDataWrapper
-import com.example.disputer.training.domain.repository.utils.TrainingsLiveDataWrapper
-import com.example.disputer.training.presentation.training_sign_up.TrainingSignUpScreen
+import com.example.disputer.training.domain.repository.utils.YourChildrenTrainingLiveLiveDataWrapper
+import com.example.disputer.training.presentation.training_sign_off.TrainingSignOffScreen
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -27,7 +26,7 @@ open class TrainingParentMainViewModel(
     private val getChildrenByIdUseCase: GetChildrenByIdUseCase,
     private val getChildrenTrainings: GetChildrenTrainings,
     private val currentUserLiveDataWrapper: CurrentUserLiveDataWrapper,
-    private val futureTrainingsLiveDataWrapper: FutureTrainingListLiveDataWrapper,
+    private val yourChildrenTrainingLiveLiveDataWrapper: YourChildrenTrainingLiveLiveDataWrapper,
     private val shopsLiveDataWrapper: ShopsLiveDataWrapper,
     private val clickedTrainingLiveDataWrapper: ClickedTrainingLiveDataWrapper,
     private val viewModelScope: CoroutineScope,
@@ -39,32 +38,32 @@ open class TrainingParentMainViewModel(
         viewModelScope.launch(dispatcherIO) {
             val shopsList = shopRepository.getShops()
 
-            if (shopsList.data != null)
-                shopsLiveDataWrapper.update(shopsList.data)
-
+            withContext(dispatcherMain) {
+                if (shopsList.data != null)
+                    shopsLiveDataWrapper.update(shopsList.data)
+            }
         }
-
-        getYourChildrenTrainings()
+        //getYourChildrenTrainings()
         observeShops()
     }
 
     fun getYourChildrenTrainings() {
         viewModelScope.launch(dispatcherIO) {
             val currentParent = getCurrentParent() ?: Parent()
-
+            val allTrainings = mutableSetOf<Training>()
             currentParent.childIds.forEach { childId ->
                 val children = getChildrenByIdUseCase.invoke(childId).data
                 children?.let {
-                    val trainings = getChildrenTrainings.invoke(it).data
-                    trainings?.let {
-                        withContext(dispatcherMain) {
-                            futureTrainingsLiveDataWrapper.addAll(it)
-                        }
-                    }
+                    val trainings = getChildrenTrainings.invoke(it).data ?: emptyList()
+                    allTrainings.addAll(trainings)
                 }
+            }
+            withContext(dispatcherMain) {
+                yourChildrenTrainingLiveLiveDataWrapper.update(allTrainings.toList())
             }
         }
     }
+
 
     fun getCurrentParent(): Parent? {
         val user = currentUserLiveDataWrapper.liveData().value
@@ -74,12 +73,12 @@ open class TrainingParentMainViewModel(
         return null
     }
 
-    fun futureTrainingsLiveData() = futureTrainingsLiveDataWrapper.liveData()
+    fun yourChildrenTrainingsLiveData() = yourChildrenTrainingLiveLiveDataWrapper.liveData()
     fun shopsLiveData() = shopsLiveDataWrapper.liveData()
 
     fun trainingDetailsScreen(training: Training) {
         clickedTrainingLiveDataWrapper.update(training)
-        navigation.update(TrainingSignUpScreen)
+        navigation.update(TrainingSignOffScreen)
     }
 
     fun observeShops() {

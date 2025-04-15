@@ -4,11 +4,14 @@ import android.app.AlertDialog
 import android.app.TimePickerDialog
 import android.os.Bundle
 import android.text.InputType
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
+import com.example.disputer.children.data.Student
+import com.example.disputer.children.presentation.list.ChildrenRcViewAdapter
 import com.example.disputer.core.AbstractFragment
 import com.example.disputer.core.ProvideViewModel
 import com.example.disputer.databinding.FragmentAddTrainingBinding
@@ -24,6 +27,7 @@ class AddTrainingFragment : AbstractFragment<FragmentAddTrainingBinding>() {
 
     private lateinit var viewModel: TrainingCoachViewModel
     private lateinit var currentTraining: Training
+    private lateinit var childrenAdapter: ChildrenRcViewAdapter
 
     override fun bind(
         inflater: LayoutInflater,
@@ -35,9 +39,11 @@ class AddTrainingFragment : AbstractFragment<FragmentAddTrainingBinding>() {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel = (activity as ProvideViewModel).viewModel(TrainingCoachViewModel::class.java)
+        getCurrentTraining()
+        setUpRcView()
         dateAndTimePickers()
         setupAddressSelection()
-        getCurrentTraining()
+
 
         //Если id есть то обновялется существующее значение
         binding.saveButton.setOnClickListener {
@@ -100,6 +106,20 @@ class AddTrainingFragment : AbstractFragment<FragmentAddTrainingBinding>() {
                 maxPersonEditText.setText(training.maxPersonCount.toString())
             }
         }
+    }
+
+    private fun setUpRcView() {
+        viewModel.getChildrenSignedUpForTraining(currentTraining.id)
+        childrenAdapter = ChildrenRcViewAdapter(object : ChildrenRcViewAdapter.OnChildrenClickListener {
+            override fun onClick(student: Student) {}
+        })
+        binding.signedUpChildrensRcView.adapter = childrenAdapter
+
+        viewModel.signedUpForTrainingChildrensByParentLiveData().observe(viewLifecycleOwner) {
+            childrenAdapter.update(ArrayList(it))
+            binding.signedUpChildrenTV.text = "${it.size} / ${currentTraining.maxPersonCount}"
+        }
+
     }
 
     private fun setupAddressSelection() {

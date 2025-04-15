@@ -3,12 +3,14 @@ package com.example.disputer.schedule.presentation
 import androidx.lifecycle.ViewModel
 import com.example.disputer.authentication.data.AuthUser
 import com.example.disputer.authentication.domain.utils.CurrentUserLiveDataWrapper
-import com.example.disputer.children.domain.usecases.GetChildrenByIdUseCase
-import com.example.disputer.children.domain.usecases.GetChildrenTrainings
+import com.example.disputer.core.Navigation
 import com.example.disputer.parent.data.Parent
+import com.example.disputer.schedule.domain.ClickedTrainingToSignUpLiveDataWrapper
+import com.example.disputer.training.data.Training
 import com.example.disputer.training.domain.repository.TrainingsRepository
+import com.example.disputer.training.domain.repository.utils.ClickedTrainingLiveDataWrapper
 import com.example.disputer.training.domain.repository.utils.FutureTrainingListLiveDataWrapper
-import com.example.disputer.training.domain.repository.utils.TrainingsLiveDataWrapper
+import com.example.disputer.training.presentation.training_sign_up.TrainingSignUpScreen
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -16,9 +18,12 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class ScheduleViewModel(
+    private val navigation: Navigation,
     private val trainingsRepository: TrainingsRepository,
     private val currentUserLiveDataWrapper: CurrentUserLiveDataWrapper,
-    private val trainingsLiveDataWrapper: TrainingsLiveDataWrapper,
+    private val futureTrainingListLiveDataWrapper: FutureTrainingListLiveDataWrapper,
+    //private val clickedTrainingToSignUpLiveDataWrapper: ClickedTrainingToSignUpLiveDataWrapper,
+    private val clickedTrainingLiveDataWrapper: ClickedTrainingLiveDataWrapper,
     private val viewModelScope: CoroutineScope,
     private val dispatcherMain: CoroutineDispatcher = Dispatchers.Main,
     private val dispatcherIO: CoroutineDispatcher = Dispatchers.IO
@@ -31,11 +36,11 @@ class ScheduleViewModel(
 
     fun getTrainings() {
         viewModelScope.launch(dispatcherIO) {
-            val trainings = trainingsRepository.getAllTrainings().data
+            val trainings = trainingsRepository.getFutureTrainings().data
 
             withContext(dispatcherMain) {
                 trainings?.let {
-                    trainingsLiveDataWrapper.update(trainings)
+                    futureTrainingListLiveDataWrapper.update(trainings)
                 }
             }
         }
@@ -44,7 +49,7 @@ class ScheduleViewModel(
     fun observeTrainingsAndShops() {
         trainingsRepository.observeTrainingsLiveData().observeForever {
             it.data?.let {
-                trainingsLiveDataWrapper.update(it)
+                futureTrainingListLiveDataWrapper.update(it)
             }
         }
     }
@@ -57,5 +62,11 @@ class ScheduleViewModel(
         return null
     }
 
-    fun futureTrainingsLiveData() = trainingsLiveDataWrapper.liveData()
+    fun trainingSignUpScreen(training: Training) {
+        //clickedTrainingToSignUpLiveDataWrapper.update(training)
+        clickedTrainingLiveDataWrapper.update(training)
+        navigation.update(TrainingSignUpScreen)
+    }
+
+    fun futureTrainingsLiveData() = futureTrainingListLiveDataWrapper.liveData()
 }

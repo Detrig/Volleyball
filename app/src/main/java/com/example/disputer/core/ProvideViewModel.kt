@@ -289,7 +289,11 @@ interface ProvideViewModel {
 
                 ChildrenViewModel::class.java -> ChildrenViewModel(
                     navigation,
-                    clickedChildrenLiveDataWrapper
+                    clickedChildrenLiveDataWrapper,
+                    getParentChildrensUseCase,
+                    currentUserLiveDataWrapper,
+                    parentChildsListLiveDataWrapper,
+                    viewModelScope
                 )
 
                 AddChildrenViewModel::class.java -> AddChildrenViewModel(

@@ -1,6 +1,7 @@
 package com.example.disputer.info
 
 import androidx.lifecycle.ViewModel
+import com.example.disputer.about_app.AboutAppScreen
 import com.example.disputer.authentication.data.AuthUser
 import com.example.disputer.authentication.domain.usecase.LogoutUseCase
 import com.example.disputer.authentication.domain.utils.CurrentUserLiveDataWrapper
@@ -44,4 +45,6 @@ class InfoViewModel(
     }
 
     fun myAllTrainingParentScreen() = navigation.update(MyAllTrainingParentScreen)
+
+    fun aboutAppScreen() = navigation.update(AboutAppScreen)
 }

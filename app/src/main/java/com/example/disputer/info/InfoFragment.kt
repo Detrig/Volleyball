@@ -75,6 +75,10 @@ class InfoFragment : AbstractFragment<FragmentInformationBinding>() {
         binding.myTrainingsButton.setOnClickListener {
             viewModel.myAllTrainingParentScreen()
         }
+
+        binding.aboutAppButton.setOnClickListener {
+            viewModel.aboutAppScreen()
+        }
     }
 
     private fun showLogoutConfirmationDialog() {

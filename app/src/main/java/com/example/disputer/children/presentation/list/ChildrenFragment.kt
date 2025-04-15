@@ -27,14 +27,33 @@ class ChildrenFragment : AbstractFragment<FragmentMyChildrensBinding>() {
         viewModel = (activity as ProvideViewModel).viewModel(ChildrenViewModel::class.java)
 
         initRcView()
+        setUpViews()
     }
 
     private fun initRcView() {
-        childrenRcViewAdapter = ChildrenRcViewAdapter(object : ChildrenRcViewAdapter.OnChildrenClickListener {
-            override fun onClick(children: Student) {
-                viewModel.addChildrenScreen(children)
-            }
-        })
+        childrenRcViewAdapter =
+            ChildrenRcViewAdapter(object : ChildrenRcViewAdapter.OnChildrenClickListener {
+                override fun onClick(children: Student) {
+                    viewModel.addChildrenScreen(children)
+                }
+            })
         binding.childrenRcView.adapter = childrenRcViewAdapter
+    }
+
+    private fun setUpViews() {
+        var currentParent = viewModel.getCurrentParent()
+
+        currentParent?.let {
+
+            binding.addChildButton.setOnClickListener {
+                viewModel.addChildrenScreen()
+            }
+
+            //Update children live data
+            viewModel.getParentChilds(it.uid)
+            viewModel.parentChildsListLiveData().observe(viewLifecycleOwner) {
+                childrenRcViewAdapter.update(ArrayList(it))
+            }
+        }
     }
 }

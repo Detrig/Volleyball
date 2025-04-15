@@ -34,7 +34,6 @@ class EditParentProfileViewModel(
 ) : ViewModel() {
 
     fun parentChildsListLiveData() = parentChildsListLiveDataWrapper.liveData()
-    fun clickedChildrenLiveData() = clickedChildrenLiveDataWrapper.liveData()
     fun clearClickedChildrenLiveData() = clickedChildrenLiveDataWrapper.update(Student())
 
     fun getCurrentParent() : Parent? {
@@ -59,7 +58,6 @@ class EditParentProfileViewModel(
     fun getParentChilds(parentId: String) {
         viewModelScope.launch(dispatcherIo) {
             val childrens = getParentChildrensUseCase.invoke(parentId).data ?: listOf()
-            Log.d("VB-11", "EditParentProfileViewModel childs: $childrens")
             withContext(dispatcherMain) {
                 parentChildsListLiveDataWrapper.update(childrens)
             }

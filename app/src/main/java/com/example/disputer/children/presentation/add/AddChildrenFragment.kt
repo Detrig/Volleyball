@@ -128,7 +128,7 @@ class AddChildrenFragment : AbstractFragment<FragmentAddChildrenBinding>() {
                 age = age,
                 phoneNumber = phone,
                 parentId = viewModel.getCurrentParentId(),
-                trainingIds = emptyList(),
+                trainingIds = currentChildren.trainingIds,
                 photoBase64 = photoBase64
             )
         }

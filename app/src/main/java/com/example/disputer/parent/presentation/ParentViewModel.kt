@@ -40,7 +40,5 @@ class ParentViewModel(
         }
     }
 
-    fun getChildrenTrainings(children: Student) {
 
-    }
 }

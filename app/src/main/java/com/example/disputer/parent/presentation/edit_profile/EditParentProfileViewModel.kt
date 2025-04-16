@@ -72,4 +72,8 @@ class EditParentProfileViewModel(
             navigation.update(AddChildrenScreen)
         }
     }
+
+    fun infoScreen() {
+        navigation.update(InfoScreen)
+    }
 }

@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/scrollViewAbout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/titleTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:fontFamily="@font/onest_bold"
+            android:text="О занятиях"
+            android:textColor="@android:color/black"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:fontFamily="@font/onest_regular"
+            android:text="Наши занятия по волейболу направлены на развитие физических и личностных качеств у детей. Тренировки проходят в дружественной и поддерживающей атмосфере под руководством опытных тренеров."
+            android:textSize="16sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:fontFamily="@font/onest_bold"
+            android:text="Что дают занятия по волейболу:"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:fontFamily="@font/onest_regular"
+            android:text="• Улучшают координацию, выносливость и общую физическую форму;\n• Развивают командный дух и чувство ответственности;\n• Учат ставить цели и добиваться их;\n• Помогают укрепить уверенность в себе."
+            android:textSize="16sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:fontFamily="@font/onest_bold"
+            android:text="Для кого подходят занятия:"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:fontFamily="@font/onest_regular"
+            android:text="Мы формируем группы по возрасту и уровню подготовки. Заниматься могут дети от 7 лет и старше — как новички, так и те, кто уже имеет опыт."
+            android:textSize="16sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:fontFamily="@font/onest_bold"
+            android:text="Как проходят тренировки:"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:fontFamily="@font/onest_regular"
+            android:text="• Тренировки проходят 2–3 раза в неделю;\n• Каждое занятие длится 60–90 минут;\n• Мы учитываем индивидуальные особенности каждого ребёнка;\n• Используем современные методы тренировки и элементы игровой практики."
+            android:textSize="16sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:fontFamily="@font/onest_bold"
+            android:text="Соревнования и участие:"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:fontFamily="@font/onest_regular"
+            android:text="Дети, желающие развиваться дальше, имеют возможность участвовать в внутренних турнирах и городских соревнованиях."
+            android:textSize="16sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:fontFamily="@font/onest_bold"
+            android:text="Безопасность и забота:"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            android:fontFamily="@font/onest_regular"
+            android:text="Мы обеспечиваем безопасные условия для тренировок и внимательное отношение к каждому участнику."
+            android:textSize="16sp" />
+
+    </LinearLayout>
+</ScrollView>

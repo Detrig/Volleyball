@@ -25,12 +25,22 @@ class ScheduleFragment : AbstractFragment<FragmentScheduleBinding>() {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel = (activity as ProvideViewModel).viewModel(ScheduleViewModel::class.java)
-        
+
         initRcView()
+        loadRcViewList()
+
+
+        setUpClickListeners()
 
         viewModel.getTrainings()
         viewModel.futureTrainingsLiveData().observe(viewLifecycleOwner) {
             adapter.update(ArrayList(it))
+        }
+    }
+
+    private fun setUpClickListeners() {
+        binding.aboutTrainings.setOnClickListener {
+            viewModel.aboutTrainingsScreen()
         }
     }
 
@@ -41,5 +51,11 @@ class ScheduleFragment : AbstractFragment<FragmentScheduleBinding>() {
             }
         })
         binding.rcViewSchedule.adapter = adapter
+    }
+
+    private fun loadRcViewList() {
+        viewModel.futureTrainingsLiveData().value?.let {
+            adapter.update(ArrayList(it))
+        }
     }
 }

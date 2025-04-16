@@ -1,10 +1,10 @@
 package com.example.disputer.parent.presentation.edit_profile
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import com.example.disputer.children.data.Student
 import com.example.disputer.children.presentation.list.ChildrenRcViewAdapter
 import com.example.disputer.core.AbstractFragment
@@ -29,7 +29,16 @@ class EditParentProfileFragment : AbstractFragment<FragmentEditParentProfileBind
 
         viewModel = (activity as ProvideViewModel).viewModel(EditParentProfileViewModel::class.java)
 
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    viewModel.infoScreen()
+                }
+            }
+        )
+
         initRcView()
+        loadRcViewList()
         setUpViews()
     }
 
@@ -72,5 +81,12 @@ class EditParentProfileFragment : AbstractFragment<FragmentEditParentProfileBind
         })
         binding.childrenRcView.adapter = childrenAdapter
     }
+
+    private fun loadRcViewList() {
+        viewModel.parentChildsListLiveData().value?.let {
+            childrenAdapter.update(ArrayList(it))
+        }
+    }
+
 
 }

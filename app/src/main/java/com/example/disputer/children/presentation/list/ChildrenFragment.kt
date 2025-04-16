@@ -27,6 +27,7 @@ class ChildrenFragment : AbstractFragment<FragmentMyChildrensBinding>() {
         viewModel = (activity as ProvideViewModel).viewModel(ChildrenViewModel::class.java)
 
         initRcView()
+        loadRcViewList()
         setUpViews()
     }
 
@@ -54,6 +55,12 @@ class ChildrenFragment : AbstractFragment<FragmentMyChildrensBinding>() {
             viewModel.parentChildsListLiveData().observe(viewLifecycleOwner) {
                 childrenRcViewAdapter.update(ArrayList(it))
             }
+        }
+    }
+
+    private fun loadRcViewList() {
+        viewModel.parentChildsListLiveData().value?.let {
+            childrenRcViewAdapter.update(ArrayList(it))
         }
     }
 }

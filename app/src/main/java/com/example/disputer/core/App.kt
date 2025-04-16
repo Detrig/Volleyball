@@ -3,6 +3,10 @@ package com.example.disputer.core
 import android.app.Application
 import androidx.lifecycle.ViewModel
 import com.google.firebase.FirebaseApp
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.FirebaseFirestoreSettings
+import com.google.firebase.firestore.MemoryCacheSettings
+import com.google.firebase.firestore.PersistentCacheSettings
 
 class App : Application(), ProvideViewModel {
 
@@ -16,9 +20,18 @@ class App : Application(), ProvideViewModel {
 
     override fun onCreate() {
         super.onCreate()
+
+        FirebaseApp.initializeApp(this)
+        val firestore = FirebaseFirestore.getInstance()
+        val settings = FirebaseFirestoreSettings.Builder()
+            .setLocalCacheSettings(MemoryCacheSettings.newBuilder().build()) // Включение кэша в памяти
+            .setLocalCacheSettings(PersistentCacheSettings.newBuilder().build()) // Включение дискового кэша
+            .build()
+        firestore.firestoreSettings = settings
+
         val provideViewModel = ProvideViewModel.Base(clear)
         factory = ViewModelFactory.Base(provideViewModel)
-        FirebaseApp.initializeApp(this)
+
     }
 
     override fun <T : ViewModel> viewModel(viewModelClass: Class<T>): T =

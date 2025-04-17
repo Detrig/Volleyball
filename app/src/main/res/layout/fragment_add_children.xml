@@ -12,52 +12,16 @@
         android:paddingStart="16dp"
         android:paddingEnd="16dp">
 
-        <!-- Контейнер с фото и кнопкой выбора -->
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/addPhotoContainer"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
 
-            <ImageButton
-                android:id="@+id/deleteButton"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:background="@drawable/trash"
-                android:visibility="invisible"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <ImageView
-                android:id="@+id/childPhotoImageView"
-                android:layout_width="120dp"
-                android:layout_height="120dp"
-                android:background="@drawable/image_gallery"
-                android:contentDescription="Фото ребенка"
-                android:scaleType="centerCrop"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/selectPhotoButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:background="@drawable/rounded_stroke"
-                android:fontFamily="@font/onest_medium"
-                android:padding="16dp"
-                android:text="Выбрать фото"
-                android:textColor="@color/black"
-                android:textSize="16sp"
-                app:iconGravity="textStart"
-                app:layout_constraintTop_toBottomOf="@id/childPhotoImageView"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        <ImageButton
+            android:id="@+id/deleteButton"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/trash"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="@+id/childDataLabel"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <!-- Заголовок -->
         <TextView
@@ -65,13 +29,12 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp"
             android:text="Данные ребенка"
             android:textSize="20sp"
             android:textStyle="bold"
-            app:layout_constraintTop_toBottomOf="@id/addPhotoContainer"
+            app:layout_constraintEnd_toStartOf="@+id/deleteButton"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <!-- Имя -->
         <com.google.android.material.textfield.TextInputLayout
@@ -149,15 +112,15 @@
             android:id="@+id/saveButton"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
             android:background="@drawable/rounded_stroke"
             android:fontFamily="@font/onest_medium"
             android:text="@string/save"
             android:textColor="@color/black"
-            android:layout_marginTop="32dp"
             android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/phoneInputLayout" />
+            app:layout_constraintStart_toStartOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

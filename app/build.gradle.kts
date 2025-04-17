@@ -58,9 +58,12 @@ dependencies {
     implementation(libs.firebase.analytics)
     implementation(libs.firebase.auth)
     implementation("com.google.firebase:firebase-database:21.0.0")
+    implementation("com.google.firebase:firebase-messaging:24.1.1")
 
     //Authentication with Credential Manager
     implementation(libs.play.services.auth)
 
     implementation("com.github.bumptech.glide:glide:4.16.0")
+
+    implementation("com.squareup.okhttp3:okhttp:4.12.0")
 }

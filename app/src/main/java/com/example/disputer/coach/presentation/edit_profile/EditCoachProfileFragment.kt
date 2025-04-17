@@ -7,8 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.LinearLayout
+import androidx.activity.result.contract.ActivityResultContracts
+import com.bumptech.glide.Glide
+import com.example.disputer.R
 import com.example.disputer.coach.data.Coach
 import com.example.disputer.core.AbstractFragment
+import com.example.disputer.core.ImageUtils
 import com.example.disputer.core.ProvideViewModel
 import com.example.disputer.databinding.FragmentEditCoachProfileBinding
 
@@ -16,6 +20,13 @@ class EditCoachProfileFragment : AbstractFragment<FragmentEditCoachProfileBindin
 
     private lateinit var viewModel: EditCoachProfileViewModel
     private val addressEditTexts = mutableListOf<EditText>()
+    private val imagePickerLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+        uri?.let {
+            val base64 = ImageUtils.uriToBase64(requireContext(), it)
+            viewModel.setSelectedImage(base64)
+            displayImage(base64)
+        }
+    }
 
     override fun bind(
         inflater: LayoutInflater,
@@ -52,10 +63,19 @@ class EditCoachProfileFragment : AbstractFragment<FragmentEditCoachProfileBindin
                 )
             viewModel.updateCoach(coach)
         }
+
+        binding.changeImageButton.setOnClickListener {
+            selectImageFromGallery()
+        }
     }
 
     private fun setupViews(coach: Coach?) {
         coach?.let {
+            if (it.photoBase64.isNotEmpty()) {
+                displayImage(it.photoBase64)
+            }
+            viewModel.setSelectedImage(it.photoBase64)
+
             binding.emailEditText.setText(coach.email)
             binding.nameEditText.setText(coach.name)
             binding.phoneEditText.setText(coach.phoneNumber)
@@ -89,6 +109,23 @@ class EditCoachProfileFragment : AbstractFragment<FragmentEditCoachProfileBindin
         return addressEditTexts
             .map { it.text.toString() }
             .filter { it.isNotBlank() }
+    }
+
+    private fun selectImageFromGallery() {
+        imagePickerLauncher.launch("image/*")
+    }
+
+    private fun displayImage(base64: String) {
+        val bitmap = ImageUtils.base64ToBitmap(base64)
+        bitmap?.let {
+            Glide.with(binding.profileImage.context)
+                .load(it)
+                .centerCrop()
+                .placeholder(R.drawable.user)
+                .into(binding.profileImage)
+        } ?: run {
+            binding.profileImage.setImageResource(R.drawable.user)
+        }
     }
 
     private fun Int.dpToPx(): Int = (this * resources.displayMetrics.density).toInt()

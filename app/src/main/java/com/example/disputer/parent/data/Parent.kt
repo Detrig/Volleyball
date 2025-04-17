@@ -6,5 +6,6 @@ data class Parent(
     var email: String = "",
     var phoneNumber: String = "",
     var image: String = "",
-    var childIds: List<String> = emptyList()
+    var childIds: List<String> = emptyList(),
+    var fcmToken: String = ""
 )

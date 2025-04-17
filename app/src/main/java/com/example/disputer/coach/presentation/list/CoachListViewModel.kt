@@ -24,11 +24,7 @@ class CoachListViewModel(
     private val dispatcherIo: CoroutineDispatcher = Dispatchers.IO
 ) : ViewModel() {
 
-    init {
-        loadCoachs()
-    }
-
-    private fun loadCoachs() {
+    fun loadCoachs() {
         viewModelScope.launch(dispatcherIo) {
             getCoachListUseCase.invoke().data?.let {
                 withContext(dispatcherMain) {

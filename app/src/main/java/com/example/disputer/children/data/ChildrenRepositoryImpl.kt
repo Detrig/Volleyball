@@ -3,6 +3,7 @@ package com.example.disputer.children.data
 import com.example.disputer.children.domain.repo.ChildrenRepository
 import com.example.disputer.coach.data.Coach
 import com.example.disputer.core.Resource
+import com.example.disputer.parent.data.Parent
 import com.example.disputer.training.data.Training
 
 class ChildrenRepositoryImpl(
@@ -29,5 +30,7 @@ class ChildrenRepositoryImpl(
     override suspend fun deleteChildren(children: Student): Resource<Student> =
         childrenDataSource.deleteChildren(children)
 
+    override suspend fun getParentByChildId(childId: String): Resource<Parent> =
+        childrenDataSource.getParentByChildId(childId)
 
 }

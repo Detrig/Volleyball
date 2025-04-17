@@ -15,6 +15,7 @@ import com.example.disputer.children.presentation.list.ChildrenRcViewAdapter
 import com.example.disputer.core.AbstractFragment
 import com.example.disputer.core.ProvideViewModel
 import com.example.disputer.databinding.FragmentAddTrainingBinding
+import com.example.disputer.notification.domain.utils.NotificationHelper
 import com.example.disputer.training.data.Training
 import com.example.disputer.training.presentation.training_coach.TrainingCoachViewModel
 import com.google.android.material.datepicker.MaterialDatePicker
@@ -28,6 +29,7 @@ class AddTrainingFragment : AbstractFragment<FragmentAddTrainingBinding>() {
     private lateinit var viewModel: TrainingCoachViewModel
     private lateinit var currentTraining: Training
     private lateinit var childrenAdapter: ChildrenRcViewAdapter
+    private lateinit var notificationHelper: NotificationHelper
 
     override fun bind(
         inflater: LayoutInflater,
@@ -37,7 +39,7 @@ class AddTrainingFragment : AbstractFragment<FragmentAddTrainingBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        notificationHelper = NotificationHelper(requireContext())
         viewModel = (activity as ProvideViewModel).viewModel(TrainingCoachViewModel::class.java)
         getCurrentTraining()
         setUpRcView()
@@ -156,7 +158,7 @@ class AddTrainingFragment : AbstractFragment<FragmentAddTrainingBinding>() {
             .setTitle("Удаление тренировки")
             .setMessage("Вы уверены, что хотите удалить эту тренировку?")
             .setPositiveButton("Удалить") { _, _ ->
-                viewModel.deleteTraining(currentTraining)
+                viewModel.deleteTraining(currentTraining, notificationHelper)
             }
             .setNegativeButton("Отмена", null)
             .create()

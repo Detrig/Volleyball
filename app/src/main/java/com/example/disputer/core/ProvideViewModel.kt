@@ -1,5 +1,6 @@
 package com.example.disputer.core
 
+import android.app.Application
 import androidx.lifecycle.ViewModel
 import com.example.disputer.authentication.presentation.login.LoginViewModel
 import com.example.disputer.authentication.data.AuthRepository
@@ -41,6 +42,7 @@ import com.example.disputer.coach.presentation.edit_profile.EditCoachProfileView
 import com.example.disputer.coach.presentation.list.CoachListViewModel
 import com.example.disputer.coach.presentation.profile.CoachInfoViewModel
 import com.example.disputer.info.InfoViewModel
+import com.example.disputer.notification.data.FirebaseNotificationRepository
 import com.example.disputer.parent.data.FirebaseParentDataSource
 import com.example.disputer.parent.data.ParentRepositoryImpl
 import com.example.disputer.parent.domain.usecase.DeleteChildrenFromParentUseCase
@@ -72,6 +74,7 @@ import com.example.disputer.training.presentation.all_my_training_parent_list.My
 import com.example.disputer.training.presentation.training_coach.TrainingCoachViewModel
 import com.example.disputer.training.presentation.training_sign_up.TrainingSignUpViewModel
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.ktx.database
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.CoroutineScope
@@ -87,6 +90,7 @@ interface ProvideViewModel {
     ) : ProvideViewModel {
         private val fireBaseAuth = Firebase.auth
         private val fireBaseFirestore = Firebase.firestore
+        private val firebaseDatabase = Firebase.database
         private val viewModelScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
         private val navigation = Navigation.Base()
 
@@ -175,6 +179,9 @@ interface ProvideViewModel {
         private val signedUpForTrainingChildrensByParentLiveDataWrapper =
             SignedUpForTrainingChildrensByParentLiveDataWrapper.Base()
 
+        //Notification
+        private val notificationRepository = FirebaseNotificationRepository(firebaseDatabase)
+
         override fun <T : ViewModel> viewModel(viewModelClass: Class<T>): T {
             return when (viewModelClass) {
 
@@ -230,6 +237,7 @@ interface ProvideViewModel {
                     navigation,
                     trainingsRepository,
                     shopRepository,
+                    notificationRepository,
                     trainingsLiveDataWrapper,
                     shopsLiveDataWrapper,
                     currentUserLiveDataWrapper,

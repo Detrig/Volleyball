@@ -21,13 +21,7 @@ class AddChildrenFragment : AbstractFragment<FragmentAddChildrenBinding>() {
     private lateinit var viewModel: AddChildrenViewModel
     private var currentChildren = Student()
     private var selectedImageUri: Uri? = null
-    private val pickImageLauncher =
-        registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
-            uri?.let {
-                selectedImageUri = it
-                loadSelectedImage(it)
-            }
-        }
+
 
     override fun bind(
         inflater: LayoutInflater,
@@ -59,9 +53,6 @@ class AddChildrenFragment : AbstractFragment<FragmentAddChildrenBinding>() {
             phoneEditText.setText(currentChildren.phoneNumber)
         }
 
-        binding.selectPhotoButton.setOnClickListener {
-            pickImageLauncher.launch("image/*")
-        }
 
         binding.saveButton.setOnClickListener {
             saveChildWithPhoto()
@@ -69,21 +60,6 @@ class AddChildrenFragment : AbstractFragment<FragmentAddChildrenBinding>() {
 
         binding.deleteButton.setOnClickListener {
             viewModel.deleteChildren(currentChildren)
-        }
-    }
-
-    private fun loadSelectedImage(uri: Uri) {
-        try {
-            val inputStream = requireContext().contentResolver.openInputStream(uri)
-            val bitmap = BitmapFactory.decodeStream(inputStream)
-            inputStream?.close()
-
-            // Сжимаем изображение перед отображением
-            val compressedBitmap = ImageHelper.compressBitmap(bitmap, 800)
-            binding.childPhotoImageView.setImageBitmap(compressedBitmap)
-        } catch (e: Exception) {
-            Toast.makeText(requireContext(), "Ошибка загрузки изображения", Toast.LENGTH_SHORT)
-                .show()
         }
     }
 

@@ -1,6 +1,8 @@
 package com.example.disputer.parent.presentation.edit_profile
 
 import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.disputer.authentication.data.AuthUser
 import com.example.disputer.authentication.domain.utils.CurrentUserLiveDataWrapper
@@ -33,6 +35,13 @@ class EditParentProfileViewModel(
     private val dispatcherIo: CoroutineDispatcher = Dispatchers.IO
 ) : ViewModel() {
 
+    private val _selectedImageLiveData = MutableLiveData<String?>()
+    val selectedImageLiveData: LiveData<String?> = _selectedImageLiveData
+
+    fun setSelectedImage(image: String) {
+        _selectedImageLiveData.value = image
+    }
+
     fun parentChildsListLiveData() = parentChildsListLiveDataWrapper.liveData()
     fun clearClickedChildrenLiveData() = clickedChildrenLiveDataWrapper.update(Student())
 
@@ -45,11 +54,12 @@ class EditParentProfileViewModel(
     }
 
     fun updateParent(parent: Parent) {
+        val updatedParent = parent.copy(image = _selectedImageLiveData.value ?: parent.image)
         viewModelScope.launch(dispatcherIo) {
-            updateParentUseCase.invoke(parent)
+            updateParentUseCase.invoke(updatedParent)
             withContext(dispatcherMain) {
                 Log.d("VB-09", "EditParentProfileViewModel parent: $parent")
-                currentUserLiveDataWrapper.update(AuthUser.ParentUser(parent))
+                currentUserLiveDataWrapper.update(AuthUser.ParentUser(updatedParent))
                 navigation.update(InfoScreen)
             }
         }

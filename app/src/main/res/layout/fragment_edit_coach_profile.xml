@@ -22,10 +22,10 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:src="@drawable/image_gallery" />
+            android:background="@drawable/image_gallery" />
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/changePhotoText"
+            android:id="@+id/changeImageButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -48,7 +48,7 @@
             android:enabled="false"
             android:focusable="false"
             android:clickable="false"
-            app:layout_constraintTop_toBottomOf="@id/changePhotoText">
+            app:layout_constraintTop_toBottomOf="@id/changeImageButton">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/emailEditText"

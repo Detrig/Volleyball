@@ -9,7 +9,6 @@ interface AddChildrenUiState {
     fun update(
         binding: FragmentAddChildrenBinding
     ) {
-        binding.addPhotoContainer.visibility = View.VISIBLE
         binding.nameEditText.visibility = View.VISIBLE
         binding.phoneEditText.visibility = View.VISIBLE
         binding.ageEditText.visibility = View.VISIBLE
@@ -20,7 +19,6 @@ interface AddChildrenUiState {
 
     object Loading : AddChildrenUiState {
         override fun update(binding: FragmentAddChildrenBinding) {
-            binding.addPhotoContainer.visibility = View.INVISIBLE
             binding.nameEditText.visibility = View.INVISIBLE
             binding.phoneEditText.visibility = View.INVISIBLE
             binding.ageEditText.visibility = View.INVISIBLE

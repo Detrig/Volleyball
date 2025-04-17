@@ -5,9 +5,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.disputer.R
 import com.example.disputer.coach.data.Coach
 import com.example.disputer.core.ImageHelper
+import com.example.disputer.core.ImageUtils
 import com.example.disputer.databinding.CoachRcViewItemBinding
 
 class CoachRcViewAdapter(private val listener: OnCoachClickListener) :
@@ -24,14 +26,14 @@ class CoachRcViewAdapter(private val listener: OnCoachClickListener) :
             coachQualification.text = coach.qualification
 
             if (coach.photoBase64.isNotEmpty()) {
-                try {
-                    val bitmap = ImageHelper.base64ToBitmap(coach.photoBase64)
-                    bitmap?.let {
-                        coachImage.setImageBitmap(it)
-                    } ?: run {
-                        coachImage.setImageResource(R.drawable.user)
-                    }
-                } catch (e: Exception) {
+                val bitmap = ImageUtils.base64ToBitmap(coach.photoBase64)
+                if (bitmap != null) {
+                    Glide.with(coachImage.context)
+                        .load(bitmap)
+                        .centerCrop()
+                        .placeholder(R.drawable.user)
+                        .into(coachImage)
+                } else {
                     coachImage.setImageResource(R.drawable.user)
                 }
             } else {

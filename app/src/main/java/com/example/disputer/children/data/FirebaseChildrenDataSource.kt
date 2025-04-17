@@ -130,4 +130,34 @@ class FirebaseChildrenDataSource(
             Resource.Error(e.localizedMessage ?: "Failed to delete training")
         }
     }
+
+    override suspend fun getParentByChildId(childId: String): Resource<Parent> {
+        return try {
+            val studentDocument = fireStore.collection(STUDENTS_COLLECTION)
+                .document(childId)
+                .get()
+                .await()
+
+            if (studentDocument.exists()) {
+                val student = studentDocument.toObject(Student::class.java)
+                val parentId = student?.parentId ?: throw Exception("Parent ID not found for the student")
+
+                val parentDocument = fireStore.collection(PARENTS_COLLECTION)
+                    .document(parentId)
+                    .get()
+                    .await()
+
+                if (parentDocument.exists()) {
+                    val parent = parentDocument.toObject(Parent::class.java)
+                    Resource.Success(parent ?: throw Exception("Failed to parse parent data"))
+                } else {
+                    Resource.Error("Parent not found")
+                }
+            } else {
+                Resource.Error("Child not found")
+            }
+        } catch (e: Exception) {
+            Resource.Error(e.localizedMessage ?: "Failed to load parent data")
+        }
+    }
 }

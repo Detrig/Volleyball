@@ -5,9 +5,6 @@ import com.example.disputer.children.data.Student
 import com.example.disputer.core.Resource
 import com.example.disputer.training.domain.repository.TrainingDataSource
 import com.example.disputer.training.domain.repository.TrainingsRepository
-import com.google.firebase.firestore.FirebaseFirestore
-import kotlinx.coroutines.tasks.await
-import java.time.LocalDate
 
 class TrainingRepositoryImpl(
     private val dataSource: TrainingDataSource
@@ -47,6 +44,4 @@ class TrainingRepositoryImpl(
 
     override suspend fun getChildrensSignedUpForTraining(trainingId: String): Resource<List<Student>> =
         dataSource.getChildrensSignedUpForTraining(trainingId)
-
-
 }

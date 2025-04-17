@@ -10,6 +10,8 @@ import androidx.lifecycle.ViewModel
 import com.example.disputer.R
 import com.example.disputer.core.ProvideViewModel
 import com.example.disputer.databinding.ActivityMainBinding
+import com.example.disputer.notification.domain.utils.NotificationObserver
+import com.google.firebase.auth.FirebaseAuth
 
 class MainActivity : AppCompatActivity(), ProvideViewModel {
 
@@ -28,6 +30,11 @@ class MainActivity : AppCompatActivity(), ProvideViewModel {
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
+        }
+
+        val userId = FirebaseAuth.getInstance().currentUser?.uid
+        if (userId != null) {
+            NotificationObserver.observeNotifications(this, userId)
         }
 
         viewModel.liveData().observe(this) { screen ->

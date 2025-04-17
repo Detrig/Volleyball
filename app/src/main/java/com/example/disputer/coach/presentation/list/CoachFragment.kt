@@ -21,7 +21,7 @@ class CoachFragment : AbstractFragment<FragmentCoachBinding>() {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel = (activity as ProvideViewModel).viewModel(CoachListViewModel::class.java)
-
+        viewModel.loadCoachs()
         initRcView()
         observeCoachListLiveData()
     }

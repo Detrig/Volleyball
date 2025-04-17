@@ -1,5 +1,6 @@
 package com.example.disputer.authentication.presentation.main
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import com.example.disputer.authentication.data.AuthUser
 import com.example.disputer.authentication.domain.utils.CurrentUserLiveDataWrapper
@@ -7,9 +8,15 @@ import com.example.disputer.authentication.presentation.login.LoginScreen
 import com.example.disputer.core.Navigation
 import com.example.disputer.coach.presentation.list.CoachScreen
 import com.example.disputer.info.InfoScreen
+import com.example.disputer.notification.data.NotificationData
+import com.example.disputer.notification.domain.utils.NotificationHelper
 import com.example.disputer.training.presentation.training_parent.TrainingParentMainScreen
 import com.example.disputer.schedule.presentation.ScheduleScreen
 import com.example.disputer.training.presentation.training_coach.main.TrainingCoachMainScreen
+import com.google.firebase.database.ChildEventListener
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
 
 class MainViewModel(
     private val navigation: Navigation,
@@ -47,4 +54,6 @@ class MainViewModel(
     }
 
     fun liveData() = navigation.liveData()
+
+
 }

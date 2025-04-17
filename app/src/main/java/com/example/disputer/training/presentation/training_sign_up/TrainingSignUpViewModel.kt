@@ -13,6 +13,7 @@ import com.example.disputer.core.Resource
 import com.example.disputer.core.Screen
 import com.example.disputer.parent.domain.usecase.GetParentChildrensUseCase
 import com.example.disputer.schedule.domain.ClickedTrainingToSignUpLiveDataWrapper
+import com.example.disputer.schedule.presentation.ScheduleScreen
 import com.example.disputer.training.data.Training
 import com.example.disputer.training.domain.repository.TrainingsRepository
 import com.example.disputer.training.domain.repository.utils.ClickedTrainingLiveDataWrapper
@@ -75,7 +76,7 @@ class TrainingSignUpViewModel(
                     is Resource.Success -> {
                         //sendNotificationToCoach(trainingId, students)
                         _signUpMessageLiveData.postValue("Вы успешно записались на тренировку ✅")
-                        navigation.update(TrainingParentMainScreen)
+                        navigation.update(ScheduleScreen)
                     }
                     is Resource.Error -> {
                         _signUpMessageLiveData.postValue(result.message)

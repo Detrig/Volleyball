@@ -1,15 +1,18 @@
 package com.example.disputer.training.presentation.training_coach
 
+import android.app.Application
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.disputer.authentication.data.AuthUser
 import com.example.disputer.authentication.domain.utils.CurrentUserLiveDataWrapper
+import com.example.disputer.children.domain.usecases.GetParentByChildIdUseCase
 import com.example.disputer.coach.data.Coach
 import com.example.disputer.core.Navigation
-import com.example.disputer.core.Result
 import com.example.disputer.core.Screen
+import com.example.disputer.notification.data.FirebaseNotificationRepository
+import com.example.disputer.notification.data.NotificationData
+import com.example.disputer.notification.domain.repo.NotificationRepository
+import com.example.disputer.notification.domain.utils.NotificationHelper
 import com.example.disputer.shop.domain.repo.ShopRepository
 import com.example.disputer.shop.presentation.AddShopScreen
 import com.example.disputer.training.data.Training
@@ -32,6 +35,7 @@ class TrainingCoachViewModel(
     private val navigation: Navigation,
     private val trainingsRepository: TrainingsRepository,
     private val shopRepository: ShopRepository,
+    private val notificationRepository: NotificationRepository,
     private val trainingsLiveDataWrapper: TrainingsLiveDataWrapper,
     private val shopsLiveDataWrapper: ShopsLiveDataWrapper,
     private val currentUserLiveDataWrapper: CurrentUserLiveDataWrapper,
@@ -91,9 +95,25 @@ class TrainingCoachViewModel(
         }
     }
 
-    fun deleteTraining(training: Training) {
-        addTrainingUiStateLiveDataWrapper.update(AddTrainingUiState.Loading)
+    fun deleteTraining(training: Training, notificationHelper: NotificationHelper) {
         viewModelScope.launch(dispatcherIO) {
+
+            val signedUpChildrens = trainingsRepository.getChildrensSignedUpForTraining(training.id).data ?: listOf()
+
+            val parentIds = signedUpChildrens.map { it.parentId }
+
+            notificationRepository.sendNotification(training.id, training.date, parentIds.toSet().toList())
+
+            parentIds.forEach { parentId ->
+                val notificationData = NotificationData(
+                    id = training.id,
+                    title = "Тренировка отменена",
+                    body = "Тренировка ${training.date} была отменена.",
+                    timestamp = System.currentTimeMillis()
+                )
+                notificationHelper.showNotification(notificationData)
+            }
+
             trainingsRepository.deleteTraining(training)
             withContext(dispatcherMain) {
                 navigation.update(Screen.Pop)

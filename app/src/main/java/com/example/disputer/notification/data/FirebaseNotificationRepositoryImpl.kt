@@ -15,7 +15,7 @@ class FirebaseNotificationRepository @Inject constructor(
         val snapshot = firebaseDatabase
             .getReference("notifications/$userId")
             .orderByKey()
-            .limitToLast(1)
+            .limitToLast(100)
             .get()
             .await()
 
@@ -24,7 +24,7 @@ class FirebaseNotificationRepository @Inject constructor(
             val title = child.child("title").getValue(String::class.java)
             val body = child.child("body").getValue(String::class.java)
             val timestamp = child.child("timestamp").getValue(Long::class.java)
-
+            Log.d("VB-101", "id: $id, title: $title, body: $body")
             if (title != null && body != null && timestamp != null) {
                 NotificationData(id, title, body, timestamp)
             } else null

@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
-import com.example.disputer.notification.presentation.FirebaseCheckWorker
+import com.example.disputer.notification.presentation.NotificationWorker
 import com.google.firebase.FirebaseApp
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreSettings
@@ -41,7 +41,7 @@ class App : Application(), ProvideViewModel {
     }
 
     private fun scheduleNotificationCheck() {
-        val workRequest = PeriodicWorkRequestBuilder<FirebaseCheckWorker>(
+        val workRequest = PeriodicWorkRequestBuilder<NotificationWorker>(
             15, TimeUnit.MINUTES
         ).build()
 

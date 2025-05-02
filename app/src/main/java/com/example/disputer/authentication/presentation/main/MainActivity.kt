@@ -7,11 +7,18 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModel
+import androidx.work.Constraints
+import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.NetworkType
+import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.WorkManager
 import com.example.disputer.R
 import com.example.disputer.core.ProvideViewModel
 import com.example.disputer.databinding.ActivityMainBinding
 import com.example.disputer.notification.domain.utils.NotificationObserver
+import com.example.disputer.notification.presentation.NotificationWorker
 import com.google.firebase.auth.FirebaseAuth
+import java.util.concurrent.TimeUnit
 
 class MainActivity : AppCompatActivity(), ProvideViewModel {
 
@@ -20,6 +27,7 @@ class MainActivity : AppCompatActivity(), ProvideViewModel {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        startNotificationWorker()
         binding = ActivityMainBinding.inflate(layoutInflater)
 
         enableEdgeToEdge()
@@ -129,7 +137,19 @@ class MainActivity : AppCompatActivity(), ProvideViewModel {
     override fun <T : ViewModel> viewModel(viewModelClass: Class<T>): T =
         (application as ProvideViewModel).viewModel(viewModelClass)
 
-    companion object {
-        private const val NOTIFICATION_PERMISSION_REQUEST_CODE = 101
+    private fun startNotificationWorker() {
+        val constraints = Constraints.Builder()
+            .setRequiredNetworkType(NetworkType.CONNECTED)
+            .build()
+
+        val request = PeriodicWorkRequestBuilder<NotificationWorker>(15, TimeUnit.MINUTES)
+            .setConstraints(constraints)
+            .build()
+
+        WorkManager.getInstance(this).enqueueUniquePeriodicWork(
+            "notification_worker",
+            ExistingPeriodicWorkPolicy.KEEP,
+            request
+        )
     }
 }

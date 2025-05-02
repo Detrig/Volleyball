@@ -1,6 +1,7 @@
 package com.example.disputer.core
 
 import android.app.Application
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.ViewModel
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.PeriodicWorkRequestBuilder
@@ -25,6 +26,8 @@ class App : Application(), ProvideViewModel {
 
     override fun onCreate() {
         super.onCreate()
+
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
 
         FirebaseApp.initializeApp(this)
         val firestore = FirebaseFirestore.getInstance()

@@ -19,9 +19,9 @@ class MainActivity : AppCompatActivity(), ProvideViewModel {
     private lateinit var viewModel : MainViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
-        binding = ActivityMainBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+
         enableEdgeToEdge()
         setContentView(binding.root)
 
@@ -31,6 +31,10 @@ class MainActivity : AppCompatActivity(), ProvideViewModel {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
+        hideHeaderBottomNav() // скрываем навигацию на время анимации
+
+        animateLogoAndCheckAuth()
 
         val userId = FirebaseAuth.getInstance().currentUser?.uid
         if (userId != null) {
@@ -66,7 +70,66 @@ class MainActivity : AppCompatActivity(), ProvideViewModel {
         binding.constraint.setBackgroundColor(resources.getColor(R.color.dark_blue))
     }
 
+    private fun checkAuth() {
+        val currentUser = FirebaseAuth.getInstance().currentUser
+        if (currentUser != null) {
+            NotificationObserver.observeNotifications(this, currentUser.uid)
+
+            viewModel.initializeCurrentUserIfLoggedIn {
+                showHeaderBottomNav()
+                viewModel.mainScreen()
+            }
+        } else {
+            viewModel.login()
+        }
+    }
+
+    private fun animateLogoAndCheckAuth() {
+        val logoView = binding.logoImageView
+        val mainContainer = binding.mainUiContainer
+
+        logoView.apply {
+            scaleX = 0.8f
+            scaleY = 0.8f
+            alpha = 0f
+            visibility = View.VISIBLE
+        }
+        mainContainer.visibility = View.GONE
+
+        logoView.post {
+            logoView.animate()
+                .scaleX(1f)
+                .scaleY(1f)
+                .alpha(1f)
+                .setDuration(1200)
+                .withEndAction {
+                    // Пауза перед исчезновением
+                    logoView.postDelayed({
+                        logoView.animate()
+                            .alpha(0f)
+                            .setDuration(500)
+                            .withEndAction {
+                                logoView.visibility = View.GONE
+                                mainContainer.alpha = 0f
+                                mainContainer.visibility = View.VISIBLE
+                                mainContainer.animate()
+                                    .alpha(1f)
+                                    .setDuration(500)
+                                    .start()
+
+                                checkAuth()
+                            }
+                            .start()
+                    }, 700)
+                }
+                .start()
+        }
+    }
+
     override fun <T : ViewModel> viewModel(viewModelClass: Class<T>): T =
         (application as ProvideViewModel).viewModel(viewModelClass)
 
+    companion object {
+        private const val NOTIFICATION_PERMISSION_REQUEST_CODE = 101
+    }
 }

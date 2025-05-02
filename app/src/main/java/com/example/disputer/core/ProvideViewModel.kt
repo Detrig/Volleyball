@@ -194,7 +194,12 @@ interface ProvideViewModel {
                     viewModelScope
                 )
 
-                MainViewModel::class.java -> MainViewModel(navigation, currentUserLiveDataWrapper)
+                MainViewModel::class.java -> MainViewModel(
+                    navigation,
+                    currentUserLiveDataWrapper,
+                    getCurrentUserRoleUseCase,
+                    viewModelScope
+                )
 
                 RegisterViewModel::class.java -> RegisterViewModel(
                     navigation,

@@ -43,6 +43,9 @@ import com.example.disputer.coach.presentation.list.CoachListViewModel
 import com.example.disputer.coach.presentation.profile.CoachInfoViewModel
 import com.example.disputer.info.InfoViewModel
 import com.example.disputer.notification.data.FirebaseNotificationRepository
+import com.example.disputer.notification.domain.usecase.CheckNewNotificationsUseCase
+import com.example.disputer.notification.domain.utils.NotificationsListLiveDataWrapper
+import com.example.disputer.notification.presentation.NotificationViewModel
 import com.example.disputer.parent.data.FirebaseParentDataSource
 import com.example.disputer.parent.data.ParentRepositoryImpl
 import com.example.disputer.parent.domain.usecase.DeleteChildrenFromParentUseCase
@@ -181,6 +184,8 @@ interface ProvideViewModel {
 
         //Notification
         private val notificationRepository = FirebaseNotificationRepository(firebaseDatabase)
+        private val checkNewNotificationsUseCase = CheckNewNotificationsUseCase(notificationRepository)
+        private val notificationsListLiveDataWrapper = NotificationsListLiveDataWrapper.Base()
 
         override fun <T : ViewModel> viewModel(viewModelClass: Class<T>): T {
             return when (viewModelClass) {
@@ -194,7 +199,12 @@ interface ProvideViewModel {
                     viewModelScope
                 )
 
-                MainViewModel::class.java -> MainViewModel(navigation, currentUserLiveDataWrapper)
+                MainViewModel::class.java -> MainViewModel(
+                    navigation,
+                    currentUserLiveDataWrapper,
+                    getCurrentUserRoleUseCase,
+                    viewModelScope
+                )
 
                 RegisterViewModel::class.java -> RegisterViewModel(
                     navigation,
@@ -332,6 +342,13 @@ interface ProvideViewModel {
                     getChildrenTrainings,
                     currentUserLiveDataWrapper,
                     yourChildrenTrainingsLiveDataWrapper,
+                    viewModelScope
+                )
+
+                NotificationViewModel::class.java -> NotificationViewModel(
+                    checkNewNotificationsUseCase,
+                    currentUserLiveDataWrapper,
+                    notificationsListLiveDataWrapper,
                     viewModelScope
                 )
 

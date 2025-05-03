@@ -28,6 +28,10 @@ class MyAllTrainingParentFragment : AbstractFragment<FragmentMyAllTrainingParent
 
         viewModel.getYourChildrenAllTrainings()
         initRcView()
+
+        viewModel.yourChildrenTrainingLiveLiveData().value?.let {
+            adapter.update(ArrayList(it))
+        }
         setUpObservers()
     }
 

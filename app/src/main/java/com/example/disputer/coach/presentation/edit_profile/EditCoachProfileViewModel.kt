@@ -30,7 +30,6 @@ class EditCoachProfileViewModel(
     val selectedImageLiveData: LiveData<String?> = _selectedImageLiveData
 
     fun setSelectedImage(image: String) {
-        Log.d("VB-20", "setSelectedImage: ${image.subSequence(image.length-100, image.length)}")
         _selectedImageLiveData.value = image
     }
 

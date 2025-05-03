@@ -102,6 +102,10 @@ class InfoFragment : AbstractFragment<FragmentInformationBinding>() {
         binding.aboutAppButton.setOnClickListener {
             viewModel.aboutAppScreen()
         }
+
+        binding.notificationButton.setOnClickListener {
+            viewModel.notificationScreen()
+        }
     }
 
     private fun showLogoutConfirmationDialog() {
